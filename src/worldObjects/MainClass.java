@@ -10,7 +10,7 @@ public class MainClass extends GraphicsProgram{
 			"../images/worldmap/").getPath();
 
 	public void run(){
-		drawBoard(0, 1);
+		drawBoard(14, 14);
 	}
 	
 	public void drawBoard(int playerX, int playerY) {
