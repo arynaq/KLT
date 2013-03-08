@@ -1,4 +1,4 @@
-package klt;
+package worldObjects;
 
 import acm.graphics.GImage;
 import acm.program.GraphicsProgram;

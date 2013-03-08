@@ -1,4 +1,4 @@
-package klt;
+package worldObjects;
 
 import java.io.File;
 import java.io.FileNotFoundException;
