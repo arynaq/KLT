@@ -3,35 +3,26 @@ package characters;
 public class Player extends GameCharacter {
 	
 	private int health;
-	private String name = "Gukern";
 	private int level;
 	private int money;
 	private int experience;
-	private int defense;
-	private int attack;
 	
 	public Player() {
 		health = 10;
 		level = 1;
 		money = 100;
-		defense = 0;
-		attack = 2;
+		this.setType(ObjType.PLAYER);
 		
 	}
 	
 	public Player(String name) {
 		this();
-		this.name = name;
+		this.setName(name);
 	}
 	
 	public void setMoney(int money) {
 		this.money = money;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 
 	public void setExperience(int experience) {
 		this.experience = experience;
@@ -49,10 +40,6 @@ public class Player extends GameCharacter {
 
 	public int getHealth() {
 		return health;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 }

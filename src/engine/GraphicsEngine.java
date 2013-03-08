@@ -9,6 +9,7 @@ public class GraphicsEngine {
 		fileDir = getClass().getResource("../images/worldmap/").getPath();
 	}
 
+
 	public void drawBoard(int playerX, int playerY) {
 		int xDraw = ((int) Math.floor(playerX / 16.0 / 1.0));
 		int yDraw = ((int) Math.floor(playerY / 16.0 / 1.0));
