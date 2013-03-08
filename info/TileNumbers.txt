@@ -7,6 +7,21 @@ Tile#	Description	Walkable?
 6	WoodenFloor	Y
 7	Road		Y
 8	StormDrain	Y
+9	Grass2		Y
+10	Grass3		Y
+11	SmallBush	Y
+12	LargeBush	Y
+13	BlueFlower	Y
+14	RedFlower	Y
+15	ConcreteLTC	Y
+16	ConcreteRTC	Y
+17	ConcreteLBC	Y
+18	ConcreteRBC	Y
+19	ConcreteB	Y
+20	ConcreteL	Y
+21	ConcreteR	Y
+22	ConcreteU	Y
+23	ConcreteC	Y
 
 
 51	Train		N
@@ -21,4 +36,8 @@ Tile#	Description	Walkable?
 60	CarRight	N
 61	Car2Left	N
 62	Car2Right	N
+63	SmallTree	N
+64	SmallTree2	N
+65	SmallTree3	N
+66	TreeTrunk	N
 
