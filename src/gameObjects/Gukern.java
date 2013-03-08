@@ -2,7 +2,7 @@ package gameObjects;
 
 public class Gukern {
 	public static void main(String[] args) {
-		System.out.println("fackers");
+		System.out.println("fackers gonna fack");
 	}
 
 }
