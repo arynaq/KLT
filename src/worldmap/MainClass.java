@@ -3,6 +3,7 @@ package worldmap;
 import acm.graphics.GImage;
 import acm.program.GraphicsProgram;
 
+@SuppressWarnings("serial")
 public class MainClass extends GraphicsProgram{
 	WorldMap dritern = new WorldMap();
 	MapGUI mapGui = new MapGUI();

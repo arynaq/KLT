@@ -32,4 +32,10 @@ public class WorldMap {
 	public void setMap(int x, int y, int change){
 		worldMap[x][y]=change;		
 	}
+
+	// public static void main(String[] args) {
+	// WorldMap map = new WorldMap();
+	// System.out.println(map.fileDir);
+	//
+	// }
 }
