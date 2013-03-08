@@ -42,4 +42,5 @@ Tile#	Description	Walkable?
 66	TreeTrunk	N
 67	BenchLeft	N
 68	BenchRight	N
+69	FenceLeft	N
 
