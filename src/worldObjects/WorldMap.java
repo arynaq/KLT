@@ -6,12 +6,12 @@ import java.util.Scanner;
 
 public class WorldMap {
 	private int[][] worldMap = new int[32][32];
-	private final String fileDir = getClass().getResource(
+	private final String gukernFile = getClass().getResource(
 			"../levels/").getPath();
 	
 	public WorldMap(){
 		try{
-			String worldFil = fileDir + "worldmap.txt";
+			String worldFil = gukernFile + "worldmap.txt";
 			Scanner readLevel = new Scanner(new File(worldFil));
 			while (readLevel.hasNextInt()){
 				for(int y=0;y<32;y++){
@@ -31,5 +31,9 @@ public class WorldMap {
 	}
 	public void setMap(int x, int y, int change){
 		worldMap[x][y]=change;		
+	}
+
+	public int[][] getWorldMap() {
+		return worldMap;
 	}
 }
