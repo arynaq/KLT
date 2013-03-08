@@ -40,4 +40,6 @@ Tile#	Description	Walkable?
 64	SmallTree2	N
 65	SmallTree3	N
 66	TreeTrunk	N
+67	BenchLeft	N
+68	BenchRight	N
 
