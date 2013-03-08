@@ -1,16 +1,12 @@
-package worldObjects;
+package engine;
 
 import acm.graphics.GImage;
-import acm.program.GraphicsProgram;
 
-@SuppressWarnings("serial")
-public class MainClass extends GraphicsProgram{
-	WorldMap dritern = new WorldMap();
-	private final String fileDir = getClass().getResource(
-			"../images/worldmap/").getPath();
-
-	public void run(){
-		drawBoard(17, 0);
+public class GraphicsEngine {
+	private static String fileDir;
+	
+	public GraphicsEngine(){
+		fileDir = getClass().getResource("../images/worldmap/").getPath();
 	}
 
 	public void drawBoard(int playerX, int playerY) {
@@ -25,4 +21,3 @@ public class MainClass extends GraphicsProgram{
 		}
 	}
 }
-
