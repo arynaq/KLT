@@ -1,4 +1,4 @@
-package worldObjects;
+package worldmap;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package worldObjects;
+package worldmap;
 
 import acm.graphics.GImage;
 import acm.program.GraphicsProgram;
