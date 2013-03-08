@@ -32,8 +32,4 @@ public class WorldMap {
 	public void setMap(int x, int y, int change){
 		worldMap[x][y]=change;		
 	}
-
-	public int[][] getWorldMap() {
-		return worldMap;
-	}
 }
