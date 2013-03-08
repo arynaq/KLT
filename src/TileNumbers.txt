@@ -1,0 +1,24 @@
+Tile#	Description	Walkable?
+#################################
+1	Grass		Y
+2	Concrete	Y	
+4	FlowerBlue	Y
+5	FlowerRed	Y
+6	WoodenFloor	Y
+7	Road		Y
+8	StormDrain	Y
+
+
+51	Train		N
+52	TreeBottom	N
+53	TreeTop		N
+54	Crate		N
+55	ConcreteBlock	N
+56	TrainTrack	N
+57	TrashBin	N
+58	BrickWall	N
+59	CarLeft		N
+60	CarRight	N
+61	Car2Left	N
+62	Car2Right	N
+
