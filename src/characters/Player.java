@@ -12,6 +12,7 @@ public class Player extends GameCharacter {
 		level = 1;
 		money = 100;
 		this.setType(ObjType.PLAYER);
+		id = "PLYR" + (++MapObject.nextID);
 		
 	}
 	
@@ -40,6 +41,10 @@ public class Player extends GameCharacter {
 
 	public int getHealth() {
 		return health;
+	}
+
+	public int getMoney() {
+		return money;
 	}
 
 }

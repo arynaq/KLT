@@ -4,7 +4,7 @@ public abstract class MapObject {
 	static int nextID = 0;
 	private int x;
 	private int y;
-	private int id;
+	protected String id;
 	private ObjType type;
 
 	public ObjType getType() {
@@ -30,4 +30,9 @@ public abstract class MapObject {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public String getId() {
+		return id;
+	}
+	
 }
