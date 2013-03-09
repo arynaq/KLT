@@ -43,4 +43,6 @@ Tile#	Description	Walkable?
 67	BenchLeft	N
 68	BenchRight	N
 69	FenceLeft	N
+70	CrateBottom	N
+71	CrateTop	N
 
