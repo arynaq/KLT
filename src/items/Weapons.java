@@ -1,5 +1,5 @@
 package items;
 
-public class Weapons {
+public class Weapons implements GameItem {
 
 }

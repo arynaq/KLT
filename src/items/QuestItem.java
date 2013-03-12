@@ -1,5 +1,5 @@
 package items;
 
-public class QuestItem {
+public class QuestItem implements GameItem {
 
 }

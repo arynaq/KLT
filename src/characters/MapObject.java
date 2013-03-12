@@ -1,11 +1,13 @@
 package characters;
 
 public abstract class MapObject {
-	static int nextID = 0;
+	protected static int nextID = 0;
 	private int x;
 	private int y;
 	protected String id;
 	private ObjType type;
+	private boolean isWalkable;
+	
 
 	public ObjType getType() {
 		return type;
@@ -35,4 +37,9 @@ public abstract class MapObject {
 		return id;
 	}
 	
+	public boolean getIsWalkable() {
+		return isWalkable;
+	}
+
+
 }

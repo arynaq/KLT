@@ -1,6 +1,7 @@
 package engine;
 
 import characters.GameCharacter;
+import characters.MapObject;
 import characters.Player;
 
 /***
@@ -20,18 +21,21 @@ public abstract class Mover {
 	 * @param player
 	 */
 	public static void moveCharacter(Player player, int dx, int dy) {
+		// Move logic
+		MapObject characterNeighbor = Collision.getNeighbor(player, dx, dy);
+
 		player.setX(player.getX() + dx);
-		player.setY(player.getY() + dx);
+		player.setY(player.getY() + dy);
 		
 
 	}
 	
 	/**
-	 * Placeholder
+	 * Placeholder for character-mover
 	 * 
 	 * @param gc
-	 * @param dy 
-	 * @param dx 
+	 * @param dy
+	 * @param dx
 	 */
 	public static void moveCharacter(GameCharacter gc, int dx, int dy) {
 		
