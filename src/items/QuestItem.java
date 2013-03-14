@@ -1,5 +1,10 @@
 package items;
 
-public class QuestItem implements GameItem {
+public class QuestItem extends GameItem {
+	
+	public QuestItem(){
+		type = "QST";
+		id = type + (++GameItem.nextID);
+	}
 
 }

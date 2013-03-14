@@ -1,5 +1,9 @@
 package characters;
 
+import items.GameItem;
+
+import java.util.ArrayList;
+
 import engine.Mover;
 
 public abstract class GameCharacter extends MapObject {
@@ -7,6 +11,7 @@ public abstract class GameCharacter extends MapObject {
 	private String name;
 	private Facing facing;
 	private int stepSize = 16;
+	protected ArrayList<GameItem> inventory;
 	
 	/**
 	 * Move this character dx,dy step
@@ -55,6 +60,11 @@ public abstract class GameCharacter extends MapObject {
 	
 	public int getStepSize() {
 		return stepSize;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " facing: " + facing;
 	}
 
 

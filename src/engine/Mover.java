@@ -21,9 +21,13 @@ public abstract class Mover {
 	 * @param player
 	 */
 	public static void moveCharacter(Player player, int dx, int dy) {
-		// Move logic
-		MapObject characterNeighbor = Collision.getNeighbor(player, dx, dy);
+		// If a player is mounted he has double the speed, for now
+		if (player.isMounted()) {
+			dx *= 2;
+			dy *= 2;
+		}
 
+		MapObject characterNeighbor = Collision.getNeighbor(player, dx, dy);
 		player.setX(player.getX() + dx);
 		player.setY(player.getY() + dy);
 		

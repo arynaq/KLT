@@ -40,6 +40,12 @@ public abstract class MapObject {
 	public boolean getIsWalkable() {
 		return isWalkable;
 	}
+	
+	@Override
+	public String toString(){
+		return "MapObject: " + type + id + " at: " + "(" + x + "," + y + ")"
+				+ "walkable: " + isWalkable;
+	}
 
 
 }
