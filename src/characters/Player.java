@@ -1,5 +1,7 @@
 package characters;
 
+import gfx.Sprite;
+
 public class Player extends GameCharacter {
 
 	private int health;
@@ -7,6 +9,7 @@ public class Player extends GameCharacter {
 	private int money;
 	private int experience;
 	private boolean mounted; // Decides if he is mounted
+	private Sprite sprite;
 
 	public Player() {
 		mounted = false;

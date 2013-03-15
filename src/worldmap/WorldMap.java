@@ -33,10 +33,4 @@ public class WorldMap {
 		worldMap[x][y]=change;		
 	}
 
-
-	// public static void main(String[] args) {
-	// WorldMap map = new WorldMap();
-	// System.out.println(map.fileDir);
-	//
-	// }
 }
