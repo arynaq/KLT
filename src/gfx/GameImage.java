@@ -1,15 +1,16 @@
 package gfx;
 
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
- * This class will encapsulate the raw images we need to draw on the scren, this
- * will also serve as a base class for Sprites and animatedSprites.
+ * This class will encapsulate the raw images we need to draw on the screen,
+ * this will also serve as a base class for Sprites and animatedSprites.
  * 
  * @author Maki
  * 
@@ -19,6 +20,8 @@ public class GameImage {
 	private int x;
 	private int y;
 	private BufferedImage img;
+	private int imgHeight;
+	private int imgWidth;
 
 	public GameImage(String file) {
 		loadImage(file);
@@ -26,37 +29,41 @@ public class GameImage {
 		this.y = 0;
 	}
 
-	public int getX() {
+	public synchronized int getX() {
 		return x;
 	}
 
-	public int getY() {
+	public synchronized int getY() {
 		return y;
 	}
 
+	/**
+	 * Return a copy of the image, we don't want you to mess with my objects
+	 * 
+	 * @return
+	 */
+	public Image getImgCopy() {
+		return deepCopy((BufferedImage) img);
+	}
 
 	public BufferedImage getImg() {
 		return img;
 	}
 
 	public int getWidth() {
-		if (img != null)
-			return img.getWidth();
-		return 0;
+		return imgWidth;
 	}
 
 	public int getHeight() {
-		if (img != null)
-			return img.getHeight();
-		return 0;
+		return imgHeight;
 	}
 
 
-	public void setX(int x) {
+	public synchronized void setX(int x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public synchronized void setY(int y) {
 		this.y = y;
 	}
 
@@ -66,11 +73,17 @@ public class GameImage {
 	}
 
 	public void loadImage(String file) {
-		try {
-			this.img = ImageIO.read(new File(file));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ImageIcon imageIcon = new ImageIcon(file);
+		this.img = (BufferedImage) imageIcon.getImage();
+		this.imgHeight = imageIcon.getIconHeight();
+		this.imgWidth = imageIcon.getIconWidth();
+	}
+
+	public static BufferedImage deepCopy(BufferedImage bi) {
+		ColorModel cm = bi.getColorModel();
+		boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		WritableRaster raster = bi.copyData(null);
+		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 
 	/**********************************

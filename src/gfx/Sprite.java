@@ -12,7 +12,6 @@ public class Sprite extends GameImage implements Renderable {
 	public Sprite(SpriteType type) {
 		super(type.fileName());
 		this.spriteState = SpriteState.ALIVE;
-		frame.setCo
 	}
 
 	public SpriteState getSpriteState() {

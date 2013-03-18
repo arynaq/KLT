@@ -13,11 +13,11 @@ public abstract class MapObject {
 		return type;
 	}
 
-	public int getX() {
+	public synchronized int getX() {
 		return x;
 	}
 
-	public int getY() {
+	public synchronized int getY() {
 		return y;
 	}
 
@@ -25,11 +25,11 @@ public abstract class MapObject {
 		this.type = type;
 	}
 
-	public void setX(int x) {
+	public synchronized void setX(int x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public synchronized void setY(int y) {
 		this.y = y;
 	}
 	
