@@ -25,19 +25,22 @@ public class ScreenManager {
 
 	}
 
+
 	// Used with a frame that is tied to instance
 	public ScreenManager() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		this.gd = ge.getDefaultScreenDevice();
-		this.defaultMode = new DisplayMode(800, 600, 16, 60);
+		setDefaultMode(new DisplayMode(800, 600, 16, 60));
 		this.setSupportedModes();
 		this.frame = new JFrame();
 	}
 
+	// Get the supported displayrates from current graphicsdevice
 	private void setSupportedModes() {
 		this.supportedModes = gd.getDisplayModes();
 	}
 
+	// Check if the supplied displaymode is supported by current device
 	public boolean isSupportedDisplayMode(DisplayMode odm) {
 		for (DisplayMode dm : this.supportedModes) {
 			if (dm.getHeight() == odm.getHeight()
@@ -56,31 +59,46 @@ public class ScreenManager {
 		this.setFullScreen(displayMode, frame);
 	}
 
-	// Set fullscreen if supported displaymode, else default
-	private void setFullScreen(DisplayMode displayMode, JFrame frame) {
+	public DisplayMode getDefaultMode() {
+		return defaultMode;
+	}
 
-		frame.setUndecorated(true);
-		frame.setResizable(false);
-		frame.setIgnoreRepaint(true);
-		gd.setFullScreenWindow(frame);
+	public void setDefaultMode(DisplayMode defaultMode) {
+		this.defaultMode = defaultMode;
+	}
 
+	// Set fullscreen if supported displaymode, else default displaymode
+	public void setFullScreen(DisplayMode displayMode, JFrame frame) {
 		if (gd.isFullScreenSupported()) {
-
+			// Fullscreen on visible frame not allowed
+			frame.setVisible(false);
+			// Remove decoration and unresiable
+			frame.setUndecorated(true);
+			frame.setResizable(false);
+			frame.setIgnoreRepaint(true);
+			// Set frame as fullscreenwindow
+			gd.setFullScreenWindow(frame);
+			// Set default if requested not supported or null
 			if (displayMode == null || !isSupportedDisplayMode(displayMode))
 				gd.setDisplayMode(defaultMode);
 
 			else
 				gd.setDisplayMode(displayMode);
+			// Create bufferstrategy
 			frame.createBufferStrategy(2);
 		}
 	}
 	
 	// Make windowed
 	public void setWindowed() {
+		// // Windowed from fullscreen if fullscreen, otherwise we are probably
+		// // windowed already
 		if (gd.getFullScreenWindow() != null) {
-			gd.getFullScreenWindow().dispose();
+			// gd.getFullScreenWindow().dispose();
+			gd.setFullScreenWindow(null);
+			// frame.setUndecorated(false);
+			frame.setVisible(true);
 		}
-		gd.setFullScreenWindow(null);
 	}
 
 	// Get the drawing graphics of this ScreenManagers bufferstrategy
@@ -112,10 +130,40 @@ public class ScreenManager {
 	}
 
 
-	public static void main(String[] args) {
-		ScreenManager sm = new ScreenManager(new JFrame());
-		sm.setWindowed();
-	}
+	// public static void main(String[] args) throws InterruptedException {
+	// JFrame frame = new JFrame();
+	// JPanel panel = (JPanel) frame.getContentPane();
+	// panel.setPreferredSize(new Dimension(800, 600));
+	// panel.setLayout(null);
+	//
+	// Canvas canvas = new Canvas();
+	// canvas.setBounds(0, 0, 800, 600);
+	// canvas.setIgnoreRepaint(true);
+	// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//
+	// frame.pack();
+	// frame.setResizable(false);
+	// frame.setVisible(true);
+	//
+	// panel.add(canvas);
+	// panel.setBackground(Color.black);
+	// canvas.createBufferStrategy(2);
+	//
+	// BufferStrategy bufferStrategy = canvas.getBufferStrategy();
+	// Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+	//
+	// canvas.requestFocus();
+	// canvas.setBackground(Color.black);
+	//
+	// for (int i = 0; i < 50; i++) {
+	// g.setColor(new Color(5 * i, 2 * i, 3 * i));
+	// g.drawRect(0, 0, i * 16, i * 10);
+	// }
+	// g.setBackground(Color.black);
+	// bufferStrategy.show();
+	// g.dispose();
+	//
+	// }
 
 
 }

@@ -68,4 +68,19 @@ public class AnimatedSprite extends Sprite {
 		return frameCount;
 	}
 
+	public void update() {
+		if (getSpriteState() == SpriteState.ALIVE) {
+			// Keep rendering, do timing checks, do progress to next frame
+		}
+		
+		if (getSpriteState() == SpriteState.DEAD) {
+			// Da fuck happens when the sprite dies?
+		}
+
+		if (getSpriteState() == SpriteState.PAUSED) {
+			// We definitely do not render when paused
+		}
+
+	}
+
 }

@@ -1,4 +1,4 @@
 package gfx;
 public enum SpriteState {
-		DEAD, ALIVE, RENDERED
+	DEAD, ALIVE, PAUSED;
 	}
