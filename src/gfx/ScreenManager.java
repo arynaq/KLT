@@ -1,5 +1,6 @@
 package gfx;
 
+import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -9,6 +10,7 @@ import java.awt.Window;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 
 public class ScreenManager {
 
@@ -129,6 +131,17 @@ public class ScreenManager {
 				+ "@" + dm.getRefreshRate();
 	}
 
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		JFrame frame2 = new JFrame();
+		frame.setSize(new Dimension(800, 600));
+		frame2.setSize(new Dimension(600, 200));
+		frame.setVisible(true);
+		JMenu menu = new JMenu();
+		menu.setVisible(true);
+		frame.add(menu);
+		frame2.setVisible(true);
+	}
 
 	// public static void main(String[] args) throws InterruptedException {
 	// JFrame frame = new JFrame();

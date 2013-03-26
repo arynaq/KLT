@@ -1,6 +1,7 @@
 package gfx;
 
 
+
 public enum SpriteType {
 	PLAYER, DOG, COW, TREE, CAR, PLAYERANIM, DOGANIM, COWANIM, TREEANIM;
 

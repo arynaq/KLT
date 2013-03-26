@@ -5,8 +5,10 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.net.URL;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 /**
  * This class will encapsulate the raw images we need to draw on the screen,
@@ -27,6 +29,10 @@ public class GameImage {
 		loadImage(file);
 		this.x = 0;
 		this.y = 0;
+	}
+
+	public GameImage(BufferedImage img) {
+		this.img = img;
 	}
 
 	public synchronized int getX() {
@@ -73,10 +79,14 @@ public class GameImage {
 	}
 
 	public void loadImage(String file) {
-		ImageIcon imageIcon = new ImageIcon(file);
-		this.img = (BufferedImage) imageIcon.getImage();
-		this.imgHeight = imageIcon.getIconHeight();
-		this.imgWidth = imageIcon.getIconWidth();
+		try {
+			this.img = ImageIO.read(new URL(file));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.imgHeight = img.getHeight();
+		this.imgWidth = img.getWidth();
 	}
 
 	public static BufferedImage deepCopy(BufferedImage bi) {

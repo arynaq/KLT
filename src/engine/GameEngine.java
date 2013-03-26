@@ -1,9 +1,21 @@
 package engine;
 
 
+
 public class GameEngine {
-	
-	public static final int FPS = 30;
+
+	private GraphicsEngine gfx;
+	private SoundEngine sfx;
+	private LogicEngine logic;
+
+	public GameEngine() {
+		new GameState();
+		this.gfx = new GraphicsEngine();
+		this.sfx = new SoundEngine();
+		this.logic = new LogicEngine();
+	}
+
+
 
 
 }

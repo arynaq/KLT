@@ -1,5 +1,6 @@
 package characters;
 
+
 public abstract class MapObject {
 	protected static int nextID = 0;
 	private int x;

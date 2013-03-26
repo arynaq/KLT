@@ -1,5 +1,6 @@
 package gfx;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,9 +79,12 @@ public class AnimatedSprite extends Sprite {
 		}
 
 		if (getSpriteState() == SpriteState.PAUSED) {
-			// We definitely do not render when paused
+			// Do nothing
 		}
 
 	}
+
+	public void render(Graphics2D g) {
+	};
 
 }
