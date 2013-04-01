@@ -1,0 +1,13 @@
+#TYPE#KEY#FILE#ROW#COLS#
+#String[] = line.split(whitespaces)
+#String[0] is the imagetype (a=spritesheet, s=sprite, c=collisionmap, m=map, w=worldmap)
+#String[1] is the imagekey
+#String[2] is the filename
+#String[3] is the number of rows in spritesheet (only with imagetype a)
+#String[4] is the number of columns
+#Ex:
+#a player PLAYERANIMATED.png 4 4
+#...key = player.touppercase + "ANIMATED"
+s player PLAYER.PNG
+a bahamut bahamutAnimated.png 4 4 
+w world worldmap.png
