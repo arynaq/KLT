@@ -13,17 +13,15 @@ import javax.imageio.ImageIO;
 public class ImageLoader {
 
 	private Map<String, ArrayList<BufferedImage>> images;
-	private String SPRITEDIR = "../images/sprites/";
-	private String MAPDIR = "../images/worldmap/";
-	private String PORTRAITDIR = "../images/portrait/";
+	private String SPRITEDIR = "/images/sprites/";
+	private String MAPDIR = "/images/worldmap/";
+	private String PORTRAITDIR = "/images/portrait/";
 
 
-	public ImageLoader() {
-	}
-
-	public ImageLoader(Map<String, ArrayList<BufferedImage>> iMAGES2) {
-		this.images = iMAGES2;
-		loadImages("imagelist.txt");
+	public ImageLoader(String imageListFile,
+			Map<String, ArrayList<BufferedImage>> imgs) {
+		this.images = imgs;
+		loadImages(imageListFile);
 	}
 
 	/**
@@ -128,14 +126,14 @@ public class ImageLoader {
 				list.add(subimg);
 			}
 		images.put(key, list);
-
 	}
 
 
 	/** Helper method for loading images */
-	private BufferedImage loadIMG(String filePath) {
+	public BufferedImage loadIMG(String filePath) {
 		try {
-			BufferedImage img = ImageIO.read(getClass().getResource(filePath));
+			BufferedImage img = ImageIO.read(getClass().getResourceAsStream(
+					filePath));
 			return img;
 		} catch (IOException e) {
 			e.printStackTrace();

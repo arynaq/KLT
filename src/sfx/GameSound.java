@@ -1,5 +1,9 @@
 package sfx;
 
-public class GameSound {
+public interface GameSound {
+	void play();
 
+	void stop();
+
+	void reset();
 }

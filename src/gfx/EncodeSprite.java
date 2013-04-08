@@ -35,7 +35,6 @@ public class EncodeSprite {
 		try {
 			ImageIO.write(img, format, new File(file.getPath()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

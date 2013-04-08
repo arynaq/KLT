@@ -1,20 +1,31 @@
 package engine;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Map;
+
+import sfx.GameSound;
 
 
 public class GameEngine {
+	private Map<String, Entity> entities;
 
-	private GraphicsEngine gfx;
-	private SoundEngine sfx;
-	private LogicEngine logic;
+	public GameEngine(Map<String, Entity> entities,
+			Map<String, ArrayList<BufferedImage>> images,
+			Map<String, GameSound> sounds) {
 
-	public GameEngine() {
-		new GameState();
-		this.gfx = new GraphicsEngine();
-		this.sfx = new SoundEngine();
-		this.logic = new LogicEngine();
+		this.entities = entities;
+
 	}
 
+	public void start() {
+		
+	}
+
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
 
 
 

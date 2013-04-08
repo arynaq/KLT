@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import engine.GameState;
-import engine.keyMouseWindowListener;
 
 public class GameFrame {
 	private JFrame frame;
@@ -22,8 +21,8 @@ public class GameFrame {
 	private int height;
 	
 	public GameFrame(Color bgColor) {
-		this.width = GameState.GAMEDIMENSION[0];
-		this.height = GameState.GAMEDIMENSION[1];
+		this.width = (int) GameState.getInstance().getFrameWidth();
+		this.height = (int) GameState.getInstance().getFrameHeight();
 		this.frame = new JFrame();
 		this.panel = (JPanel) frame.getContentPane();
 		this.panel.setPreferredSize(new Dimension(width, height));
@@ -37,15 +36,15 @@ public class GameFrame {
 		this.frame.setResizable(false);
 		this.frame.pack();
 		this.canvas.setBackground(bgColor);
-		this.frame.setVisible(true);
 		this.panel.add(canvas);
+		this.frame.setVisible(true);
 		this.canvas.createBufferStrategy(2);
 		this.bufferStrategy = canvas.getBufferStrategy();
 		this.g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		this.canvas.requestFocus();
 		
-		this.frame.addKeyListener(new keyMouseWindowListener());
-		
+		clearScreen();
+
 	}
 	
 	public void clearScreen() {
@@ -68,40 +67,53 @@ public class GameFrame {
 		this.frame.setTitle(title);
 	}
 
-//	public static void main(String[] args) throws InterruptedException {
-//		GameFrame gf = new GameFrame(Color.black);
-//		gf.g.fillRect(0, 0, gf.width, gf.height);
-//		Map<String, ArrayList<BufferedImage>> images = new HashMap<String, ArrayList<BufferedImage>>();
-//		new ImageLoader(images);
-//		ArrayList<BufferedImage> bahamut = images.get("bahamutANIMATED");
-//		do {
-//		for (int i = 0; i < bahamut.size(); i++) {
-//			gf.g.setColor(Color.black);
-//			gf.g.fillRect(0, 0, gf.width, gf.height);
-//			BufferedImage img = bahamut.get(i);
-//				gf.g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), 0,
-//						0,
-//					img.getWidth(), img.getHeight(), Color.black, null);
-//			gf.bufferStrategy.show();
-//		}
-//		} while (gf.bufferStrategy.contentsRestored());
-//		// System.out.println("Panel: " + gf.panel.getBounds());
-//		// System.out.println("Frame: " + gf.frame.getBounds());
-//		// System.out.println("Canvas:" + gf.frame.getBounds());
-//		//
-//		// for (int R = 0; R < 255; R++) {
-//		// for (int B = 0; B < 255; B++) {
-//		// for (int G = 0; G < 255; G++) {
-//		// gf.g.setColor(Color.black);
-//		// gf.g.fillRect(0, 0, gf.width, gf.height);
-//		// gf.g.setColor(new Color(R, B, G));
-//		// gf.g.fillRect(0, 0, gf.width, gf.height);
-//		// gf.bufferStrategy.show();
-//		// }
-//		// }
-//		// }
-//
-//	}
+	public BufferStrategy createBufferStrategy() {
+		return null;
+	}
+
+	public void setVisible(boolean b) {
+		frame.setVisible(b);
+	}
+
+	public boolean isVisible() {
+		return frame.isVisible();
+	}
+
+	// public static void main(String[] args) throws InterruptedException {
+	// GameFrame gf = new GameFrame(Color.black);
+	// gf.g.fillRect(0, 0, gf.width, gf.height);
+	// Map<String, ArrayList<BufferedImage>> images = new HashMap<String,
+	// ArrayList<BufferedImage>>();
+	// new ImageLoader(images);
+	// ArrayList<BufferedImage> bahamut = images.get("bahamutANIMATED");
+	// do {
+	// for (int i = 0; i < bahamut.size(); i++) {
+	// gf.g.setColor(Color.black);
+	// gf.g.fillRect(0, 0, gf.width, gf.height);
+	// BufferedImage img = bahamut.get(i);
+	// gf.g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), 0,
+	// 0,
+	// img.getWidth(), img.getHeight(), Color.black, null);
+	// gf.bufferStrategy.show();
+	// }
+	// } while (gf.bufferStrategy.contentsRestored());
+	// // System.out.println("Panel: " + gf.panel.getBounds());
+	// // System.out.println("Frame: " + gf.frame.getBounds());
+	// // System.out.println("Canvas:" + gf.frame.getBounds());
+	// //
+	// // for (int R = 0; R < 255; R++) {
+	// // for (int B = 0; B < 255; B++) {
+	// // for (int G = 0; G < 255; G++) {
+	// // gf.g.setColor(Color.black);
+	// // gf.g.fillRect(0, 0, gf.width, gf.height);
+	// // gf.g.setColor(new Color(R, B, G));
+	// // gf.g.fillRect(0, 0, gf.width, gf.height);
+	// // gf.bufferStrategy.show();
+	// // }
+	// // }
+	// // }
+	//
+	// }
 
 	// public static void main(String[] args) throws InterruptedException,
 	// MalformedURLException, IOException {
@@ -142,7 +154,6 @@ public class GameFrame {
 	// g.drawString("FPS: " + (1.0 / ((start - end) / 1E+9)), 0, 10);
 	// g.setColor(new Color(R, B, G));
 	// g.drawString("HELLO", x, y);
-	// g.drawImage(gf.img, spriteX, spriteY, null);
 	// b.show();
 	// end = System.nanoTime();
 	// }

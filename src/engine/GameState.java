@@ -1,110 +1,169 @@
 package engine;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.Dimension;
 
-import javax.sound.sampled.Clip;
-
-import worldmap.MapType;
+import worldmap.GameMap;
+import worldmap.WorldMap;
 
 public class GameState {
 
-	public static final int[] GAMEDIMENSION = { 800, 592 };
-	public static final int xCenter = GAMEDIMENSION[0] / 2;
-	public static final int yCenter = GAMEDIMENSION[1] / 2;
-	public static final String GAMETITLE = "KLT - The RPG";
-	public static final int GAMEFPS = 60;
-	public static MapType CURRENTMAP = MapType.OUT1;
-	public static GameCondition gameState = GameCondition.RUNNING;
+	private GameMap currentMap;
+	private WorldMap worldMap;
+	// private Map<String, Entity> playerMapEntities;
+	// private Map<String, Entity> worldMapEntities;
 	
-	private static Map<String, ArrayList<BufferedImage>> IMAGES;
-	private static Map<String, Clip> SOUNDS;
-	
-	static {
-		IMAGES = new HashMap<String, ArrayList<BufferedImage>>();
-		loadSplashStuff();
-		Thread imageLoaderThread = new Thread() {
-			public void run() {
-				IMAGES = new HashMap<String, ArrayList<BufferedImage>>();
-				new ImageLoader(IMAGES);
-			}
-		};
-		Thread soundLoaderThread = new Thread() {
-			public void run() {
-				SOUNDS = new HashMap<String, Clip>();
-			}
-		};
+	private static final Dimension DIMENSION = new Dimension(500, 800);
+	private static final int GAMEFPS = 60;
+	private static final GameState instance = new GameState();
+	private GameCondition state;
 
-		imageLoaderThread.start();
-		soundLoaderThread.start();
+	private GameState() {
+		this.state = GameCondition.SPLASH;
+		// this.playerMapEntities = new HashMap<String, Entity>();
+		// this.worldMapEntities = new HashMap<String, Entity>();
 	}
 
-	public BufferedImage getPortrait(String key) {
-		if (key.contains("PORTRAIT")) {
-			
-		}
-		return null;
+	public static GameState getInstance() {
+		return instance;
 	}
 
-	public BufferedImage getSpriteImage(String key) {
-		if (key.contains("SPRITE")) {
-
-		}
-		return null;
+	public int getFPS() {
+		return GAMEFPS;
 	}
 
-	public BufferedImage getCollisionMap(String key) {
-		if (key.contains("COLLISION")) {
-
-		}
-
-		return null;
+	public double getFrameWidth() {
+		return DIMENSION.getWidth();
 	}
 
-	public BufferedImage getMap(String key) {
-		if (key.contains("MAP")) {
-
-		}
-		return null;
+	public double getFrameHeight() {
+		return DIMENSION.getHeight();
 	}
 
-	public ArrayList<BufferedImage> getAnimatedSpriteImage(String key) {
-		if (key.contains("ANIMATED")) {
+//	public Map<String, Entity> getPlayerMapEntities() {
+//		return playerMapEntities;
+//	}
+//
+//	public Map<String, Entity> getWorldMapEntities() {
+//		return worldMapEntities;
+	// }
 
-		}
-		return null;
-	}
-	
-	public void addAnimatedSprite(String key, ArrayList<BufferedImage> frames) {
-	
-	}
-	
-	public void addSprite(String key, BufferedImage sprite) {
-		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
-		list.add(sprite);
-		// Add to hashmap
-	}
-	
-	public void addPortrait(String key, BufferedImage portrait) {
-		// Add portrait to hashamap
-	}
-	
-	public void addCollisionMap(String key, BufferedImage colMap) {
+	// public static final int[] GAMEDIMENSION = { 800, 592 };
+	// public static final int xCenter = GAMEDIMENSION[0] / 2;
+	// public static final int yCenter = GAMEDIMENSION[1] / 2;
+	// public static final String GAMETITLE = "KLT - The RPG";
+	// public static MapType CURRENTMAP = MapType.OUT1;
+	// public static GameCondition gameState = GameCondition.RUNNING;
+	//
+	// private static Map<String, ArrayList<BufferedImage>> IMAGES;
+	// private static Map<String, Clip> SOUNDS;
+	//
+	// static {
+	// IMAGES = new HashMap<String, ArrayList<BufferedImage>>();
+	// loadSplashStuff();
+	// Thread imageLoaderThread = new Thread() {
+	// public void run() {
+	// IMAGES = new HashMap<String, ArrayList<BufferedImage>>();
+	// new ImageLoader(IMAGES);
+	// }
+	// };
+	// Thread soundLoaderThread = new Thread() {
+	// public void run() {
+	// SOUNDS = new HashMap<String, Clip>();
+	// }
+	// };
+	//
+	// imageLoaderThread.start();
+	// soundLoaderThread.start();
+	// }
+	//
+	// public BufferedImage getPortrait(String key) {
+	// if (key.contains("PORTRAIT")) {
+	//
+	// }
+	// return null;
+	// }
+	//
+	// public BufferedImage getSpriteImage(String key) {
+	// if (key.contains("SPRITE")) {
+	//
+	// }
+	// return null;
+	// }
+	//
+	// public BufferedImage getCollisionMap(String key) {
+	// if (key.contains("COLLISION")) {
+	//
+	// }
+	//
+	// return null;
+	// }
+	//
+	// public BufferedImage getMap(String key) {
+	// if (key.contains("MAP")) {
+	//
+	// }
+	// return null;
+	// }
+	//
+	// public ArrayList<BufferedImage> getAnimatedSpriteImage(String key) {
+	// if (key.contains("ANIMATED")) {
+	//
+	// }
+	// return null;
+	// }
+	//
+	// public void addAnimatedSprite(String key, ArrayList<BufferedImage>
+	// frames) {
+	//
+	// }
+	//
+	// public void addSprite(String key, BufferedImage sprite) {
+	// ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
+	// list.add(sprite);
+	// }
+	//
+	// public void addPortrait(String key, BufferedImage portrait) {
+	// }
+	//
+	// public void addCollisionMap(String key, BufferedImage colMap) {
+	// }
+	//
+	// public void addMap(String key, BufferedImage map) {
+	// }
+	//
+	// private static void loadSplashStuff() {
+	// }
+	//
+	//
+	// public static GameState getInstance() {
+	// return instance;
+	// }
+	//
 
+
+
+	public GameMap getCurrentMap() {
+		return currentMap;
 	}
 
-	public void addMap(String key, BufferedImage map) {
 
+	public WorldMap getWorldMap() {
+		return worldMap;
 	}
 
-	private static void loadSplashStuff() {
-		// The few resources we need asap before the game splash, load these
-		// first, let the threads handle the rest.
+	public void setWorldMap(WorldMap worldMap) {
+		this.worldMap = worldMap;
 	}
 
-	private static void loadSounds() {
-
+	public void setCurrentMap(GameMap currentMap) {
+		this.currentMap = currentMap;
 	}
+
+	public GameCondition getState() {
+		return state;
+	}
+
+	public void init() {
+	}
+
 }

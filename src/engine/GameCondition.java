@@ -1,5 +1,5 @@
 package engine;
 
 public enum GameCondition {
-	PAUSED, RUNNING, GAMEOVER
+	PAUSED, RUNNING, GAMEOVER, SPLASH, MENU
 }
