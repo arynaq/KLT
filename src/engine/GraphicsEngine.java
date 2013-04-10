@@ -1,5 +1,6 @@
 package engine;
 
+import gfx.Animated;
 import gfx.GameFrame;
 import gfx.Renderable;
 
@@ -40,6 +41,20 @@ public class GraphicsEngine {
 
 	public void start() {
 		frame.setVisible(true);
+		Renderable bahamut;
+		int imageWidth = images.get("bahamutANIMATED").get(0).getWidth();
+		int imageHeight = images.get("bahamutANIMATED").get(0).getHeight();
+		for (int i = 0; i < width / imageWidth; i++) {
+			for (int j = 0; j < height / imageHeight; j++) {
+
+				int delay = (int) ((1000 - 10) * Math.random() + 10);
+				bahamut = new Animated(images.get("bahamutANIMATED"), 4, 4,
+						10 + delay);
+				bahamut.setPosition(i * imageWidth, j * imageHeight);
+				renderables.put("" + i + "," + j, bahamut);
+			}
+		}
+		renderables.put("player", entities.get("player").getRenderable());
 	}
 
 	public void clearScreen() {
@@ -52,14 +67,16 @@ public class GraphicsEngine {
 	}
 
 	public void drawAll() {
-		long t = (long) (1E+9 / GameState.getInstance().getFPS());
-		long t0 = System.nanoTime();
-		long t1 = System.nanoTime();
-		long delta = (long) (t - (t1 - t0) / (1E+9));
+
 	}
 
-	public void render() {
-		drawAll();
+	public void render(int delta) {
+		clearScreen();
+		for (String key : renderables.keySet()) {
+			renderables.get(key).render(g, delta);
+		}
+		showBuffer();
+
 	}
 
 }

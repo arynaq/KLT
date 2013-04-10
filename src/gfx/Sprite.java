@@ -1,40 +1,36 @@
 package gfx;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
 
 
-public class Sprite extends GameImage implements Renderable {
+public class Sprite implements Renderable {
 
-	private SpriteState spriteState;
-	JFrame frame;
-	
+	private BufferedImage image;
+	private int x;
+	private int y;
 
-	public Sprite(SpriteType type) {
-		super(type.fileName());
-		this.spriteState = SpriteState.ALIVE;
-	}
-
-	public SpriteState getSpriteState() {
-		return spriteState;
-	}
-
-	public void setState(SpriteState state) {
-		this.spriteState = state;
+	public Sprite(GameImage image) {
+		this.image = image.getImage();
 	}
 
 	@Override
 	public void render(Graphics2D g) {
-		// TODO Auto-generated method stub
+		g.drawImage(image, x, y, null);
 
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
+	public void render(Graphics2D g, int deltaTime) {
+		g.drawImage(image, x, y, null);
 
 	}
 
-
+	@Override
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 }

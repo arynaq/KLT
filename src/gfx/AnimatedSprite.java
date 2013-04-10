@@ -38,6 +38,8 @@ public class AnimatedSprite extends Sprite {
 		this.rows = rows;
 	}
 
+
+
 	// Load each invidivual frame in the stripe into the frames hashmap
 	public void loadFrames() {
 		if (rows != 0 & columns != 0) {

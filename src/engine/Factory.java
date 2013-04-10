@@ -22,7 +22,6 @@ public class Factory {
 	private ImageLoader Iloader;
 	private SoundLoader Sloader;
 
-
 	public Factory() {
 
 		this.images = new ConcurrentHashMap<String, ArrayList<BufferedImage>>();
@@ -31,8 +30,8 @@ public class Factory {
 
 		this.Iloader = new ImageLoader("imagelist.txt", images);
 		this.Sloader = new SoundLoader("soundlist.txt", sounds);
-		this.frame = new GameFrame(Color.black);
 		this.listener = new GameEventListener();
+		this.frame = new GameFrame(Color.black);
 	}
 
 	public GameEngine createGameEngine() {
@@ -44,6 +43,7 @@ public class Factory {
 	}
 
 	public GraphicsEngine createGraphicsEngine() {
+		frame.addListener(listener);
 		return new GraphicsEngine(entities, images, frame);
 	}
 }

@@ -1,63 +1,87 @@
 package characters;
 
-import gfx.Sprite;
+import engine.Entity;
+import gfx.Renderable;
 
-public class Player extends GameCharacter {
+public class Player extends GameCharacter implements Entity {
 
-	private int health;
-	private int level;
-	private int money;
-	private int experience;
-	private boolean mounted; // Decides if he is mounted
-	private Sprite sprite;
+	private Renderable attackSheet;
+	private Renderable movementSheet;
+	private Renderable renderable;
+	private State state;
+	private Facing facing;
 
-	public Player() {
-		mounted = false;
-		health = 10;
-		level = 1;
-		money = 100;
-		this.setType(ObjType.PLAYER);
-		id = "PLYR" + (++MapObject.nextID);
+	private int x;
+	private int y;
+	private int speedX = 10;
+	private int speedY = 10;
 
+	public Player(Renderable movementSheet) {
+		this.x = 0;
+		this.y = 0;
+		this.attackSheet = null;
+		this.movementSheet = movementSheet;
+		this.renderable = this.movementSheet;
+		this.facing = Facing.EAST;
+
+		renderable.setPosition(x, y);
+		setReturnRenderable();
 	}
 
-	public Player(String name) {
-		this();
-		this.setName(name);
+	@Override
+	public Renderable getRenderable() {
+		// TODO Auto-generated method stub
+		return renderable;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
+	@Override
+	public int getX() {
+		// TODO Auto-generated method stub
+		return x;
 	}
 
-	public void setExperience(int experience) {
-		this.experience = experience;
+	@Override
+	public int getY() {
+		// TODO Auto-generated method stub
+		return y;
 	}
 
-	public void levelUp() {
-		this.level++;
-		this.health += (this.level * 2);
-		this.experience = 0;
+	@Override
+	public State getState() {
+		// TODO Auto-generated method stub
+		return state;
 	}
 
-	public int getExperience() {
-		return experience;
+	private void setReturnRenderable() {
+		if (state == State.DEAD) {
+
+		}
+		if (facing == Facing.EAST) {
+
+		}
 	}
 
-	public int getHealth() {
-		return health;
+	public boolean isAlive() {
+		if (state == State.DEAD) {
+			return false;
+		}
+
+		return true;
 	}
 
-	public int getMoney() {
-		return money;
+	public void setX(int x) {
+		this.x = x;
 	}
 
-	public boolean isMounted() {
-		return mounted;
+	public void setY(int y) {
+		this.y = y;
 	}
 
-	public void setMounted(boolean mounted) {
-		this.mounted = mounted;
+	public int getSpeedX() {
+		return speedX;
 	}
 
+	public int getSpeedY() {
+		return speedY;
+	}
 }

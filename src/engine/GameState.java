@@ -12,13 +12,13 @@ public class GameState {
 	// private Map<String, Entity> playerMapEntities;
 	// private Map<String, Entity> worldMapEntities;
 	
-	private static final Dimension DIMENSION = new Dimension(500, 800);
+	private static final Dimension DIMENSION = new Dimension(1500, 1000);
 	private static final int GAMEFPS = 60;
 	private static final GameState instance = new GameState();
 	private GameCondition state;
 
 	private GameState() {
-		this.state = GameCondition.SPLASH;
+		this.state = GameCondition.RUNNING;
 		// this.playerMapEntities = new HashMap<String, Entity>();
 		// this.worldMapEntities = new HashMap<String, Entity>();
 	}

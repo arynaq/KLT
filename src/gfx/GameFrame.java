@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import engine.GameEventListener;
 import engine.GameState;
 
 public class GameFrame {
@@ -16,6 +17,7 @@ public class GameFrame {
 	private JPanel panel;
 	private Canvas canvas;
 	private BufferStrategy bufferStrategy;
+	private GameEventListener listener;
 	private Graphics2D g;
 	private int width;
 	private int height;
@@ -37,6 +39,8 @@ public class GameFrame {
 		this.frame.pack();
 		this.canvas.setBackground(bgColor);
 		this.panel.add(canvas);
+		this.frame.setLocationRelativeTo(null);
+		this.frame.setTitle("KLT - The RPG");
 		this.frame.setVisible(true);
 		this.canvas.createBufferStrategy(2);
 		this.bufferStrategy = canvas.getBufferStrategy();
@@ -77,6 +81,15 @@ public class GameFrame {
 
 	public boolean isVisible() {
 		return frame.isVisible();
+	}
+
+	public void addListener(GameEventListener listener) {
+		if (this.listener == null) {
+			this.listener = listener;
+			this.canvas.addMouseListener(listener);
+			this.canvas.addKeyListener(listener);
+			this.frame.addWindowListener(listener);
+		}
 	}
 
 	// public static void main(String[] args) throws InterruptedException {

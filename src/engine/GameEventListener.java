@@ -8,7 +8,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class GameEventListener implements KeyListener, MouseListener,
-		WindowListener {
+WindowListener {
+
+	public GameEventListener() {
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -42,13 +45,52 @@ public class GameEventListener implements KeyListener, MouseListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				System.out.println("Game is running, moving player up");
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_S) {
+				System.out.println("Game is running, moving player down ");
+			}
+
+			else if (e.getKeyCode() == KeyEvent.VK_A) {
+				System.out.println("Game is running, moving player left");
+			}
+
+			else if (e.getKeyCode() == KeyEvent.VK_D) {
+				System.out.println("Game is running, move player right");
+			}
+
+			else if (e.getKeyCode() == KeyEvent.VK_E) {
+				System.out.println("Interacting with the bastard facing you");
+			}
+			// Process player inputs and inputs corresponding to the gameframe
+		}
+
+		else if (GameState.getInstance().getState() == GameCondition.PAUSED) {
+			// Do stuff that correspond to the pause screen
+		}
+
+		else if (GameState.getInstance().getState() == GameCondition.MENU) {
+			// Input does stuff on the menu
+		}
+
+		else if (GameState.getInstance().getState() == GameCondition.SPLASH) {
+			// What do keys do on the splashscreen?
+		}
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+			if (e.getKeyCode() == KeyEvent.VK_F) {
+				System.out
+						.println("Aha! You pressed F, attacking the bastard facing you!");
+				// Just pressed and released F, attack?
+				e.consume();
+			}
+		}
 
 	}
 
@@ -66,7 +108,7 @@ public class GameEventListener implements KeyListener, MouseListener,
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Do cleanup
 
 	}
 
@@ -84,20 +126,19 @@ public class GameEventListener implements KeyListener, MouseListener,
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Unpause
 
 	}
 
 	@Override
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Pause
 
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-
+		// ?
 	}
 
 }

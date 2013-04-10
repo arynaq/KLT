@@ -1,9 +1,8 @@
 package engine;
 
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ import javax.imageio.ImageIO;
 public class ImageLoader {
 
 	private Map<String, ArrayList<BufferedImage>> images;
-	private String SPRITEDIR = "/images/sprites/";
+	private String SPRITEDIR = "/sprites/";
 	private String MAPDIR = "/images/worldmap/";
 	private String PORTRAITDIR = "/images/portrait/";
 
@@ -30,48 +29,43 @@ public class ImageLoader {
 	 */
 	public void loadImages(String imagelistFile) {
 		Scanner readFile = null;
-		try {
-			readFile = new Scanner(new FileReader(getClass().getResource(
-					imagelistFile).getFile()));
+		InputStream is = getClass().getResourceAsStream(imagelistFile);
+		readFile = new Scanner(is);
 
-			while (readFile.hasNextLine()) {
-				String line = readFile.nextLine();
-				// annotation or empty
-				if (line.startsWith("#") || line.isEmpty())
-					continue;
-				// Sprite
-				if (line.startsWith("s")) {
-					String[] strings = line.split("\\s+");
-					loadSprite(strings[1], strings[2]);
-				}
-				// AnimatedSprite
-				if (line.startsWith("a")) {
-					String[] strings = line.split("\\s+");
-					loadAnimatedSprite(strings[1], strings[2], strings[3],
-							strings[4]);
-				}
-				// Worldmap
-				if (line.startsWith("w")) {
-					String[] strings = line.split("\\s+");
-					loadWorldMap(strings[1], strings[2]);
-				}
-				// Indoor map
-				if (line.startsWith("i")) {
-					String[] strings = line.split("\\s+");
-					loadIndoorMap(strings[1], strings[2]);
-				}
-				// Characterportrait
-				if (line.startsWith("p")) {
-					String[] strings = line.split("\\s+");
-					loadCharacterPortrait(strings[1], strings[2]);
-				}
-
+		while (readFile.hasNextLine()) {
+			String line = readFile.nextLine();
+			// annotation or empty
+			if (line.startsWith("#") || line.isEmpty())
+				continue;
+			// Sprite
+			if (line.startsWith("s")) {
+				String[] strings = line.split("\\s+");
+				loadSprite(strings[1], strings[2]);
 			}
-			readFile.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// AnimatedSprite
+			if (line.startsWith("a")) {
+				String[] strings = line.split("\\s+");
+				loadAnimatedSprite(strings[1], strings[2], strings[3],
+						strings[4]);
+			}
+			// Worldmap
+			if (line.startsWith("w")) {
+				String[] strings = line.split("\\s+");
+				loadWorldMap(strings[1], strings[2]);
+			}
+			// Indoor map
+			if (line.startsWith("i")) {
+				String[] strings = line.split("\\s+");
+				loadIndoorMap(strings[1], strings[2]);
+			}
+			// Characterportrait
+			if (line.startsWith("p")) {
+				String[] strings = line.split("\\s+");
+				loadCharacterPortrait(strings[1], strings[2]);
+			}
+
 		}
+		readFile.close();
 	}
 
 	
@@ -121,7 +115,7 @@ public class ImageLoader {
 		
 		for(int i=0; i<Integer.valueOf(col); i++)
 			for (int j = 0; j < Integer.valueOf(row); j++) {
-				subimg = img.getSubimage(i * frameWidth, j * frameHeight,
+				subimg = img.getSubimage(j * frameWidth, i * frameHeight,
 						frameWidth, frameHeight);
 				list.add(subimg);
 			}
@@ -132,8 +126,8 @@ public class ImageLoader {
 	/** Helper method for loading images */
 	public BufferedImage loadIMG(String filePath) {
 		try {
-			BufferedImage img = ImageIO.read(getClass().getResourceAsStream(
-					filePath));
+			InputStream is = getClass().getResourceAsStream(filePath);
+			BufferedImage img = ImageIO.read(is);
 			return img;
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,11 +1,14 @@
 package engine;
 
+import sfx.ExamplePlayer;
+
 public class Game {
 	private Factory factory;
 	private GraphicsEngine gfx;
 	private SoundEngine sfx;
 	private GameEngine engine;
 	private static final Game instance = new Game();
+	private int t0, t1, delta;
 
 	private Game() {
 		factory = new Factory();
@@ -19,19 +22,43 @@ public class Game {
 	}
 
 	public void init() {
+		engine.start();
 		gfx.start();
 		sfx.start();
-		engine.start();
 	}
 
 	public void gameLoop() {
-		engine.update();
-		gfx.render();
-		sfx.play();
+		t0 = time();
+		while (GameState.getInstance().getState() == GameCondition.RUNNING) {
+
+			engine.update();
+			sfx.play();
+
+			t1 = time();
+			delta = t1 - t0;
+
+			gfx.render(delta);
+			sleep(10);
+		}
+	}
+
+	private int time() {
+		return (int) System.currentTimeMillis();
 	}
 
 	public static void main(String[] args) {
 		Game game = Game.getInstance();
+		ExamplePlayer ex = new ExamplePlayer();
+		ex.start();
+		game.init();
 		game.gameLoop();
+	}
+
+	private void sleep(int milliSeconds){
+		try {
+			Thread.sleep(milliSeconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
