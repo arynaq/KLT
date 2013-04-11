@@ -1,6 +1,7 @@
 package engine;
 
 import gfx.GameFrame;
+import gfx.ScreenManager;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -18,6 +19,8 @@ public class Factory {
 	private Map<String, GameSound> sounds;
 	private Map<String, ArrayList<BufferedImage>> images;
 	private GameEventListener listener;
+	private MovementManager movementManager;
+	private ScreenManager screenManager;
 	private GameFrame frame;
 	private ImageLoader Iloader;
 	private SoundLoader Sloader;
@@ -31,6 +34,7 @@ public class Factory {
 		this.Iloader = new ImageLoader("imagelist.txt", images);
 		this.Sloader = new SoundLoader("soundlist.txt", sounds);
 		this.listener = new GameEventListener();
+		this.movementManager = new MovementManager(entities);
 		this.frame = new GameFrame(Color.black);
 	}
 
@@ -43,6 +47,8 @@ public class Factory {
 	}
 
 	public GraphicsEngine createGraphicsEngine() {
+		listener.setMovementManager(movementManager);
+		listener.setScreenManager(screenManager);
 		frame.addListener(listener);
 		return new GraphicsEngine(entities, images, frame);
 	}

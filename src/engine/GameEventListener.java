@@ -1,5 +1,7 @@
 package engine;
 
+import gfx.ScreenManager;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -9,6 +11,9 @@ import java.awt.event.WindowListener;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
+
+	private MovementManager movementManager;
+	private ScreenManager screenManager;
 
 	public GameEventListener() {
 	}
@@ -48,21 +53,26 @@ WindowListener {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				System.out.println("Game is running, moving player up");
+				movementManager.movePlayer(0, -1);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_S) {
 				System.out.println("Game is running, moving player down ");
+				movementManager.movePlayer(0, 1);
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_A) {
 				System.out.println("Game is running, moving player left");
+				movementManager.movePlayer(-1, 0);
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_D) {
+				movementManager.movePlayer(1, 0);
 				System.out.println("Game is running, move player right");
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_E) {
-				System.out.println("Interacting with the bastard facing you");
+				movementManager.interact();
+				System.out.println("Spawning a new player");
 			}
 			// Process player inputs and inputs corresponding to the gameframe
 		}
@@ -139,6 +149,14 @@ WindowListener {
 	@Override
 	public void windowOpened(WindowEvent e) {
 		// ?
+	}
+
+	public void setMovementManager(MovementManager movementManager) {
+		this.movementManager = movementManager;
+	}
+
+	public void setScreenManager(ScreenManager screenManager) {
+		this.screenManager = screenManager;
 	}
 
 }

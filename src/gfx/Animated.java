@@ -44,17 +44,22 @@ public class Animated implements Renderable {
 
 	}
 
-	@Override
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
 
 	@Override
 	public void render(Graphics2D g, int deltaTime) {
 		frameUpdate(deltaTime);
 		g.drawImage(currentImage, x, y, null);
 
+	}
+
+	@Override
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	@Override
+	public void setY(int y) {
+		this.y = y;
 	}
 
 }

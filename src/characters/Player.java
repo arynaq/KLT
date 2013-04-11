@@ -23,8 +23,8 @@ public class Player extends GameCharacter implements Entity {
 		this.movementSheet = movementSheet;
 		this.renderable = this.movementSheet;
 		this.facing = Facing.EAST;
-
-		renderable.setPosition(x, y);
+		renderable.setX(x);
+		renderable.setY(y);
 		setReturnRenderable();
 	}
 
@@ -71,10 +71,12 @@ public class Player extends GameCharacter implements Entity {
 
 	public void setX(int x) {
 		this.x = x;
+		this.renderable.setX(x);
 	}
 
 	public void setY(int y) {
 		this.y = y;
+		this.renderable.setY(y);
 	}
 
 	public int getSpeedX() {

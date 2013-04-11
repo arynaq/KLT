@@ -28,8 +28,12 @@ public class Sprite implements Renderable {
 	}
 
 	@Override
-	public void setPosition(int x, int y) {
+	public void setX(int x) {
 		this.x = x;
+	}
+
+	@Override
+	public void setY(int y) {
 		this.y = y;
 	}
 	

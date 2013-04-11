@@ -23,8 +23,11 @@ public class Game {
 
 	public void init() {
 		engine.start();
+		sleep(10);
 		gfx.start();
+		sleep(10);
 		sfx.start();
+		sleep(10);
 	}
 
 	public void gameLoop() {

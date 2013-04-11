@@ -2,7 +2,9 @@ package engine;
 
 import gfx.Animated;
 import gfx.GameFrame;
+import gfx.GameImage;
 import gfx.Renderable;
+import gfx.Sprite;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -17,7 +19,7 @@ import java.util.Map;
 public class GraphicsEngine {
 	private GameFrame frame;
 	private Map<String, Entity> entities;
-	private Map<String, ArrayList<BufferedImage>> images;
+	private static Map<String, ArrayList<BufferedImage>> images;
 	private Map<String, Renderable> renderables;
 	private Graphics2D g;
 	private BufferStrategy bufferStrategy;
@@ -29,7 +31,7 @@ public class GraphicsEngine {
 
 		this.entities = entities;
 		this.renderables = new HashMap<String, Renderable>();
-		this.images = images;
+		GraphicsEngine.images = images;
 		this.frame = frame;
 
 		this.g = frame.getGraphics();
@@ -50,11 +52,11 @@ public class GraphicsEngine {
 				int delay = (int) ((1000 - 10) * Math.random() + 10);
 				bahamut = new Animated(images.get("bahamutANIMATED"), 4, 4,
 						10 + delay);
-				bahamut.setPosition(i * imageWidth, j * imageHeight);
+				bahamut.setX(i * imageWidth);
+				bahamut.setY(j * imageHeight);
 				renderables.put("" + i + "," + j, bahamut);
 			}
 		}
-		renderables.put("player", entities.get("player").getRenderable());
 	}
 
 	public void clearScreen() {
@@ -75,8 +77,18 @@ public class GraphicsEngine {
 		for (String key : renderables.keySet()) {
 			renderables.get(key).render(g, delta);
 		}
+		for (String key : entities.keySet()) {
+			entities.get(key).getRenderable().render(g, delta);
+		}
 		showBuffer();
 
+	}
+
+	public static Sprite getSprite(String key) {
+		if (images.containsKey(key + "SPRITE")) {
+			return new Sprite(new GameImage(images.get(key + "SPRITE")));
+		}
+		return null;
 	}
 
 }
