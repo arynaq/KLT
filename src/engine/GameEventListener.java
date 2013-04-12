@@ -8,14 +8,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
 
 	private MovementManager movementManager;
 	private ScreenManager screenManager;
+	private List<KeyEvent> moves;
 
 	public GameEventListener() {
+		moves = new ArrayList<KeyEvent>();
 	}
 
 	@Override

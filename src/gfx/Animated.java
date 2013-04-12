@@ -10,7 +10,7 @@ public class Animated implements Renderable {
 	private int rows;
 	private int x;
 	private int y;
-	private int frameDelay;
+	private int frameDelay, deltaTimeSum;
 	private int currentFrame;
 	private int lastFrame;
 	private BufferedImage currentImage;
@@ -26,8 +26,10 @@ public class Animated implements Renderable {
 		this.currentImage = sheet.get(0);
 	}
 
+
 	private void frameUpdate(int deltaTime) {
-		if ((deltaTime % frameDelay) < 10) {
+		deltaTimeSum += deltaTime;
+		if (deltaTimeSum >= frameDelay) {
 			if (currentFrame == lastFrame) {
 				currentFrame = 0;
 			}
@@ -35,7 +37,7 @@ public class Animated implements Renderable {
 				currentFrame++;
 			}
 			currentImage = sheet.get(currentFrame);
-
+			deltaTimeSum = 0;
 		}
 	}
 

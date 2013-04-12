@@ -8,13 +8,14 @@ public class Game {
 	private SoundEngine sfx;
 	private GameEngine engine;
 	private static final Game instance = new Game();
-	private int t0, t1, delta;
+	private long fpsDelta, delta, t0, t1;
 
 	private Game() {
 		factory = new Factory();
 		this.engine = factory.createGameEngine();
 		this.sfx = factory.createSoundEngine();
 		this.gfx = factory.createGraphicsEngine();
+		this.fpsDelta = (long) (1000.0 / GameState.getInstance().getFPS());
 	}
 
 	public static Game getInstance() {
@@ -31,22 +32,43 @@ public class Game {
 	}
 
 	public void gameLoop() {
+
 		t0 = time();
 		while (GameState.getInstance().getState() == GameCondition.RUNNING) {
-
 			engine.update();
 			sfx.play();
+			delta = time() - t0;
+			System.out.println(delta);
+			gfx.render((int) delta);
+			t0 = time();
 
-			t1 = time();
-			delta = t1 - t0;
+			if ((fpsDelta - delta) <= 0) {
+				sleep(2);
+			}
 
-			gfx.render(delta);
-			sleep(10);
+			else {
+				sleep(fpsDelta - delta);
+			}
+
 		}
+		// t0 = time();
+		// while (GameState.getInstance().getState() == GameCondition.RUNNING) {
+		// engine.update();
+		// sfx.play();
+		//
+		// delta = time() - t0;
+		// long sleepTime = fpsDelta - delta;
+		//
+		// gfx.render((int) delta);
+		// t0 = time();
+		// System.out.println(sleepTime);
+		// sleep(sleepTime);
+		//
+		// }
 	}
 
-	private int time() {
-		return (int) System.currentTimeMillis();
+	private long time() {
+		return System.currentTimeMillis();
 	}
 
 	public static void main(String[] args) {
@@ -57,7 +79,7 @@ public class Game {
 		game.gameLoop();
 	}
 
-	private void sleep(int milliSeconds){
+	private void sleep(long milliSeconds) {
 		try {
 			Thread.sleep(milliSeconds);
 		} catch (InterruptedException e) {

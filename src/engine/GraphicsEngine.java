@@ -74,6 +74,7 @@ public class GraphicsEngine {
 
 	public void render(int delta) {
 		clearScreen();
+		for (int i = 0; i < 2; i++) {
 		for (String key : renderables.keySet()) {
 			renderables.get(key).render(g, delta);
 		}
@@ -81,6 +82,7 @@ public class GraphicsEngine {
 			entities.get(key).getRenderable().render(g, delta);
 		}
 		showBuffer();
+		}
 
 	}
 

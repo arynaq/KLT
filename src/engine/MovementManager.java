@@ -23,8 +23,9 @@ public class MovementManager {
 
 	public void interact() {
 		Player playerTwo = new Player(GraphicsEngine.getSprite("player"));
-		int x = player.getX() + 20;
-		int y = player.getY() + 30;
+		double theta = 2 * Math.PI * Math.random();
+		int x = (int) (100 * Math.cos(theta) + player.getX());
+		int y = (int) (100 * Math.sin(theta) + player.getY());
 		playerTwo.setX(x);
 		playerTwo.setY(y);
 		entities.put(x + "" + y, playerTwo);
@@ -32,7 +33,11 @@ public class MovementManager {
 		for (String key : entities.keySet()) {
 			if (!key.equals("player")) {
 				Player p = (Player) entities.get(key);
-				p.setY(p.getY() + 10);
+				if (p.getY() > GameState.getInstance().getFrameHeight()) {
+					entities.remove(key);
+					continue;
+				}
+				p.setY((int) (p.getY() + 20));
 			}
 		}
 		System.out.println(entities.size());
