@@ -57,25 +57,26 @@ WindowListener {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				System.out.println("Game is running, moving player up");
-				movementManager.movePlayer(0, -1);
+				movementManager.movePlayer(GameInput.Movement.UP);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_S) {
 				System.out.println("Game is running, moving player down ");
-				movementManager.movePlayer(0, 1);
+				movementManager.movePlayer(GameInput.Movement.DOWN);
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_A) {
 				System.out.println("Game is running, moving player left");
-				movementManager.movePlayer(-1, 0);
+				movementManager.movePlayer(GameInput.Movement.LEFT);
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_D) {
-				movementManager.movePlayer(1, 0);
+				movementManager.movePlayer(GameInput.Movement.RIGHT);
 				System.out.println("Game is running, move player right");
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_E) {
 				movementManager.interact();
+				movementManager.testGameOver();
 				System.out.println("Spawning a new player");
 			}
 			// Process player inputs and inputs corresponding to the gameframe
@@ -91,6 +92,15 @@ WindowListener {
 
 		else if (GameState.getInstance().getState() == GameCondition.SPLASH) {
 			// What do keys do on the splashscreen?
+		}
+
+		else if (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
+			// What do keys do when game is over?
+
+			// test
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				GameState.getInstance().setState(GameCondition.RUNNING);
+			}
 		}
 
 	}

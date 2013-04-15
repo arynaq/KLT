@@ -6,4 +6,8 @@ public interface GameSound {
 	void stop();
 
 	void reset();
+
+	public enum SOUNDS {
+		ATTACK
+	}
 }

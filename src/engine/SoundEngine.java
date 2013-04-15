@@ -24,4 +24,9 @@ public class SoundEngine {
 
 	}
 
+	public void playerGameOver() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

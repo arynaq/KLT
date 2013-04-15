@@ -1,13 +1,13 @@
 package engine;
 
-import gfx.GameImage;
-import gfx.Sprite;
+import gfx.Animated;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
 
 import sfx.GameSound;
+import worldmap.WorldMap;
 import characters.Player;
 
 
@@ -33,15 +33,19 @@ public class GameEngine {
 
 	private void initEntities() {
 		Player player;
-		Sprite sprite;
-		sprite = new Sprite(new GameImage(images.get("playerSPRITE")));
+		Animated sprite = new Animated(images.get("indianaANIMATED"), 4, 4, 200);
 		player = new Player(sprite);
 		entities.put("player", player);
+
+		WorldMap worldMap = new WorldMap(images.get("worldWORLDMAP"));
+		GameState.getInstance().setWorldMap(worldMap);
+		GameState.getInstance().setCurrentMap(worldMap.getGameMap());
+
 	}
 
 	public void update() {
-		// TODO Auto-generated method stub
-
+		// Manager player, where has he gone? Should he change map? For now the
+		// player is stored somewhere else, we can change that.
 	}
 
 

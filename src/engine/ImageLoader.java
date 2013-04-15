@@ -13,7 +13,7 @@ public class ImageLoader {
 
 	private Map<String, ArrayList<BufferedImage>> images;
 	private String SPRITEDIR = "/sprites/";
-	private String MAPDIR = "/images/worldmap/";
+	private String MAPDIR = "/maps/";
 	private String PORTRAITDIR = "/images/portrait/";
 
 

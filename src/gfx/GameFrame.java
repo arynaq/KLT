@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -46,7 +47,11 @@ public class GameFrame {
 		this.bufferStrategy = canvas.getBufferStrategy();
 		this.g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		this.canvas.requestFocus();
-		
+
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		clearScreen();
 
 	}

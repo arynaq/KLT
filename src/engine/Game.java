@@ -32,13 +32,14 @@ public class Game {
 	}
 
 	public void gameLoop() {
+		
+		while (true){
 
 		t0 = time();
 		while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 			engine.update();
 			sfx.play();
 			delta = time() - t0;
-			System.out.println(delta);
 			gfx.render((int) delta);
 			t0 = time();
 
@@ -51,20 +52,13 @@ public class Game {
 			}
 
 		}
-		// t0 = time();
-		// while (GameState.getInstance().getState() == GameCondition.RUNNING) {
-		// engine.update();
-		// sfx.play();
-		//
-		// delta = time() - t0;
-		// long sleepTime = fpsDelta - delta;
-		//
-		// gfx.render((int) delta);
-		// t0 = time();
-		// System.out.println(sleepTime);
-		// sleep(sleepTime);
-		//
-		// }
+
+		while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
+			sfx.playerGameOver();
+			gfx.renderGameOver();
+			sleep(150);
+		}
+		}
 	}
 
 	private long time() {

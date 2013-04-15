@@ -1,6 +1,8 @@
 package characters;
 
 import engine.Entity;
+import engine.GameInput;
+import engine.GameState;
 import gfx.Renderable;
 
 public class Player extends GameCharacter implements Entity {
@@ -9,22 +11,18 @@ public class Player extends GameCharacter implements Entity {
 	private Renderable movementSheet;
 	private Renderable renderable;
 	private State state;
-	private Facing facing;
+	private GameInput.Movement facing;
 
 	private int x;
 	private int y;
-	private int speedX = 10;
-	private int speedY = 10;
+	private int speedX = 5;
+	private int speedY = 5;
 
-	public Player(Renderable movementSheet) {
+	public Player(Renderable sprite) {
 		this.x = 0;
 		this.y = 0;
-		this.attackSheet = null;
-		this.movementSheet = movementSheet;
-		this.renderable = this.movementSheet;
-		this.facing = Facing.EAST;
-		renderable.setX(x);
-		renderable.setY(y);
+		this.renderable = sprite;
+		this.facing = GameInput.Movement.RIGHT;
 		setReturnRenderable();
 	}
 
@@ -56,9 +54,6 @@ public class Player extends GameCharacter implements Entity {
 		if (state == State.DEAD) {
 
 		}
-		if (facing == Facing.EAST) {
-
-		}
 	}
 
 	public boolean isAlive() {
@@ -71,12 +66,12 @@ public class Player extends GameCharacter implements Entity {
 
 	public void setX(int x) {
 		this.x = x;
-		this.renderable.setX(x);
+		this.renderable.setX(x % GameState.DIMENSION.width);
 	}
 
 	public void setY(int y) {
 		this.y = y;
-		this.renderable.setY(y);
+		this.renderable.setY(y % GameState.DIMENSION.height);
 	}
 
 	public int getSpeedX() {
@@ -85,5 +80,9 @@ public class Player extends GameCharacter implements Entity {
 
 	public int getSpeedY() {
 		return speedY;
+	}
+
+	public void setFacing(GameInput.Movement facing) {
+		this.facing = facing;
 	}
 }

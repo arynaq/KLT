@@ -12,7 +12,7 @@ public class GameState {
 	// private Map<String, Entity> playerMapEntities;
 	// private Map<String, Entity> worldMapEntities;
 	
-	private static final Dimension DIMENSION = new Dimension(1500, 1000);
+	public static final Dimension DIMENSION = new Dimension(512, 512);
 	private static final int GAMEFPS = 60;
 	private static final GameState instance = new GameState();
 	private GameCondition state;
@@ -31,12 +31,12 @@ public class GameState {
 		return GAMEFPS;
 	}
 
-	public double getFrameWidth() {
-		return DIMENSION.getWidth();
+	public int getFrameWidth() {
+		return (int) DIMENSION.getWidth();
 	}
 
-	public double getFrameHeight() {
-		return DIMENSION.getHeight();
+	public int getFrameHeight() {
+		return (int) DIMENSION.getHeight();
 	}
 
 //	public Map<String, Entity> getPlayerMapEntities() {
@@ -164,6 +164,10 @@ public class GameState {
 	}
 
 	public void init() {
+	}
+
+	public void setState(GameCondition condition) {
+		this.state = condition;
 	}
 
 }

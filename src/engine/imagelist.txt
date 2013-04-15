@@ -9,5 +9,6 @@
 #a player PLAYERANIMATED.png 4 4
 #...key = player.touppercase + "ANIMATED"
 s player player.png
-a bahamut bahamutAnimated.png 4 4 
-#w world worldmap.png
+a bahamut bahamutAnimated.png 4 4
+a indiana indianajones.png 4 4
+w world worldmap.png

@@ -24,6 +24,7 @@ public class Factory {
 	private GameFrame frame;
 	private ImageLoader Iloader;
 	private SoundLoader Sloader;
+	private ArrayList<GameInput> moveStack;
 
 	public Factory() {
 
