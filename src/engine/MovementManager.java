@@ -25,7 +25,8 @@ public class MovementManager {
 		int oldY = player.getY();
 		int newX = oldX + direction.getDX() * player.getSpeedX();
 		int newY = oldY + direction.getDY() * player.getSpeedY();
-		if (!collisionMap.isWalkable(direction, player.getX(), player.getY())) {
+		if (!collisionMap.isWalkable(direction, player.getX() + 16,
+				player.getY() + 32)) {
 			player.setFacing(direction);
 			return;
 		}
@@ -41,7 +42,6 @@ public class MovementManager {
 			player.setWalking(true);
 		}
 
-		System.out.println("Gukern");
 
 		
 
@@ -54,11 +54,11 @@ public class MovementManager {
 
 		// System.out.println("(FX,FY): " + "(" + player.getFeetX() + ","
 		// + player.getFeetY() + ")");
-		System.out.println(collisionMap.isWalkable(direction,
-				player.getFeetX(),
-				player.getFeetY()));
-
-		System.out.println(player.getX() + "," + player.getY());
+		// System.out.println(collisionMap.isWalkable(direction,
+		// player.getFeetX(),
+		// player.getFeetY()));
+		//
+		// System.out.println(player.getX() + "," + player.getY());
 
 	}
 
@@ -87,6 +87,31 @@ public class MovementManager {
 	public void testGameOver() {
 		GameState.getInstance().setState(GameCondition.GAMEOVER);
 
+	}
+
+	// gjør DMG til player
+	public void testPlayerDamage(int dmg) {
+		if (this.player == null) {
+			this.player = (Player) entities.get("player");
+		}
+		if (player.getHealth() > dmg) {
+			player.setHealth(player.getHealth() - dmg);
+		} else {
+			player.setHealth(0);
+		}
+	}
+
+	// Player bruker potion
+	public void usePotion() {
+		player.usePotion('h');
+	}
+
+	public void resumeGame() {
+		GameState.getInstance().setState(GameCondition.RUNNING);
+	}
+
+	public void pauseGame() {
+		GameState.getInstance().setState(GameCondition.PAUSED);
 	}
 
 	public void addCollisionMap(CollisionMap collisionMap) {

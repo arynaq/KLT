@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import characters.Player;
+
 
 
 public class GraphicsEngine {
@@ -96,6 +98,14 @@ public class GraphicsEngine {
 		for (String key : entities.keySet()) {
 			entities.get(key).getRenderable().render(g, delta);
 		}
+		
+		renderRectangle(330, 0, 190, 30, "dufern");
+
+		// Tegner Teksten til HUD
+		Player player = (Player) entities.get("player");
+		renderString("HP: " + player.getHealth() + "/" + player.getMaxHealth(),
+				350, 20, 25);
+		renderString("Potions: " + player.getNumPotions() + "", 250, 20, 25);
 		showBuffer();
 
 	}
@@ -127,6 +137,41 @@ public class GraphicsEngine {
 		g.drawString(message, (width / 2) - offsetX, (height / 2) - offsetY);
 		g.setFont(fontG);
 		showBuffer();
+	}
+
+	public void renderPause() {
+		Composite cG = g.getComposite();
+		Composite c = AlphaComposite.getInstance(AlphaComposite.DST_IN, 0.9f);
+		Font fontG = g.getFont();
+		Font messageFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
+		String message = "PAUSED";
+
+		g.setFont(messageFont);
+		fontMetrics = g.getFontMetrics();
+		int offsetX = fontMetrics.stringWidth(message) / 2;
+		int offsetY = fontMetrics.getHeight() / 2;
+
+		g.setComposite(c);
+		clearScreen();
+		g.setComposite(cG);
+		g.setColor(Color.black);
+		g.drawString(message, (width / 2) - offsetX, (height / 2) - offsetY);
+		g.setFont(fontG);
+		showBuffer();
+	}
+
+	public void renderString(String string, int x, int y, int size) {
+		Font fontG = g.getFont();
+		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
+		g.setFont(stringFont);
+		g.setColor(Color.black);
+		g.drawString(string, x, y);
+	}
+
+	public void renderRectangle(int x, int y, int w, int h,
+			String color) {
+		g.setColor(Color.WHITE);
+		g.fillRect(x, y, w, h);
 	}
 
 }

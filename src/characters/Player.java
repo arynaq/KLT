@@ -1,9 +1,12 @@
 package characters;
 
+import java.util.ArrayList;
+
 import engine.Entity;
 import engine.GameInput;
 import engine.GameInput.Movement;
 import engine.GameState;
+import engine.Potion;
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
 
@@ -20,6 +23,7 @@ public class Player extends GameCharacter implements Entity {
 	private Renderable attackNorthSheet;
 	private Renderable currentRenderable;
 
+	private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
 	private State state;
 	private GameInput.Movement facing;
 	private int x;
@@ -29,6 +33,8 @@ public class Player extends GameCharacter implements Entity {
 	private int playerWidth;
 	private int playerHeight;
 	private boolean isWalking;
+	private int health;
+	private int maxHealth;
 
 	public Player(Renderable animatedSprite) {
 		this.x = 120;
@@ -42,6 +48,9 @@ public class Player extends GameCharacter implements Entity {
 		this.playerWidth = sprite.getSheeet().getImages().get(0).getWidth();
 		this.playerHeight = sprite.getSheeet().getImages().get(0).getHeight();
 		this.facing = Movement.RIGHT;
+		this.health = 10;
+		this.maxHealth = 100;
+		HealthPotions.add(new Potion('h', 50));
 
 		// System.out.println("NULL CHECK IN PLAYER:");
 		// System.out.println("South: " + moveSouthSheet);
@@ -99,8 +108,13 @@ public class Player extends GameCharacter implements Entity {
 	}
 
 	@Override
+	// Returns state of player. Returns DEAD or ALIVE
 	public State getState() {
-		// TODO Auto-generated method stub
+		if (this.health <= 0) {
+			this.state = State.DEAD;
+		} else if (this.health > 0) {
+			this.state = State.ALIVE;
+		}
 		return state;
 	}
 
@@ -118,7 +132,6 @@ public class Player extends GameCharacter implements Entity {
 		if (state == State.DEAD) {
 			return false;
 		}
-
 		return true;
 	}
 
@@ -162,5 +175,42 @@ public class Player extends GameCharacter implements Entity {
 
 	public int getFeetY() {
 		return getHeight() / 2 + getY();
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int newHealth) {
+		health = newHealth;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int newMaxHealth) {
+		maxHealth = newMaxHealth;
+	}
+
+	// Bruker HealthPotion for now
+	public void usePotion(char potionType) {
+
+		if (HealthPotions.size() > 0 && health < maxHealth) {
+			System.out
+					.println("USING POTION MAFAKKA IN DA FACE YO GANGSTA NIGGAS BE TRIPPIN YO");
+			if ((maxHealth - health) < HealthPotions.get(0).getValue()) {
+				health = maxHealth;
+				HealthPotions.remove(0);
+			} else {
+				health += HealthPotions.get(0).getValue();
+				HealthPotions.remove(0);
+			}
+		}
+
+	}
+
+	public int getNumPotions() {
+		return HealthPotions.size();
 	}
 }

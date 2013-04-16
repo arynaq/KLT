@@ -11,7 +11,6 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
@@ -61,54 +60,51 @@ WindowListener {
 
 	}
 
-	public void setKey(KeyEvent e) {
-		sisteKey = e;
-	}
-
-	public KeyEvent getKey() {
-		return sisteKey;
-	}
-
 	@Override
 
 	public void keyPressed(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-			if (timeElapsedMove > moveTime) {
-				lastTimeMove = System.currentTimeMillis();
-				if (e.getKeyCode() == KeyEvent.VK_W) {
-					System.out.println("Game is running, moving player up");
-					movementManager.movePlayer(GameInput.Movement.UP);
-				} else if (e.getKeyCode() == KeyEvent.VK_S) {
+			// if (timeElapsedMove > moveTime) {
+			// lastTimeMove = System.currentTimeMillis();
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				// System.out.println("Game is running, moving player up");
+				movementManager.movePlayer(GameInput.Movement.UP);
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
 
-					System.out.println("Game is running, moving player down ");
-					movementManager.movePlayer(GameInput.Movement.DOWN);
-				}
-
-				else if (e.getKeyCode() == KeyEvent.VK_A) {
-
-					System.out.println("Game is running, moving player left");
-					movementManager.movePlayer(GameInput.Movement.LEFT);
-				}
-
-				else if (e.getKeyCode() == KeyEvent.VK_D) {
-
-					movementManager.movePlayer(GameInput.Movement.RIGHT);
-					System.out.println("Game is running, move player right");
-				}
-
-				else if (e.getKeyCode() == KeyEvent.VK_E) {
-					movementManager.interact();
-					System.out.println("Spawning a new player");
-				}
-				timeElapsedMove = 0;
-			} else {
-				timeElapsedMove = System.currentTimeMillis() - lastTimeMove;
+				// System.out.println("Game is running, moving player down ");
+				movementManager.movePlayer(GameInput.Movement.DOWN);
+			} else if (e.getKeyCode() == KeyEvent.VK_O) {
+				movementManager.testPlayerDamage(3);
+			}
+ else if (e.getKeyCode() == KeyEvent.VK_I) {
+				movementManager.usePotion();
 			}
 
-			if (timeElapsedAttack > attackTime) {
+			else if (e.getKeyCode() == KeyEvent.VK_A) {
+
+				// System.out.println("Game is running, moving player left");
+				movementManager.movePlayer(GameInput.Movement.LEFT);
+			}
+
+			else if (e.getKeyCode() == KeyEvent.VK_D) {
+
+				movementManager.movePlayer(GameInput.Movement.RIGHT);
+				// System.out.println("Game is running, move player right");
+			}
+
+			else if (e.getKeyCode() == KeyEvent.VK_E) {
+
+				movementManager.testGameOver();
+
+			} else if (e.getKeyCode() == KeyEvent.VK_P) {
+				movementManager.pauseGame();
+			}
+			timeElapsedMove = 0;
+
+			if (timeElapsedAttack >= attackTime) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					lastTimeAttack = System.currentTimeMillis();
-					System.out.println("ANGRIPER");
+					// System.out.println("ANGRIPER");
 					timeElapsedAttack = 0;
 				}
 			} else {
@@ -121,6 +117,9 @@ WindowListener {
 		}
 
 		else if (GameState.getInstance().getState() == GameCondition.PAUSED) {
+			if (e.getKeyCode() == KeyEvent.VK_P) {
+				movementManager.resumeGame();
+			}
 			// Do stuff that correspond to the pause screen
 		}
 
@@ -218,14 +217,4 @@ WindowListener {
 	public void setScreenManager(ScreenManager screenManager) {
 		this.screenManager = screenManager;
 	}
-
-	class attack extends TimerTask {
-		GameEventListener dritt = new GameEventListener();
-
-		public void run() {
-			releaseTimer.cancel(); // Terminate the timer thread
-
-		}
-	}
-
 }

@@ -1,5 +1,6 @@
 package engine;
 
+import engine.Entity.State;
 import gfx.AttackMoveAnimated;
 import gfx.SpriteSheet;
 
@@ -48,6 +49,10 @@ public class GameEngine {
 	}
 
 	public void update() {
+		if (getPlayer().getState() == State.DEAD) {
+			GameState.getInstance().setState(GameCondition.GAMEOVER);
+			System.out.println("Running update");
+		}
 		// Manager player, where has he gone? Should he change map? For now the
 		// player is stored somewhere else, we can change that.
 	}

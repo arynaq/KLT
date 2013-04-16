@@ -35,7 +35,8 @@ public class Game {
 	public void gameLoop() {
 
 		while (true){
-
+			// System.out.println("Game is started in: "
+			// + GameState.getInstance().getState());
 			t0 = time();
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
@@ -53,12 +54,21 @@ public class Game {
 					sleep(fpsDelta - delta);
 				}
 
+
 			}
+			// System.out.println("Game changed to: "
+			// + GameState.getInstance().getState());
 
 			while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
 				sfx.playerGameOver();
 				gfx.renderGameOver();
-				sleep(150);
+				sleep(100);
+			}
+
+			while (GameState.getInstance().getState() == GameCondition.PAUSED) {
+				sfx.pauseGame();
+				gfx.renderPause();
+				sleep(100);
 			}
 		}
 	}
