@@ -32,12 +32,16 @@ public class MovementManager {
 		if (newX >= 0 && newX <= 2047) {
 			player.setX(oldX + direction.getDX()
 					* (player.getSpeedX()));
+			player.setWalking(true);
 		}
 
 		if (newY >= 0 && newY <= 2047) {
 			player.setY(oldY + direction.getDY()
 					* (player.getSpeedY()));
+			player.setWalking(true);
 		}
+
+		System.out.println("Gukern");
 
 		
 
