@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
-
+	private String NIGGGERFAENHOREHELVETTEIHODETTILMORDI;
 	private MovementManager movementManager;
 	private ScreenManager screenManager;
 	private List<KeyEvent> moves;
