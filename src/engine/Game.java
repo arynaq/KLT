@@ -9,6 +9,7 @@ public class Game {
 	private GameEngine engine;
 	private static final Game instance = new Game();
 	private long fpsDelta, delta, t0, t1;
+	private int hasNotMovedCount;
 
 	private Game() {
 		factory = new Factory();
@@ -32,32 +33,33 @@ public class Game {
 	}
 
 	public void gameLoop() {
-		
+
 		while (true){
 
-		t0 = time();
-		while (GameState.getInstance().getState() == GameCondition.RUNNING) {
-			engine.update();
-			sfx.play();
-			delta = time() - t0;
-			gfx.render((int) delta);
 			t0 = time();
+			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
-			if ((fpsDelta - delta) <= 0) {
-				sleep(2);
+				engine.update();
+				sfx.play();
+				delta = time() - t0;
+				gfx.render((int) delta);
+				t0 = time();
+
+				if ((fpsDelta - delta) <= 0) {
+					sleep(2);
+				}
+
+				else {
+					sleep(fpsDelta - delta);
+				}
+
 			}
 
-			else {
-				sleep(fpsDelta - delta);
+			while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
+				sfx.playerGameOver();
+				gfx.renderGameOver();
+				sleep(150);
 			}
-
-		}
-
-		while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
-			sfx.playerGameOver();
-			gfx.renderGameOver();
-			sleep(150);
-		}
 		}
 	}
 

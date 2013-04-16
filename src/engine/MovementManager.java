@@ -2,11 +2,14 @@ package engine;
 
 import java.util.Map;
 
+import worldmap.CollisionMap;
 import characters.Player;
 
 public class MovementManager {
 	private Map<String, Entity> entities;
 	private Player player;
+	private CollisionMap collisionMap;
+	private int hasNotMovedCount;
 
 	public MovementManager(Map<String, Entity> entities) {
 		this.entities = entities;
@@ -15,21 +18,24 @@ public class MovementManager {
 	
 	public void movePlayer(GameInput.Movement direction) {
 
-		System.out.println("DX: " + direction.getDX());
-		System.out.println("DY: " + direction.getDY());
 		if (this.player == null) {
 			this.player = (Player) entities.get("player");
 		}
-
-		int newX = player.getX() + direction.getDX() * player.getSpeedX();
-		int newY = player.getY() + direction.getDY() * player.getSpeedY();
+		int oldX = player.getX();
+		int oldY = player.getY();
+		int newX = oldX + direction.getDX() * player.getSpeedX();
+		int newY = oldY + direction.getDY() * player.getSpeedY();
+		if (!collisionMap.isWalkable(direction, player.getX(), player.getY())) {
+			player.setFacing(direction);
+			return;
+		}
 		if (newX >= 0 && newX <= 2047) {
-			player.setX(player.getX() + direction.getDX()
+			player.setX(oldX + direction.getDX()
 					* (player.getSpeedX()));
 		}
 
 		if (newY >= 0 && newY <= 2047) {
-			player.setY(player.getY() + direction.getDY()
+			player.setY(oldY + direction.getDY()
 					* (player.getSpeedY()));
 		}
 
@@ -41,6 +47,14 @@ public class MovementManager {
 		player.setFacing(direction);
 
 		GameState.getInstance().getWorldMap().updateGameMap(i, j);
+
+		// System.out.println("(FX,FY): " + "(" + player.getFeetX() + ","
+		// + player.getFeetY() + ")");
+		System.out.println(collisionMap.isWalkable(direction,
+				player.getFeetX(),
+				player.getFeetY()));
+
+		System.out.println(player.getX() + "," + player.getY());
 
 	}
 
@@ -69,5 +83,9 @@ public class MovementManager {
 	public void testGameOver() {
 		GameState.getInstance().setState(GameCondition.GAMEOVER);
 
+	}
+
+	public void addCollisionMap(CollisionMap collisionMap) {
+		this.collisionMap = collisionMap;
 	}
 }

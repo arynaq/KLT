@@ -56,28 +56,31 @@ WindowListener {
 	public void keyPressed(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
-				System.out.println("Game is running, moving player up");
+				// System.out.println("Game is running, moving player up");
 				movementManager.movePlayer(GameInput.Movement.UP);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_S) {
-				System.out.println("Game is running, moving player down ");
+				// System.out.println("Game is running, moving player down ");
 				movementManager.movePlayer(GameInput.Movement.DOWN);
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_A) {
-				System.out.println("Game is running, moving player left");
+				// System.out.println("Game is running, moving player left");
 				movementManager.movePlayer(GameInput.Movement.LEFT);
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_D) {
 				movementManager.movePlayer(GameInput.Movement.RIGHT);
-				System.out.println("Game is running, move player right");
+				// System.out.println("Game is running, move player right");
 			}
 
 			else if (e.getKeyCode() == KeyEvent.VK_E) {
 				movementManager.interact();
 				movementManager.testGameOver();
 				System.out.println("Spawning a new player");
+			}
+
+			else if (e.getKeyCode() == KeyEvent.VK_F) {
 			}
 			// Process player inputs and inputs corresponding to the gameframe
 		}
@@ -109,8 +112,8 @@ WindowListener {
 	public void keyReleased(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 			if (e.getKeyCode() == KeyEvent.VK_F) {
-				System.out
-						.println("Aha! You pressed F, attacking the bastard facing you!");
+				// System.out
+				// .println("Aha! You pressed F, attacking the bastard facing you!");
 				// Just pressed and released F, attack?
 				e.consume();
 			}

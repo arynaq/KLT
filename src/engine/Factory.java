@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import sfx.GameSound;
+import worldmap.CollisionMap;
 
 public class Factory {
 
@@ -35,8 +36,10 @@ public class Factory {
 		this.Iloader = new ImageLoader("imagelist.txt", images);
 		this.Sloader = new SoundLoader("soundlist.txt", sounds);
 		this.listener = new GameEventListener();
-		this.movementManager = new MovementManager(entities);
 		this.frame = new GameFrame(Color.black);
+		this.movementManager = new MovementManager(entities);
+		this.movementManager.addCollisionMap(new CollisionMap(images.get(
+				"collisionWORLDMAP").get(0)));
 	}
 
 	public GameEngine createGameEngine() {

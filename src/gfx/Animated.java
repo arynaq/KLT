@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Animated implements Renderable {
-	private ArrayList<BufferedImage> sheet;
+	private SpriteSheet sheet;
 	private int cols;
 	private int rows;
 	private int x;
@@ -14,29 +14,27 @@ public class Animated implements Renderable {
 	private int currentFrame;
 	private int lastFrame;
 	private BufferedImage currentImage;
+	private boolean doUpdate = false;
 
-	public Animated(ArrayList<BufferedImage> spritesheet, int cols,
-			int rows, int frameDelay) {
+	public Animated(SpriteSheet sheet, int frameDelay) {
 
-		this.sheet = spritesheet;
-		this.cols = cols;
-		this.rows = rows;
+		this.sheet = sheet;
 		this.frameDelay = frameDelay;
-		this.lastFrame = sheet.size() - 1;
-		this.currentImage = sheet.get(0);
+		this.lastFrame = sheet.getSize() - 1;
+		this.currentImage = sheet.getFrame(0);
 	}
 
 
 	private void frameUpdate(int deltaTime) {
 		deltaTimeSum += deltaTime;
-		if (deltaTimeSum >= frameDelay) {
+		if (deltaTimeSum >= getFrameDelay()) {
 			if (currentFrame == lastFrame) {
 				currentFrame = 0;
 			}
 			else {
 				currentFrame++;
 			}
-			currentImage = sheet.get(currentFrame);
+			currentImage = sheet.getFrame(currentFrame);
 			deltaTimeSum = 0;
 		}
 	}
@@ -62,6 +60,27 @@ public class Animated implements Renderable {
 	@Override
 	public void setY(int y) {
 		this.y = y;
+	}
+
+
+	public int getFrameDelay() {
+		return frameDelay;
+	}
+
+
+
+	public ArrayList<BufferedImage> getSheetList() {
+		return sheet.getImages();
+	}
+
+
+	public SpriteSheet getSheeet() {
+		// TODO Auto-generated method stub
+		return this.sheet;
+	}
+
+	public Animated getRowAnimated(int rowNumber) {
+		return new Animated(sheet.getRow(rowNumber), this.frameDelay);
 	}
 
 }

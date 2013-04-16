@@ -1,6 +1,7 @@
 package engine;
 
-import gfx.Animated;
+import gfx.AttackMoveAnimated;
+import gfx.SpriteSheet;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -33,7 +34,10 @@ public class GameEngine {
 
 	private void initEntities() {
 		Player player;
-		Animated sprite = new Animated(images.get("indianaANIMATED"), 4, 4, 200);
+		AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
+				images.get("indianaANIMATED"), 4, 4), 100);
+		// Animated sprite = new Animated(new SpriteSheet(
+		// images.get("indianaANIMATED")), 200);
 		player = new Player(sprite);
 		entities.put("player", player);
 
@@ -46,6 +50,10 @@ public class GameEngine {
 	public void update() {
 		// Manager player, where has he gone? Should he change map? For now the
 		// player is stored somewhere else, we can change that.
+	}
+
+	public Player getPlayer() {
+		return (Player) entities.get("player");
 	}
 
 
