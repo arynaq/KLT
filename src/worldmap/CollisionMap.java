@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 
 import engine.GameInput.Movement;
 
+private String gukern;
+
 public class CollisionMap {
 	private BufferedImage collisionMap;
 
