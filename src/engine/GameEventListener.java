@@ -10,13 +10,22 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
-	private String NIGGGERFAENHOREHELVETTEIHODETTILMORDI;
+	private Timer releaseTimer;
 	private MovementManager movementManager;
 	private ScreenManager screenManager;
 	private List<KeyEvent> moves;
+	private KeyEvent sisteKey;
+	private long lastTimeMove = System.currentTimeMillis();
+	private long lastTimeAttack = System.currentTimeMillis();
+	private int attackTime = 500;
+	private int moveTime = 5;
+	private long timeElapsedMove = moveTime;
+	private long timeElapsedAttack = attackTime;
 
 	public GameEventListener() {
 		moves = new ArrayList<KeyEvent>();
@@ -52,36 +61,62 @@ WindowListener {
 
 	}
 
+	public void setKey(KeyEvent e) {
+		sisteKey = e;
+	}
+
+	public KeyEvent getKey() {
+		return sisteKey;
+	}
+
 	@Override
+
 	public void keyPressed(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-			if (e.getKeyCode() == KeyEvent.VK_W) {
-				// System.out.println("Game is running, moving player up");
-				movementManager.movePlayer(GameInput.Movement.UP);
-			}
-			else if (e.getKeyCode() == KeyEvent.VK_S) {
-				// System.out.println("Game is running, moving player down ");
-				movementManager.movePlayer(GameInput.Movement.DOWN);
+			if (timeElapsedMove > moveTime) {
+				lastTimeMove = System.currentTimeMillis();
+				if (e.getKeyCode() == KeyEvent.VK_W) {
+					System.out.println("Game is running, moving player up");
+					movementManager.movePlayer(GameInput.Movement.UP);
+				} else if (e.getKeyCode() == KeyEvent.VK_S) {
+
+					System.out.println("Game is running, moving player down ");
+					movementManager.movePlayer(GameInput.Movement.DOWN);
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_A) {
+
+					System.out.println("Game is running, moving player left");
+					movementManager.movePlayer(GameInput.Movement.LEFT);
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_D) {
+
+					movementManager.movePlayer(GameInput.Movement.RIGHT);
+					System.out.println("Game is running, move player right");
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_E) {
+					movementManager.interact();
+					System.out.println("Spawning a new player");
+				}
+				timeElapsedMove = 0;
+			} else {
+				timeElapsedMove = System.currentTimeMillis() - lastTimeMove;
 			}
 
-			else if (e.getKeyCode() == KeyEvent.VK_A) {
-				// System.out.println("Game is running, moving player left");
-				movementManager.movePlayer(GameInput.Movement.LEFT);
+			if (timeElapsedAttack > attackTime) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					lastTimeAttack = System.currentTimeMillis();
+					System.out.println("ANGRIPER");
+					timeElapsedAttack = 0;
+				}
+			} else {
+				timeElapsedAttack = System.currentTimeMillis() - lastTimeAttack;
 			}
+			// timeElapsed = System.currentTimeMillis()-lastTime;
 
-			else if (e.getKeyCode() == KeyEvent.VK_D) {
-				movementManager.movePlayer(GameInput.Movement.RIGHT);
-				// System.out.println("Game is running, move player right");
-			}
 
-			else if (e.getKeyCode() == KeyEvent.VK_E) {
-				movementManager.interact();
-				movementManager.testGameOver();
-				System.out.println("Spawning a new player");
-			}
-
-			else if (e.getKeyCode() == KeyEvent.VK_F) {
-			}
 			// Process player inputs and inputs corresponding to the gameframe
 		}
 
@@ -101,7 +136,7 @@ WindowListener {
 			// What do keys do when game is over?
 
 			// test
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			if (e.getKeyCode() == KeyEvent.VK_R) {
 				GameState.getInstance().setState(GameCondition.RUNNING);
 			}
 		}
@@ -111,13 +146,21 @@ WindowListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-			if (e.getKeyCode() == KeyEvent.VK_F) {
-				// System.out
-				// .println("Aha! You pressed F, attacking the bastard facing you!");
-				// Just pressed and released F, attack?
-				e.consume();
-			}
+
+			// if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			// if (timeElapsedAttack > attackTime) {
+			// lastTimeAttack = System.currentTimeMillis();
+			// System.out.println("ANGRIPER");
+			// timeElapsedAttack = 0;
+			// } else {
+			// timeElapsedAttack = System.currentTimeMillis()
+			// - lastTimeAttack;
+			// }
+			// // timeElapsed = System.currentTimeMillis()-lastTime;
+			// }
+
 		}
+		// Process player inputs and inputs corresponding to the gameframe
 
 	}
 
@@ -174,6 +217,15 @@ WindowListener {
 
 	public void setScreenManager(ScreenManager screenManager) {
 		this.screenManager = screenManager;
+	}
+
+	class attack extends TimerTask {
+		GameEventListener dritt = new GameEventListener();
+
+		public void run() {
+			releaseTimer.cancel(); // Terminate the timer thread
+
+		}
 	}
 
 }
