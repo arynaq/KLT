@@ -16,6 +16,8 @@ public class GameEngine {
 	private Map<String, Entity> entities;
 	private Map<String, ArrayList<BufferedImage>> images;
 	private Map<String, GameSound> sounds;
+	private Player player;
+	private int oldPlayerX, oldplayerY;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, ArrayList<BufferedImage>> images,
@@ -33,13 +35,11 @@ public class GameEngine {
 	}
 
 	private void initEntities() {
-		Player player;
 		AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
-				images.get("indianaANIMATED"), 4, 4), 100);
-		// Animated sprite = new Animated(new SpriteSheet(
-		// images.get("indianaANIMATED")), 200);
+				images.get("indianaANIMATED"), 4, 4));
 		player = new Player(sprite);
 		entities.put("player", player);
+
 
 		WorldMap worldMap = new WorldMap(images.get("worldWORLDMAP"));
 		GameState.getInstance().setWorldMap(worldMap);
@@ -48,8 +48,23 @@ public class GameEngine {
 	}
 
 	public void update() {
-		// Manager player, where has he gone? Should he change map? For now the
-		// player is stored somewhere else, we can change that.
+		updatePlayer();
+	}
+
+	private void updatePlayer() {
+		int newPlayerX = player.getX();
+		int newPlayerY = player.getY();
+
+		// if (newPlayerX == oldPlayerX && newPlayerY == oldplayerY) {
+		// ((Animated) player.getRenderable()).stop();
+		// }
+		//
+		// else {
+		// ((Animated) player.getRenderable()).resume();
+		// }
+
+		oldPlayerX = newPlayerX;
+		oldplayerY = newPlayerY;
 	}
 
 	public Player getPlayer() {

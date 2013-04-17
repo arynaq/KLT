@@ -1,5 +1,7 @@
 package engine;
 
+import gfx.Animated;
+
 import java.util.Map;
 
 import worldmap.CollisionMap;
@@ -9,7 +11,6 @@ public class MovementManager {
 	private Map<String, Entity> entities;
 	private Player player;
 	private CollisionMap collisionMap;
-	private int hasNotMovedCount;
 
 	public MovementManager(Map<String, Entity> entities) {
 		this.entities = entities;
@@ -25,40 +26,29 @@ public class MovementManager {
 		int oldY = player.getY();
 		int newX = oldX + direction.getDX() * player.getSpeedX();
 		int newY = oldY + direction.getDY() * player.getSpeedY();
-		if (!collisionMap.isWalkable(direction, player.getX(), player.getY())) {
+		if (!collisionMap.isWalkable(player, direction)) {
 			player.setFacing(direction);
 			return;
 		}
 		if (newX >= 0 && newX <= 2047) {
 			player.setX(oldX + direction.getDX()
 					* (player.getSpeedX()));
-			player.setWalking(true);
 		}
 
 		if (newY >= 0 && newY <= 2047) {
 			player.setY(oldY + direction.getDY()
 					* (player.getSpeedY()));
-			player.setWalking(true);
 		}
-
-		System.out.println("Gukern");
-
 		
+
+
+		((Animated) player.getRenderable()).move(5);
 
 		int i = player.getY() / GameState.getInstance().getFrameHeight();
 		int j = player.getX() / GameState.getInstance().getFrameHeight();
 
 		player.setFacing(direction);
-
 		GameState.getInstance().getWorldMap().updateGameMap(i, j);
-
-		// System.out.println("(FX,FY): " + "(" + player.getFeetX() + ","
-		// + player.getFeetY() + ")");
-		System.out.println(collisionMap.isWalkable(direction,
-				player.getFeetX(),
-				player.getFeetY()));
-
-		System.out.println(player.getX() + "," + player.getY());
 
 	}
 
@@ -87,6 +77,10 @@ public class MovementManager {
 	public void testGameOver() {
 		GameState.getInstance().setState(GameCondition.GAMEOVER);
 
+	}
+
+	public void testPauseMovement() {
+		((Animated) player.getRenderable()).pause();
 	}
 
 	public void addCollisionMap(CollisionMap collisionMap) {

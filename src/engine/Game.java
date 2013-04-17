@@ -9,7 +9,6 @@ public class Game {
 	private GameEngine engine;
 	private static final Game instance = new Game();
 	private long fpsDelta, delta, t0, t1;
-	private int hasNotMovedCount;
 
 	private Game() {
 		factory = new Factory();
@@ -25,9 +24,7 @@ public class Game {
 
 	public void init() {
 		engine.start();
-		sleep(10);
 		gfx.start();
-		sleep(10);
 		sfx.start();
 		sleep(10);
 	}
@@ -60,6 +57,18 @@ public class Game {
 				gfx.renderGameOver();
 				sleep(150);
 			}
+
+			// while (GameState.getInstance().getState() ==
+			// GameCondition.PAUSED) {
+			// sfx.gamePaused();
+			// gfx.renderPaused();
+			// sleep(150);
+			// }
+			//
+			// while (GameState.getInstance().getState() ==
+			// GameCondition.SPLASH) {
+			//
+			// }
 		}
 	}
 
@@ -69,9 +78,9 @@ public class Game {
 
 	public static void main(String[] args) {
 		Game game = Game.getInstance();
+		game.init();
 		ExamplePlayer ex = new ExamplePlayer();
 		ex.start();
-		game.init();
 		game.gameLoop();
 	}
 

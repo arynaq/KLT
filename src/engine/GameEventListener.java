@@ -22,7 +22,7 @@ WindowListener {
 	private KeyEvent sisteKey;
 	private long lastTimeMove = System.currentTimeMillis();
 	private long lastTimeAttack = System.currentTimeMillis();
-	private int attackTime = 500;
+	private int attackTime = 5000;
 	private int moveTime = 5;
 	private long timeElapsedMove = moveTime;
 	private long timeElapsedAttack = attackTime;
@@ -73,48 +73,41 @@ WindowListener {
 
 	public void keyPressed(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-			if (timeElapsedMove > moveTime) {
-				lastTimeMove = System.currentTimeMillis();
 				if (e.getKeyCode() == KeyEvent.VK_W) {
-					System.out.println("Game is running, moving player up");
+				// System.out.println("Game is running, moving player up");
 					movementManager.movePlayer(GameInput.Movement.UP);
 				} else if (e.getKeyCode() == KeyEvent.VK_S) {
 
-					System.out.println("Game is running, moving player down ");
+				// System.out.println("Game is running, moving player down ");
 					movementManager.movePlayer(GameInput.Movement.DOWN);
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_A) {
 
-					System.out.println("Game is running, moving player left");
+				// System.out.println("Game is running, moving player left");
 					movementManager.movePlayer(GameInput.Movement.LEFT);
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_D) {
 
 					movementManager.movePlayer(GameInput.Movement.RIGHT);
-					System.out.println("Game is running, move player right");
+				// System.out.println("Game is running, move player right");
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_E) {
-					movementManager.interact();
-					System.out.println("Spawning a new player");
+				movementManager.testPauseMovement();
+				// System.out.println("Spawning a new player");
 				}
-				timeElapsedMove = 0;
-			} else {
-				timeElapsedMove = System.currentTimeMillis() - lastTimeMove;
-			}
 
-			if (timeElapsedAttack > attackTime) {
+			if (timeElapsedAttack >= attackTime) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					lastTimeAttack = System.currentTimeMillis();
-					System.out.println("ANGRIPER");
+					// System.out.println("ANGRIPER");
 					timeElapsedAttack = 0;
 				}
 			} else {
 				timeElapsedAttack = System.currentTimeMillis() - lastTimeAttack;
 			}
-			// timeElapsed = System.currentTimeMillis()-lastTime;
 
 
 			// Process player inputs and inputs corresponding to the gameframe

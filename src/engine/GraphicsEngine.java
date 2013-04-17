@@ -94,6 +94,7 @@ public class GraphicsEngine {
 
 		}
 		for (String key : entities.keySet()) {
+			entities.get(key).getRenderable().render(g);
 			entities.get(key).getRenderable().render(g, delta);
 		}
 		showBuffer();
