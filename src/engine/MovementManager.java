@@ -44,10 +44,6 @@ public class MovementManager {
 					* (player.getSpeedY()));
 			player.setWalking(true);
 		}
-
-
-
-
 		int i = player.getY() / GameState.getInstance().getFrameHeight();
 		int j = player.getX() / GameState.getInstance().getFrameHeight();
 

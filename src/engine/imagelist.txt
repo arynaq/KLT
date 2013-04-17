@@ -11,5 +11,6 @@
 s player player.png
 a bahamut bahamutAnimated.png 4 4
 a indiana indianajones.png 4 4
+a awesome awesome.png 4 4
 w world worldmap.png
 w collision worldCollision.png
