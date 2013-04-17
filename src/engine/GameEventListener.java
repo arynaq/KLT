@@ -76,6 +76,9 @@ WindowListener {
 			} else if (e.getKeyCode() == KeyEvent.VK_O) {
 				movementManager.testPlayerDamage(3);
 			}
+ else if (e.getKeyCode() == KeyEvent.VK_X) {
+				movementManager.giveXp();
+			}
  else if (e.getKeyCode() == KeyEvent.VK_I) {
 				movementManager.usePotion();
 			}

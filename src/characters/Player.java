@@ -35,6 +35,8 @@ public class Player extends GameCharacter implements Entity {
 	private boolean isWalking;
 	private int health;
 	private int maxHealth;
+	private int xp;
+
 
 	public Player(Renderable animatedSprite) {
 		this.x = 120;
@@ -48,8 +50,6 @@ public class Player extends GameCharacter implements Entity {
 		this.playerWidth = sprite.getSheeet().getImages().get(0).getWidth();
 		this.playerHeight = sprite.getSheeet().getImages().get(0).getHeight();
 		this.facing = Movement.RIGHT;
-		this.health = 10;
-		this.maxHealth = 100;
 		HealthPotions.add(new Potion('h', 50));
 
 		// System.out.println("NULL CHECK IN PLAYER:");
@@ -212,5 +212,13 @@ public class Player extends GameCharacter implements Entity {
 
 	public int getNumPotions() {
 		return HealthPotions.size();
+	}
+
+	public void setXP(int xpGain) {
+		xp += xpGain;
+	}
+
+	public int getXP() {
+		return xp;
 	}
 }

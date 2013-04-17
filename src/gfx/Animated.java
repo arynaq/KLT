@@ -83,4 +83,10 @@ public class Animated implements Renderable {
 		return new Animated(sheet.getRow(rowNumber), this.frameDelay);
 	}
 
+	@Override
+	public boolean doRender() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

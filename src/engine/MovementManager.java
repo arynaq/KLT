@@ -8,19 +8,22 @@ import characters.Player;
 public class MovementManager {
 	private Map<String, Entity> entities;
 	private Player player;
+	private LevelManager levelManager;
 	private CollisionMap collisionMap;
-	private int hasNotMovedCount;
+	private GameEngine engine;
 
 	public MovementManager(Map<String, Entity> entities) {
 		this.entities = entities;
 		this.player = (Player) entities.get("player");
 	}
-	
-	public void movePlayer(GameInput.Movement direction) {
 
-		if (this.player == null) {
-			this.player = (Player) entities.get("player");
-		}
+	public MovementManager(GameEngine engine) {
+		this.engine = engine;
+		this.player = engine.getPlayer();
+		this.levelManager = engine.getLevelManager();
+	}
+
+	public void movePlayer(GameInput.Movement direction) {
 		int oldX = player.getX();
 		int oldY = player.getY();
 		int newX = oldX + direction.getDX() * player.getSpeedX();
@@ -43,7 +46,7 @@ public class MovementManager {
 		}
 
 
-		
+
 
 		int i = player.getY() / GameState.getInstance().getFrameHeight();
 		int j = player.getX() / GameState.getInstance().getFrameHeight();
@@ -104,6 +107,10 @@ public class MovementManager {
 	// Player bruker potion
 	public void usePotion() {
 		player.usePotion('h');
+	}
+
+	public void giveXp() {
+		levelManager.xpGain(10);
 	}
 
 	public void resumeGame() {
