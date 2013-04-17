@@ -36,6 +36,7 @@ public class Player extends GameCharacter implements Entity {
 	private int health;
 	private int maxHealth;
 	private int xp;
+	private int dmg;
 
 
 	public Player(Renderable animatedSprite) {
@@ -220,5 +221,13 @@ public class Player extends GameCharacter implements Entity {
 
 	public int getXP() {
 		return xp;
+	}
+
+	public int getDmg() {
+		return dmg;
+	}
+
+	public void setDmg(int dmg) {
+		this.dmg = dmg;
 	}
 }
