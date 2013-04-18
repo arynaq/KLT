@@ -29,4 +29,9 @@ public class SoundEngine {
 
 	}
 
+	public void pauseGame() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -23,4 +23,11 @@ public interface Combatable {
 	 */
 	public void seek(Player player);
 
+	/**
+	 * Take damage.
+	 * 
+	 * @param damage
+	 */
+	public void getAttacked(int damage);
+
 }

@@ -1,13 +1,16 @@
 package characters;
 
+import items.Potion;
+
+import java.util.ArrayList;
+
 import engine.Entity;
-import engine.GameInput;
 import engine.GameInput.Movement;
 import engine.GameState;
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
 
-public class Player extends GameCharacter implements Entity {
+public class Player extends GameCharacter implements Entity, Combatable {
 
 	private Renderable fullSheet;
 	private Renderable moveSouthSheet;
@@ -20,16 +23,19 @@ public class Player extends GameCharacter implements Entity {
 	private Renderable attackNorthSheet;
 	private Renderable currentRenderable;
 
+	private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
 	private State state;
-	private GameInput.Movement facing;
+	// private GameInput.Movement facing;
 	private int x;
 	private int y;
 	private int speedX = 5;
 	private int speedY = 5;
 	private int playerWidth;
 	private int playerHeight;
-	private boolean isWalking;
-
+	private int health;
+	private int maxHealth;
+	private int xp;
+	private int dmg = 20;
 	/**
 	 * The player is initialized with its sprite represented by the renderable.
 	 * @param renderable
@@ -38,7 +44,7 @@ public class Player extends GameCharacter implements Entity {
 		this.x = 120;
 		this.y = 340;
 		this.fullSheet = renderable;
-		this.facing = Movement.RIGHT;
+		super.setFacing(Movement.RIGHT);
 	}
 
 	/**
@@ -58,39 +64,40 @@ public class Player extends GameCharacter implements Entity {
 				.getWidth();
 		this.playerHeight = animatedSpriteSheet.getSheeet().getImages().get(0)
 				.getHeight();
-		this.facing = Movement.RIGHT;
+		super.setFacing(Movement.RIGHT);
 	}
 
 	@Override
 	public Renderable getRenderable() {
-		if (facing == Movement.RIGHT) {
+		if (getFacing() == Movement.RIGHT) {
 			currentRenderable = moveEastSheet;
 		}
 
-		else if (facing == Movement.LEFT) {
+		else if (getFacing() == Movement.LEFT) {
 
 			currentRenderable = moveWestSheet;
 		}
 
-		else if (facing == Movement.UP) {
+		else if (getFacing() == Movement.UP) {
 			currentRenderable = moveNorthSheet;
 		}
 
-		else if (facing == Movement.DOWN) {
+		else if (getFacing() == Movement.DOWN) {
 			currentRenderable = moveSouthSheet;
 		}
 		updateCurrentRenderable();
 		return currentRenderable;
 	}
 
-	private void updateCurrentRenderable() {
-		this.currentRenderable.setX(x % GameState.DIMENSION.width);
-		this.currentRenderable.setY(y % GameState.DIMENSION.height);
-	}
-
 	@Override
 	public int getX() {
 		return x;
+	}
+
+	private void updateCurrentRenderable() {
+		currentRenderable.setX(x % GameState.DIMENSION.width);
+		currentRenderable.setY(y % GameState.DIMENSION.height);
+
 	}
 
 	@Override
@@ -99,27 +106,14 @@ public class Player extends GameCharacter implements Entity {
 	}
 
 	@Override
+	// Returns state of player. Returns DEAD or ALIVE
 	public State getState() {
-		// TODO Auto-generated method stub
+		if (this.health <= 0) {
+			this.state = State.DEAD;
+		} else if (this.health > 0) {
+			this.state = State.ALIVE;
+		}
 		return state;
-	}
-
-	private void setReturnRenderable() {
-		if (state == State.DEAD) {
-			// He is dead, send the dying animation
-			return;
-		}
-
-		if (facing == Movement.DOWN) {
-		}
-	}
-
-	public boolean isAlive() {
-		if (state == State.DEAD) {
-			return false;
-		}
-
-		return true;
 	}
 
 	public void setX(int x) {
@@ -140,19 +134,88 @@ public class Player extends GameCharacter implements Entity {
 		return speedY;
 	}
 
-	public void setFacing(GameInput.Movement facing) {
-		this.facing = facing;
-	}
-
-	public void setWalking(boolean isWalking) {
-		this.isWalking = isWalking;
-	}
-
 	public int getWidth() {
 		return this.playerWidth;
 	}
 
 	public int getHeight() {
 		return this.playerHeight;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int newHealth) {
+		health = newHealth;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int newMaxHealth) {
+		maxHealth = newMaxHealth;
+	}
+
+	// Bruker HealthPotion for now
+	public void usePotion(char potionType) {
+
+		if (HealthPotions.size() > 0 && health < maxHealth) {
+			if ((maxHealth - health) < HealthPotions.get(0).getValue()) {
+				health = maxHealth;
+				HealthPotions.remove(0);
+			} else {
+				health += HealthPotions.get(0).getValue();
+				HealthPotions.remove(0);
+			}
+		}
+
+	}
+
+	public int getNumPotions() {
+		return HealthPotions.size();
+	}
+
+	public void setXP(int xpGain) {
+		xp += xpGain;
+	}
+
+	public int getXP() {
+		return xp;
+	}
+
+	public int getDmg() {
+		return dmg;
+	}
+
+	public void setDmg(int dmg) {
+		this.dmg = dmg;
+	}
+
+	@Override
+	public void attack(Combatable other) {
+		other.getAttacked(dmg);
+	}
+
+	@Override
+	public void seek(Combatable other) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void seek(Player player) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void getAttacked(int damage) {
+		// int dx = getFacing().opposite().getDX() * 2 * speedX;
+		// int dy = getFacing().opposite().getDY() * 2 * speedY;
+		// setX(getX() + dx);
+		// setY(getY() + dy);
+		this.health -= damage;
 	}
 }

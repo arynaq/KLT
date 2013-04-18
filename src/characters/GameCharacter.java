@@ -1,23 +1,46 @@
 package characters;
 
+import engine.GameInput.Movement;
 
 public abstract class GameCharacter {
 	private int x;
 	private int y;
+	private Movement facing;
 
+	/**
+	 * Returns the cardinal direction this character faces.
+	 * 
+	 * @return
+	 */
+	public Movement getFacing() {
+		return facing;
+	}
+
+	/**
+	 * Sets which cardinal direction this character faces.
+	 * 
+	 * @param facing
+	 */
+	public void setFacing(Movement facing) {
+		this.facing = facing;
+	}
 	/**
 	 * Returns the x-position of the GameCharacter on the global(worldmap)
 	 * 
 	 * @return
 	 */
-	public abstract int getX();
+	public int getX() {
+		return x;
+	}
 
 	/**
 	 * Returns the y-position of the GameCharacter on the global(world) map.
 	 * 
 	 * @return
 	 */
-	public abstract int getY();
+	public int getY() {
+		return y;
+	}
 
 	/**
 	 * Returns the characters movement-speed in the x-direction.

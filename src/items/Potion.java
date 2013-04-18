@@ -1,11 +1,28 @@
 package items;
 
-public class Potion extends GameItem {
+public class Potion {
+	private char type;
+	private int value;
 
-	public Potion(){
-		type = "PTN";
-		id = type + (++GameItem.nextID);
+	public Potion(char type, int value) {
+		this.type = type;
+		this.value = value;
 	}
 
+	public char getType() {
+		return type;
+	}
+
+	public void setType(char type) {
+		this.type = type;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
 
 }
