@@ -7,6 +7,10 @@ public class AttackMoveAnimated extends Animated {
 		super(sheet, frameDelay);
 	}
 
+	public AttackMoveAnimated(SpriteSheet spriteSheet) {
+		super(spriteSheet);
+	}
+
 	public Animated getSouthMovementSheet() {
 		return getRowAnimated(0);
 	}
@@ -38,4 +42,5 @@ public class AttackMoveAnimated extends Animated {
 	public Animated getNorthAttackSheet() {
 		return null;
 	}
+
 }

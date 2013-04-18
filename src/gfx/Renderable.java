@@ -27,7 +27,12 @@ public interface Renderable {
 	 */
 	public void setX(int x);
 
+	/**
+	 * Change the (or set) the position of the renderable on the canvas. The
+	 * position is relative to the canvas, with the maximum being the current
+	 * frameHeight.
+	 * 
+	 * @param y
+	 */
 	public void setY(int y);
-
-	public boolean doRender();
 }

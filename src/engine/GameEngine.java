@@ -23,6 +23,7 @@ public class GameEngine {
 	private Map<String, Renderable> renderables;
 	private Player player;
 	private LevelManager levelManager;
+	private WorldMap worldMap;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, Renderable> renderables,
@@ -58,7 +59,7 @@ public class GameEngine {
 	}
 
 	private void initMaps() {
-		WorldMap worldMap = new WorldMap(images.get("worldWORLDMAP"));
+		worldMap = new WorldMap(images.get("worldWORLDMAP"));
 		GameState.getInstance().setWorldMap(worldMap);
 		GameState.getInstance().setCurrentMap(worldMap.getGameMap());
 
@@ -84,16 +85,18 @@ public class GameEngine {
 	}
 
 	public void update() {
+	updatePlayer();
+		updateMap();
 
-		if (getPlayer().getState() == State.DEAD) {
-			GameState.getInstance().setState(GameCondition.GAMEOVER);
-			System.out.println("Running update");
-		}
+	}
+	private void updateMap() {
+		int x = player.getX();
+		int y = player.getY();
+		worldMap.updateGameMap(x, y);
+	}
 
-
-
-		// Manager player, where has he gone? Should he change map? For now the
-		// player is stored somewhere else, we can change that.
+	private void updatePlayer() {
+		
 	}
 
 	public Player getPlayer() {

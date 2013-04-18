@@ -1,5 +1,7 @@
 package engine;
 
+import gfx.Animated;
+
 import java.util.Map;
 
 import worldmap.CollisionMap;
@@ -28,8 +30,7 @@ public class MovementManager {
 		int oldY = player.getY();
 		int newX = oldX + direction.getDX() * player.getSpeedX();
 		int newY = oldY + direction.getDY() * player.getSpeedY();
-		if (!collisionMap.isWalkable(direction, player.getX() + 16,
-				player.getY() + 32)) {
+		if (!collisionMap.isWalkable(player, direction)) {
 			player.setFacing(direction);
 			return;
 		}
@@ -46,41 +47,17 @@ public class MovementManager {
 		}
 		int i = player.getY() / GameState.getInstance().getFrameHeight();
 		int j = player.getX() / GameState.getInstance().getFrameHeight();
-
+		((Animated) player.getRenderable()).move(5);
 		player.setFacing(direction);
 
-		GameState.getInstance().getWorldMap().updateGameMap(i, j);
+	
 
-		// System.out.println("(FX,FY): " + "(" + player.getFeetX() + ","
-		// + player.getFeetY() + ")");
-		// System.out.println(collisionMap.isWalkable(direction,
-		// player.getFeetX(),
-		// player.getFeetY()));
-		//
-		// System.out.println(player.getX() + "," + player.getY());
+	
 
 	}
 
 	public void interact() {
-		// //Player playerTwo = new Player(GraphicsEngine.getSprite("player"));
-		// double theta = 2 * Math.PI * Math.random();
-		// int x = (int) (100 * Math.cos(theta) + player.getX());
-		// int y = (int) (100 * Math.sin(theta) + player.getY());
-		// playerTwo.setX(x);
-		// playerTwo.setY(y);
-		// entities.put(x + "" + y, playerTwo);
-		//
-		// for (String key : entities.keySet()) {
-		// if (!key.equals("player")) {
-		// Player p = (Player) entities.get(key);
-		// if (p.getY() > GameState.getInstance().getFrameHeight()) {
-		// entities.remove(key);
-		// continue;
-		// }
-		// p.setY((int) (p.getY() + 20));
-		// }
-		// }
-		// System.out.println(entities.size());
+
 	}
 
 	public void testGameOver() {

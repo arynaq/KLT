@@ -104,6 +104,7 @@ public class GraphicsEngine {
 		// renderables.get("xp").render(g);
 		for (String key : entities.keySet()) {
 			entities.get(key).getRenderable().render(g, delta);
+			entities.get(key).getRenderable().render(g);
 		}
 		
 		renderRectangle(200, 0, 300, 30, "dufern");

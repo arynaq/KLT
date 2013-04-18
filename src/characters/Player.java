@@ -37,34 +37,39 @@ public class Player extends GameCharacter implements Entity {
 	private int maxHealth;
 	private int xp;
 	private int dmg;
-
-
-	public Player(Renderable animatedSprite) {
+	/**
+	 * The player is initialized with its sprite represented by the renderable.
+	 * @param renderable
+	 */
+	public Player(Renderable renderable) {
 		this.x = 120;
 		this.y = 340;
-		this.fullSheet = animatedSprite;
-		AttackMoveAnimated sprite = (AttackMoveAnimated) fullSheet;
-		this.moveSouthSheet = sprite.getSouthMovementSheet();
-		this.moveWestSheet = sprite.getWestMovementSheet();
-		this.moveEastSheet = sprite.getEastMovementSheet();
-		this.moveNorthSheet = sprite.getNorthMovementSheet();
-		this.playerWidth = sprite.getSheeet().getImages().get(0).getWidth();
-		this.playerHeight = sprite.getSheeet().getImages().get(0).getHeight();
+		this.fullSheet = renderable;
 		this.facing = Movement.RIGHT;
-		HealthPotions.add(new Potion('h', 50));
-
-		// System.out.println("NULL CHECK IN PLAYER:");
-		// System.out.println("South: " + moveSouthSheet);
-		// System.out.println("West: " + moveWestSheet);
-		// System.out.println("East: " + moveEastSheet);
-		// System.out.println("North: " + moveNorthSheet);
-		// System.out.println("Facing: " + facing);
 	}
 
-	@Override
+	/**
+	 * The player is initialized with its sprite being fully animated.
+	 * 
+	 * @param animatedSpriteSheet
+	 */
+	public Player(AttackMoveAnimated animatedSpriteSheet) {
+		this.x = 120;
+		this.y = 340;
+		this.fullSheet = animatedSpriteSheet;
+		this.moveSouthSheet = animatedSpriteSheet.getSouthMovementSheet();
+		this.moveWestSheet = animatedSpriteSheet.getWestMovementSheet();
+		this.moveEastSheet = animatedSpriteSheet.getEastMovementSheet();
+		this.moveNorthSheet = animatedSpriteSheet.getNorthMovementSheet();
+		this.playerWidth = animatedSpriteSheet.getSheeet().getImages().get(0)
+				.getWidth();
+		this.playerHeight = animatedSpriteSheet.getSheeet().getImages().get(0)
+				.getHeight();
+		this.facing = Movement.RIGHT;
+	}
+
+@Override
 	public Renderable getRenderable() {
-		updateCurrentRenderablesX();
-		updateCurrentRenderablesY();
 		if (facing == Movement.RIGHT) {
 			currentRenderable = moveEastSheet;
 		}
@@ -81,6 +86,7 @@ public class Player extends GameCharacter implements Entity {
 		else if (facing == Movement.DOWN) {
 			currentRenderable = moveSouthSheet;
 		}
+		updateCurrentRenderable();
 		return currentRenderable;
 	}
 
@@ -89,11 +95,10 @@ public class Player extends GameCharacter implements Entity {
 		return x;
 	}
 
-	private void updateCurrentRenderablesX() {
-		this.moveSouthSheet.setX(x % GameState.DIMENSION.width);
-		this.moveWestSheet.setX(x % GameState.DIMENSION.width);
-		this.moveEastSheet.setX(x % GameState.DIMENSION.width);
-		this.moveNorthSheet.setX(x % GameState.DIMENSION.width);
+	private void updateCurrentRenderable() {
+		currentRenderable.setX(x % GameState.DIMENSION.width);
+		currentRenderable.setY(y % GameState.DIMENSION.height);
+
 	}
 
 	@Override
