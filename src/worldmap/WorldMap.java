@@ -11,8 +11,6 @@ public class WorldMap {
 	private BufferedImage image;
 	private ArrayList<ArrayList<BufferedImage>> subMaps;
 	private GameMap currentMap;
-	private CollisionMap currentCollisionMap;
-	private int currentMapIndex;
 
 	public WorldMap(ArrayList<BufferedImage> images) {
 		this.image = images.get(0);
@@ -47,7 +45,9 @@ public class WorldMap {
 	 * Find which submap the player is, then update the current map to that map
 	 */
 
-	public void updateGameMap(int i, int j) {
+	public void updateGameMap(int x, int y) {
+		int i = y / GameState.getInstance().getFrameHeight();
+		int j = x / GameState.getInstance().getFrameWidth();
 		currentMap.setImage(subMaps.get(i).get(j));
 	}
 

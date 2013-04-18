@@ -30,12 +30,12 @@ public class MovementManager {
 			player.setFacing(direction);
 			return;
 		}
-		if (newX >= 0 && newX <= 2047) {
+		if (newX >= 0 && newX <= GameState.WORLDBOUNDS.width) {
 			player.setX(oldX + direction.getDX()
 					* (player.getSpeedX()));
 		}
 
-		if (newY >= 0 && newY <= 2047) {
+		if (newY >= 0 && newY <= GameState.WORLDBOUNDS.height) {
 			player.setY(oldY + direction.getDY()
 					* (player.getSpeedY()));
 		}
@@ -44,34 +44,11 @@ public class MovementManager {
 
 		((Animated) player.getRenderable()).move(5);
 
-		int i = player.getY() / GameState.getInstance().getFrameHeight();
-		int j = player.getX() / GameState.getInstance().getFrameHeight();
-
 		player.setFacing(direction);
-		GameState.getInstance().getWorldMap().updateGameMap(i, j);
 
 	}
 
 	public void interact() {
-		// //Player playerTwo = new Player(GraphicsEngine.getSprite("player"));
-		// double theta = 2 * Math.PI * Math.random();
-		// int x = (int) (100 * Math.cos(theta) + player.getX());
-		// int y = (int) (100 * Math.sin(theta) + player.getY());
-		// playerTwo.setX(x);
-		// playerTwo.setY(y);
-		// entities.put(x + "" + y, playerTwo);
-		//
-		// for (String key : entities.keySet()) {
-		// if (!key.equals("player")) {
-		// Player p = (Player) entities.get(key);
-		// if (p.getY() > GameState.getInstance().getFrameHeight()) {
-		// entities.remove(key);
-		// continue;
-		// }
-		// p.setY((int) (p.getY() + 20));
-		// }
-		// }
-		// System.out.println(entities.size());
 	}
 
 	public void testGameOver() {
@@ -80,7 +57,6 @@ public class MovementManager {
 	}
 
 	public void testPauseMovement() {
-		((Animated) player.getRenderable()).pause();
 	}
 
 	public void addCollisionMap(CollisionMap collisionMap) {

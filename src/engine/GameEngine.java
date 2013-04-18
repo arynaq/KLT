@@ -17,7 +17,9 @@ public class GameEngine {
 	private Map<String, ArrayList<BufferedImage>> images;
 	private Map<String, GameSound> sounds;
 	private Player player;
-	private int oldPlayerX, oldplayerY;
+	private WorldMap worldMap;
+
+	private int oldPlayerX, oldPlayerY;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, ArrayList<BufferedImage>> images,
@@ -36,12 +38,14 @@ public class GameEngine {
 
 	private void initEntities() {
 		AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
-				images.get("indianaANIMATED"), 4, 4));
+				images.get("bahamutANIMATED"), 4, 4));
 		player = new Player(sprite);
+		oldPlayerX = player.getX();
+		oldPlayerY = player.getY();
 		entities.put("player", player);
 
 
-		WorldMap worldMap = new WorldMap(images.get("worldWORLDMAP"));
+		worldMap = new WorldMap(images.get("worldWORLDMAP"));
 		GameState.getInstance().setWorldMap(worldMap);
 		GameState.getInstance().setCurrentMap(worldMap.getGameMap());
 
@@ -49,22 +53,17 @@ public class GameEngine {
 
 	public void update() {
 		updatePlayer();
+		updateMap();
+	}
+
+	private void updateMap() {
+		int x = player.getX();
+		int y = player.getY();
+		worldMap.updateGameMap(x, y);
 	}
 
 	private void updatePlayer() {
-		int newPlayerX = player.getX();
-		int newPlayerY = player.getY();
-
-		// if (newPlayerX == oldPlayerX && newPlayerY == oldplayerY) {
-		// ((Animated) player.getRenderable()).stop();
-		// }
-		//
-		// else {
-		// ((Animated) player.getRenderable()).resume();
-		// }
-
-		oldPlayerX = newPlayerX;
-		oldplayerY = newPlayerY;
+		
 	}
 
 	public Player getPlayer() {

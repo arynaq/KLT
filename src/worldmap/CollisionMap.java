@@ -13,6 +13,13 @@ public class CollisionMap {
 		this.collisionMap = collisionMap;
 	}
 
+	/**
+	 * Checks whether this character can move in the given direction.
+	 * 
+	 * @param character
+	 * @param direction
+	 * @return
+	 */
 	public boolean isWalkable(GameCharacter character, Movement direction) {
 		int midX = character.getX() + direction.getDX() * character.getSpeedX();
 		int midY = character.getY() + direction.getDY() * character.getSpeedY();

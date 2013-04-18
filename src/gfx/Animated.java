@@ -135,4 +135,11 @@ public class Animated implements Renderable {
 
 	}
 
+	/**
+	 * Resets this animation by setting the currentframe to the first frame.
+	 */
+	public void reset() {
+		currentFrame = 0;
+	}
+
 }

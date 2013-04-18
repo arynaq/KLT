@@ -13,8 +13,10 @@ public class GameState {
 	// private Map<String, Entity> worldMapEntities;
 	
 	public static final Dimension DIMENSION = new Dimension(512, 512);
-	private static final int GAMEFPS = 60;
+	public static final Dimension WORLDBOUNDS = new Dimension(
+			4 * DIMENSION.width - 1, 4 * DIMENSION.height - 1);
 	private static final GameState instance = new GameState();
+	private static final int GAMEFPS = 60;
 	private GameCondition state;
 
 	private GameState() {
