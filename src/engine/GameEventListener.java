@@ -64,106 +64,69 @@ WindowListener {
 
 	public void keyPressed(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-			// if (timeElapsedMove > moveTime) {
-			// lastTimeMove = System.currentTimeMillis();
+			/*
+			 * Player movement WASD
+			 */
 			if (e.getKeyCode() == KeyEvent.VK_W) {
-				// System.out.println("Game is running, moving player up");
 				movementManager.movePlayer(GameInput.Movement.UP);
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
-
-				// System.out.println("Game is running, moving player down ");
 				movementManager.movePlayer(GameInput.Movement.DOWN);
-			} else if (e.getKeyCode() == KeyEvent.VK_O) {
+			} else if (e.getKeyCode() == KeyEvent.VK_A) {
+				movementManager.movePlayer(GameInput.Movement.LEFT);
+			} else if (e.getKeyCode() == KeyEvent.VK_D) {
+				movementManager.movePlayer(GameInput.Movement.RIGHT);
+			}
+			/*
+			 * Player debug commands
+			 */
+			else if (e.getKeyCode() == KeyEvent.VK_O) {
 				movementManager.testPlayerDamage(3);
 			}
  else if (e.getKeyCode() == KeyEvent.VK_X) {
 				movementManager.giveXp();
-			}
- else if (e.getKeyCode() == KeyEvent.VK_I) {
-				movementManager.usePotion();
-			}
-
-			else if (e.getKeyCode() == KeyEvent.VK_A) {
-
-				// System.out.println("Game is running, moving player left");
-				movementManager.movePlayer(GameInput.Movement.LEFT);
-			}
-
-			else if (e.getKeyCode() == KeyEvent.VK_D) {
-
-				movementManager.movePlayer(GameInput.Movement.RIGHT);
-				// System.out.println("Game is running, move player right");
-			}
-
-			else if (e.getKeyCode() == KeyEvent.VK_E) {
-
+			} else if (e.getKeyCode() == KeyEvent.VK_E) {
 				movementManager.testGameOver();
+			}
 
+			/*
+			 * Potions, pause, attack and interact.
+			 */
+
+			else if (e.getKeyCode() == KeyEvent.VK_I) {
+				movementManager.usePotion();
 			} else if (e.getKeyCode() == KeyEvent.VK_P) {
 				movementManager.pauseGame();
 			}
-			timeElapsedMove = 0;
-
 			if (timeElapsedAttack >= attackTime) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					lastTimeAttack = System.currentTimeMillis();
-					// System.out.println("ANGRIPER");
 					timeElapsedAttack = 0;
+					// Attack her
 				}
 			} else {
 				timeElapsedAttack = System.currentTimeMillis() - lastTimeAttack;
 			}
-			// timeElapsed = System.currentTimeMillis()-lastTime;
-
-
-			// Process player inputs and inputs corresponding to the gameframe
-		}
-
-		else if (GameState.getInstance().getState() == GameCondition.PAUSED) {
+		} else if (GameState.getInstance().getState() == GameCondition.PAUSED) {
 			if (e.getKeyCode() == KeyEvent.VK_P) {
 				movementManager.resumeGame();
 			}
-			// Do stuff that correspond to the pause screen
-		}
-
-		else if (GameState.getInstance().getState() == GameCondition.MENU) {
+		} else if (GameState.getInstance().getState() == GameCondition.MENU) {
 			// Input does stuff on the menu
-		}
-
-		else if (GameState.getInstance().getState() == GameCondition.SPLASH) {
+		} else if (GameState.getInstance().getState() == GameCondition.SPLASH) {
 			// What do keys do on the splashscreen?
-		}
-
-		else if (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
+		} else if (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
 			// What do keys do when game is over?
-
-			// test
 			if (e.getKeyCode() == KeyEvent.VK_R) {
 				GameState.getInstance().setState(GameCondition.RUNNING);
 			}
 		}
-
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
-			// if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			// if (timeElapsedAttack > attackTime) {
-			// lastTimeAttack = System.currentTimeMillis();
-			// System.out.println("ANGRIPER");
-			// timeElapsedAttack = 0;
-			// } else {
-			// timeElapsedAttack = System.currentTimeMillis()
-			// - lastTimeAttack;
-			// }
-			// // timeElapsed = System.currentTimeMillis()-lastTime;
-			// }
-
 		}
-		// Process player inputs and inputs corresponding to the gameframe
-
 	}
 
 	@Override
