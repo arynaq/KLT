@@ -12,9 +12,8 @@ public class LevelManager {
 	private Player player;
 	private Renderable scrollingXpText;
 	private int playerLevel;
-	private int xpChange;
-	private int xpPrint;
 	private DamageEngine damageEngine;
+	private ScrollingTextXP dmgSCT;
 
 	/**
 	 * Constructor for LevelManager
@@ -56,7 +55,6 @@ public class LevelManager {
 	 */
 	public void xpGain(int xpGain) {
 		player.setXP(xpGain);
-		xpChange += 1;
 		if (player.getXP() >= levels.get(playerLevel - 1).getXP()) {
 			levelUp();
 			System.out.println("Level " + playerLevel + "!");
@@ -66,7 +64,19 @@ public class LevelManager {
 		scrollingXpText.setX(textX);
 		scrollingXpText.setY(textY);
 		((ScrollingTextXP) scrollingXpText).changeString("+" + xpGain + "XP");
+	}
 
+	public void dealDmg(int dmg) {
+		if (player.getHealth() <= 0) {
+			System.out.println("Player is dead!");
+		} else {
+			player.setHealth(player.getHealth() - dmg);
+		}
+		int textX = player.getX() % GameState.getInstance().DIMENSION.width;
+		int textY = player.getY() % GameState.getInstance().DIMENSION.height;
+		dmgSCT.setX(textX);
+		dmgSCT.setY(textY);
+		((ScrollingTextXP) dmgSCT).changeString("-" + dmg + "HP");
 	}
 
 	/**
@@ -77,27 +87,6 @@ public class LevelManager {
 		player.setMaxHealth(levels.get(playerLevel).getHP());
 		player.setDmg(levels.get(playerLevel).getDmg());
 		playerLevel += 1;
-	}
-
-	/**
-	 * Returns true if there has been a change in experience, is used to print
-	 * only one SCT.
-	 * 
-	 * @return
-	 */
-	public boolean hasXPChanged() {
-		if (xpChange > xpPrint) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * A simple set method to increase xpPrinted
-	 */
-	public void setxpPrint() {
-		xpPrint += 1;
 	}
 
 	/**
@@ -129,5 +118,9 @@ public class LevelManager {
 		public int getDmg() {
 			return dmg;
 		}
+	}
+
+	public void setDamageSCT(ScrollingTextXP SCT){
+		this.dmgSCT = SCT;
 	}
 }

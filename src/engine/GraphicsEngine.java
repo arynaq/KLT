@@ -5,9 +5,7 @@ import gfx.GameImage;
 import gfx.Renderable;
 import gfx.Sprite;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -28,6 +26,7 @@ public class GraphicsEngine {
 	private Map<String, Renderable> renderables;
 	private int width;
 	private int height;
+	private Player player;
 
 	private Graphics2D g;
 	private BufferStrategy bufferStrategy;
@@ -57,7 +56,6 @@ public class GraphicsEngine {
 
 
 	public void start() {
-		Player player = (Player) entities.get("player");
 		frame.setVisible(true);
 		Renderable currentMap = GameState.getInstance().getCurrentMap();
 		renderables.put("currentMap", currentMap);
@@ -106,22 +104,18 @@ public class GraphicsEngine {
 			entities.get(key).getRenderable().render(g, delta);
 			entities.get(key).getRenderable().render(g);
 		}
-		
-		renderRectangle(200, 0, 300, 30, "dufern");
+
+		renderRectangle(0, 0, 512, 30, Color.white, false);
 
 		// Tegner Teksten til HUD
-		Player player = (Player) entities.get("player");
+		player = (Player) entities.get("player");
 		renderString("HP: " + player.getHealth() + "/" + player.getMaxHealth(),
-				350, 20, 25, Color.black);
-		renderString("Potions: " + player.getNumPotions() + "", 200, 20, 25,
+				350, 20, 16, Color.black);
+		renderString("Potions: " + player.getNumPotions() + "", 160, 20, 16,
 				Color.black);
-		// showBuffer();
-
-		// renderString("+10xp", player.getX(), player.getY(), 10, Color.green);
 		showBuffer();
 
-		// renderables.get("xp").setX(player.getX());
-		// renderables.get("xp").setY(player.getY());
+
 
 
 	}
@@ -134,68 +128,36 @@ public class GraphicsEngine {
 	}
 
 	public void renderGameOver() {
-		Composite cG = g.getComposite();
-		Composite c = AlphaComposite.getInstance(AlphaComposite.DST_IN, 0.9f);
-		Font fontG = g.getFont();
-		Font messageFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
-		String message = "GAME OVER";
-
-		g.setFont(messageFont);
-		fontMetrics = g.getFontMetrics();
-		int offsetX = fontMetrics.stringWidth(message) / 2;
-		int offsetY = fontMetrics.getHeight() / 2;
-
-
-		g.setComposite(c);
 		clearScreen();
-		g.setComposite(cG);
-		g.setColor(Color.green);
-		g.drawString(message, (width / 2) - offsetX, (height / 2) - offsetY);
-		g.setFont(fontG);
+		renderString("Game Over", 130, 256, 34, Color.white);
 		showBuffer();
 	}
 
+
+
 	public void renderPause() {
-		Composite cG = g.getComposite();
-		Composite c = AlphaComposite.getInstance(AlphaComposite.DST_IN, 0.9f);
-		Font fontG = g.getFont();
-		Font messageFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
-		String message = "PAUSED";
-
-		g.setFont(messageFont);
-		fontMetrics = g.getFontMetrics();
-		int offsetX = fontMetrics.stringWidth(message) / 2;
-		int offsetY = fontMetrics.getHeight() / 2;
-
-		g.setComposite(c);
-		clearScreen();
-		g.setComposite(cG);
-		g.setColor(Color.black);
-		g.drawString(message, (width / 2) - offsetX, (height / 2) - offsetY);
-		g.setFont(fontG);
+		renderString("Game Paused", 120, 256, 34, Color.black);
 		showBuffer();
+
 	}
 
 	public void renderString(String string, int x, int y, int size, Color color) {
-		Font fontG = g.getFont();
-		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
+		// Font stringFont = new Font("Visitor TT2 BRK", Font.BOLD, size);
+		Font stringFont = new Font("Commodore 64 Pixelized", Font.PLAIN, size);
 		g.setFont(stringFont);
 		g.setColor(color);
 		g.drawString(string, x, y);
 	}
 
-	public void renderString(String string, int x, int y, int size) {
-		Font fontG = g.getFont();
-		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
-		g.setFont(stringFont);
-		g.setColor(Color.black);
-		g.drawString(string, x, y);
-	}
+	public void renderRectangle(int x, int y, int w, int h, Color color,
+			boolean rounded) {
+		g.setColor(color);
+		if (rounded == true) {
+			g.fillRoundRect(x, y, w, h, 10, 10);
+		} else {
+			g.fillRect(x, y, w, h);
 
-	public void renderRectangle(int x, int y, int w, int h,
-			String color) {
-		g.setColor(Color.WHITE);
-		g.fillRect(x, y, w, h);
+		}
 	}
 
 }

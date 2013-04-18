@@ -2,27 +2,55 @@ package gfx;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 public class QuestPanel implements Renderable {
-	private Color bgColor = Color.BLUE;
-	private Rectangle panel;
-	private final int height = 100;
+	private String string;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	private Color color;
+	private float transp;
+	private boolean round;
 
-	public QuestPanel(){
-		this.panel = new Rectangle(0, GameInit.GAMEDIMENSION[1] - height,
-				GameInit.GAMEDIMENSION[0], height);
+	public QuestPanel(int x, int y, int width, int height, Color color,
+			float transp, boolean round) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.color = color;
+		this.transp = transp;
+		this.round = round;
+
 	}
-
 	@Override
 	public void render(Graphics2D g) {
-		g.setColor(bgColor);
-		g.fill(panel);
+		if (round == true) {
+			g.setColor(color);
+			g.fillRoundRect(x, y, width, height, 5, 5);
+		} else {
+			g.setColor(color);
+			g.fillRect(x, y, width, height);
+		}
 	}
 
 	@Override
-	public void update() {
+	public void render(Graphics2D g, int deltaTime) {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void setX(int x) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setY(int y) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

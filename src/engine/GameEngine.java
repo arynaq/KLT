@@ -56,11 +56,16 @@ public class GameEngine {
 
 	private void initManagers() {
 		levelManager = new LevelManager(player, renderables.get("xpSCT"));
+		levelManager.setDamageSCT((ScrollingTextXP) renderables.get("dmgSCT"));
 
 	}
 
 	public void initFonts() {
-		fontLoader = new FontLoader();
+		fontLoader = new FontLoader("visitor2.ttf");
+		fontLoader = new FontLoader("m04.ttf");
+		fontLoader = new FontLoader("m04b.ttf");
+		fontLoader = new FontLoader("Commodore Pixelized v1.2.ttf");
+		fontLoader = new FontLoader("manaspc.ttf");
 	}
 
 	private void initMaps() {
@@ -83,9 +88,15 @@ public class GameEngine {
 	}
 
 	private void initRenderables() {
+		ScrollingTextXP dmgSCT = new ScrollingTextXP("dmg", 0, 0, 10,
+ Color.red);
 		ScrollingTextXP xpSCT = new ScrollingTextXP("+10XP", 0, 0, 10,
 				Color.green);
 		renderables.put("xpSCT", xpSCT);
+		renderables.put("dmgSCT", dmgSCT);
+		// Renderable qPan = new QuestPanel(0, 350, 512, 200, Color.green, 120,
+		// true);
+		// renderables.put("dufern", qPan);
 
 	}
 

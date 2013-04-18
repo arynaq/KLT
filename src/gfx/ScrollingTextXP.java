@@ -27,14 +27,17 @@ public class ScrollingTextXP implements Renderable {
 		this.xpMessage = newString;
 	}
 
+	public void changeColor(Color color) {
+		this.color = color;
+	}
+
 	@Override
 	public void render(Graphics2D g) {
 		Composite gComp = g.getComposite();
 		if (oldY < y - 100) {
 			return;
 		}
-
-		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
+		Font stringFont = new Font("Monospace", Font.BOLD, size);
 		g.setFont(stringFont);
 		// g.setColor(new Color((int) (255 * Math.random()), (int) (255 * Math
 		// .random()), (int) (255 * Math.random())));

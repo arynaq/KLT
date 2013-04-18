@@ -67,14 +67,8 @@ public class MovementManager {
 
 	// gjør DMG til player
 	public void testPlayerDamage(int dmg) {
-		if (this.player == null) {
-			this.player = (Player) entities.get("player");
-		}
-		if (player.getHealth() > dmg) {
-			player.setHealth(player.getHealth() - dmg);
-		} else {
-			player.setHealth(0);
-		}
+		levelManager.dealDmg(1);
+		// System.out.println(player.getX() + ", " + player.getY());
 	}
 
 	// Player bruker potion
@@ -83,7 +77,7 @@ public class MovementManager {
 	}
 
 	public void giveXp() {
-		levelManager.xpGain(10);
+		levelManager.xpGain(20);
 	}
 
 	public void resumeGame() {
