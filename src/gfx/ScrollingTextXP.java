@@ -33,6 +33,7 @@ public class ScrollingTextXP implements Renderable {
 		if (oldY < y - 100) {
 			return;
 		}
+
 		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
 		g.setFont(stringFont);
 		// g.setColor(new Color((int) (255 * Math.random()), (int) (255 * Math
@@ -80,9 +81,9 @@ public class ScrollingTextXP implements Renderable {
 		this.oldY = y;
 	}
 
-	@Override
-	public boolean doRender() {
-		return true;
-	}
+	// @Override
+	// public boolean doRender() {
+	// return true;
+	// }
 
 }

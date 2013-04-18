@@ -1,6 +1,5 @@
 package engine;
 
-import engine.Entity.State;
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
 import gfx.ScrollingTextXP;
@@ -24,6 +23,7 @@ public class GameEngine {
 	private Player player;
 	private LevelManager levelManager;
 	private WorldMap worldMap;
+	private FontLoader fontLoader;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, Renderable> renderables,
@@ -51,11 +51,16 @@ public class GameEngine {
 		initEntities();
 		initManagers();
 		initMaps();
+		initFonts();
 	}
 
 	private void initManagers() {
 		levelManager = new LevelManager(player, renderables.get("xpSCT"));
 
+	}
+
+	public void initFonts() {
+		fontLoader = new FontLoader();
 	}
 
 	private void initMaps() {
