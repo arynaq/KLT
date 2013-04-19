@@ -6,7 +6,7 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-public class ScrollingTextXP implements Renderable {
+public class ScrollingCombatText implements Renderable {
 
 	private String xpMessage;
 	private int x;
@@ -15,7 +15,7 @@ public class ScrollingTextXP implements Renderable {
 	private Color color;
 	private int oldY;
 
-	public ScrollingTextXP(String message, int x, int y, int size, Color color) {
+	public ScrollingCombatText(String message, int x, int y, int size, Color color) {
 		this.xpMessage = message;
 		this.x = x;
 		this.y = y;
@@ -29,15 +29,12 @@ public class ScrollingTextXP implements Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
-		Composite gComp = g.getComposite();
 		if (oldY < y - 100) {
 			return;
 		}
-
-		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
+		Composite gComp = g.getComposite();
+		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
 		g.setFont(stringFont);
-		// g.setColor(new Color((int) (255 * Math.random()), (int) (255 * Math
-		// .random()), (int) (255 * Math.random())));
 		Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 				1 - ((y - oldY) / 100.f));
 		g.setComposite(c);

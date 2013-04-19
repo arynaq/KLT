@@ -1,11 +1,17 @@
 package characters;
 
+import engine.Entity;
 import engine.GameInput.Movement;
+import engine.SpriteBoundBox;
 
-public abstract class GameCharacter {
+public abstract class GameCharacter implements Entity {
 	private int x;
 	private int y;
+	private int width;
+	private int height;
 	private Movement facing;
+	private State state;
+	private SpriteBoundBox spriteBox;
 
 	/**
 	 * Returns the cardinal direction this character faces.
@@ -57,19 +63,54 @@ public abstract class GameCharacter {
 	public abstract int getSpeedY();
 
 	/**
-	 * Returns the width of the character. The characters sprites image-width is
-	 * used. This method is helpful for determining collisions.
+	 * Returns the width of the character. The characters sprites image-width
+	 * should be used. This method is helpful for determining collisions.
 	 * 
 	 * @return
 	 */
-	public abstract int getWidth();
+	public int getWidth() {
+		return width;
+	}
 
 	/**
 	 * Returns the height of the character. The characters sprites image-height
-	 * is used. This method is helpful for determining collisions.
+	 * should be used. This method is helpful for determining collisions.
 	 * 
 	 * @return
 	 */
-	public abstract int getHeight();
+	public int getHeight() {
+		return height;
+	}
 
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public SpriteBoundBox getSpriteBox() {
+		return spriteBox;
+	}
+
+	protected void setSpriteBox(SpriteBoundBox spriteBox) {
+		this.spriteBox = spriteBox;
+	}
 }

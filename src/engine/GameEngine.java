@@ -2,7 +2,7 @@ package engine;
 
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
-import gfx.ScrollingTextXP;
+import gfx.ScrollingCombatText;
 import gfx.SpriteSheet;
 
 import java.awt.Color;
@@ -12,7 +12,8 @@ import java.util.Map;
 
 import sfx.GameSound;
 import worldmap.WorldMap;
-import characters.BlueRectangleEnemy;
+import characters.Combatable;
+import characters.CyanRectangleEnemy;
 import characters.Player;
 
 
@@ -23,6 +24,7 @@ public class GameEngine {
 	private Map<String, Renderable> renderables;
 	private Player player;
 	private LevelManager levelManager;
+	private CombatManager combatManager;
 	private WorldMap worldMap;
 	private FontLoader fontLoader;
 
@@ -53,11 +55,25 @@ public class GameEngine {
 		initManagers();
 		initMaps();
 		initFonts();
+		initTest();
+	}
+
+	/**
+	 * Testing different aspects of the game.
+	 */
+	private void initTest() {
+		renderables.put("playerBOX", player.getSpriteBox());
+		for (String key : entities.keySet()) {
+			Entity e = entities.get(key);
+			AttackBoundBox box = new AttackBoundBox((Combatable) e);
+			renderables.put(box.toString(), box);
+		}
 	}
 
 	private void initManagers() {
 		levelManager = new LevelManager(player, renderables.get("xpSCT"));
-
+		combatManager = new CombatManager(player, renderables.get("dmgSCT"),
+				this);
 	}
 
 	public void initFonts() {
@@ -73,8 +89,8 @@ public class GameEngine {
 
 	private void initEntities() {
 		entities.put("player", player);
-		Entity blueASSHOLE = new BlueRectangleEnemy(1, 100);
-		entities.put("asshole", blueASSHOLE);
+		Entity blueEnemy = new CyanRectangleEnemy(1, 100);
+		entities.put("blueEnemy", blueEnemy);
 	}
 
 	private void initPlayer() {
@@ -84,15 +100,14 @@ public class GameEngine {
 	}
 
 	private void initRenderables() {
-		ScrollingTextXP xpSCT = new ScrollingTextXP("+10XP", 0, 0, 10,
+		ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 10,
 				Color.green);
-		System.out.println(renderables);
 		renderables.put("xpSCT", xpSCT);
 
 	}
 
 	public void update() {
-	updatePlayer();
+		updatePlayer();
 		updateMap();
 
 	}
@@ -103,7 +118,7 @@ public class GameEngine {
 	}
 
 	private void updatePlayer() {
-		
+
 	}
 
 	public Player getPlayer() {
@@ -114,8 +129,16 @@ public class GameEngine {
 		return this.levelManager;
 	}
 
+	public CombatManager getCombatManager() {
+		return combatManager;
+	}
+
 	public Map<String, Entity> getEntities() {
 		return entities;
+	}
+
+	public Map<String, Renderable> getRenderables() {
+		return renderables;
 	}
 
 }

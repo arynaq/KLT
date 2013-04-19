@@ -21,7 +21,7 @@ public class Factory {
 	private Map<String, ArrayList<BufferedImage>> images;
 	private Map<String, Renderable> renderables;
 	private GameEventListener listener;
-	private MovementManager movementManager;
+	private InputManager movementManager;
 	// private ScreenManager screenManager;
 	private GameFrame frame;
 	private CollisionMap collisionMap;
@@ -49,7 +49,7 @@ public class Factory {
 		this.collisionMap = new CollisionMap(images.get("collisionWORLDMAP").get(0));
 
 		this.gameEngine = new GameEngine(entities, renderables, images, sounds);
-		this.movementManager = new MovementManager(gameEngine);
+		this.movementManager = new InputManager(gameEngine);
 		this.movementManager.addCollisionMap(collisionMap);
 
 		listener.setMovementManager(movementManager);

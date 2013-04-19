@@ -1,30 +1,30 @@
 package engine;
 
-import engine.GameInput.Movement;
-import gfx.Animated;
-
 import java.util.Map;
 
 import worldmap.CollisionMap;
-import characters.Combatable;
 import characters.Player;
+import engine.GameInput.Movement;
+import gfx.Animated;
 
-public class MovementManager {
+public class InputManager {
 	private Map<String, Entity> entities;
 	private Player player;
 	private LevelManager levelManager;
 	private CollisionMap collisionMap;
 	private GameEngine engine;
+	private CombatManager combatManager;
 
-	public MovementManager(Map<String, Entity> entities) {
+	public InputManager(Map<String, Entity> entities) {
 		this.entities = entities;
 		this.player = (Player) entities.get("player");
 	}
 
-	public MovementManager(GameEngine engine) {
+	public InputManager(GameEngine engine) {
 		this.engine = engine;
 		this.player = engine.getPlayer();
 		this.levelManager = engine.getLevelManager();
+		this.combatManager = engine.getCombatManager();
 		entities = this.engine.getEntities();
 	}
 
@@ -62,18 +62,6 @@ public class MovementManager {
 
 	}
 
-	// // gjør DMG til player
-	// public void testPlayerDamage(int dmg) {
-	// if (this.player == null) {
-	// this.player = (Player) entities.get("player");
-	// }
-	// if (player.getHealth() > dmg) {
-	// player.setHealth(player.getHealth() - dmg);
-	// } else {
-	// player.setHealth(0);
-	// }
-	// }
-
 	// Player bruker potion
 	public void usePotion() {
 		player.usePotion('h');
@@ -96,11 +84,6 @@ public class MovementManager {
 	}
 
 	public void attack() {
-		Combatable player = (Combatable) entities.get("player");
-		Combatable asshole = (Combatable) entities.get("asshole");
-
-		player.attack(asshole);
-		asshole.attack(player);
-
+		combatManager.attackPlayer();
 	}
 }

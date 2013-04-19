@@ -8,17 +8,27 @@ import java.io.InputStream;
 
 public class FontLoader {
 	public FontLoader() {
+		loadFonts();
 
-		InputStream is = FontLoader.class
-				.getResourceAsStream("/fonts/visitor2.ttf");
-		try {
-			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-			GraphicsEnvironment ge = GraphicsEnvironment
-					.getLocalGraphicsEnvironment();
-			ge.registerFont(font);
-		} catch (FontFormatException | IOException e) {
-			e.printStackTrace();
+	}
+
+	private void loadFonts() {
+		String[] fontNames = new String[] { "visitor2.ttf",
+				"Commodore Pixelized v1.2.ttf", "m04.ttf", "m04b.ttf",
+				"manaspc.ttf" };
+		for (String f : fontNames) {
+			InputStream is = FontLoader.class.getResourceAsStream("/fonts/" + f);
+			try {
+				Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+				GraphicsEnvironment ge = GraphicsEnvironment
+						.getLocalGraphicsEnvironment();
+				ge.registerFont(font);
+			} catch (FontFormatException | IOException e) {
+				e.printStackTrace();
+			}
+
 		}
+
 		// getAvailableFontFamilyNames()
 	}
 

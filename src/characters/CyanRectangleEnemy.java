@@ -1,26 +1,43 @@
 package characters;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import engine.Entity;
+import engine.GameInput.Movement;
 import engine.GameState;
 import gfx.Renderable;
 
-public class BlueRectangleEnemy implements Entity, Combatable {
+/**
+ * A simple targetdummy which can attack and be attacked, represented by a blue
+ * square.
+ * 
+ * @author aryann
+ * 
+ */
+public class CyanRectangleEnemy implements Entity, Combatable {
 
 	private Renderable renderable;
 	private int dmg;
 	private int health;
 	private int x;
 	private int y;
+	private int width;
+	private int height;
+	private int attackRange;
 
-	public BlueRectangleEnemy(int damage, int health) {
+	public CyanRectangleEnemy(int damage, int health) {
 		this.dmg = 1;
 		this.health = 100;
-		this.renderable = new BlueRectangle(100, 100);
 		this.x = 375;
 		this.y = 345;
+		this.width = 20;
+		this.height = 20;
+		this.attackRange = 10;
+		this.renderable = new BlueRectangle(width, height);
 	}
 
 	@Override
@@ -51,12 +68,12 @@ public class BlueRectangleEnemy implements Entity, Combatable {
 
 	@Override
 	public int getX() {
-		return 0;
+		return x;
 	}
 
 	@Override
 	public int getY() {
-		return 0;
+		return y;
 	}
 
 	@Override
@@ -75,13 +92,17 @@ public class BlueRectangleEnemy implements Entity, Combatable {
 
 		@Override
 		public void render(Graphics2D g) {
+			Composite cG = g.getComposite();
 			if (getState() == State.DEAD) {
 				g.setColor(Color.red);
 				g.fillRect(x, y, width, height);
 				return;
 			}
-			g.setColor(Color.blue);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					0.5f));
+			g.setColor(Color.cyan);
 			g.fillRect(x, y, width, height);
+			g.setComposite(cG);
 		}
 
 		@Override
@@ -99,6 +120,31 @@ public class BlueRectangleEnemy implements Entity, Combatable {
 			this.y = y;
 		}
 
+	}
+
+	@Override
+	public Rectangle getAttackBounds() {
+		return null;
+	}
+
+	@Override
+	public int getAttackRange() {
+		return attackRange;
+	}
+
+	@Override
+	public int getWidth() {
+		return width;
+	}
+
+	@Override
+	public int getHeight() {
+		return height;
+	}
+
+	@Override
+	public Movement getFacing() {
+		return Movement.LEFT;
 	}
 
 }

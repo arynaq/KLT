@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 public class GameMap implements Renderable {
 	BufferedImage image;
+	private int[] xBound;
+	private int[] yBound;
 
 	public GameMap(BufferedImage bufferedImage) {
 		this.image = bufferedImage;
@@ -42,6 +44,22 @@ public class GameMap implements Renderable {
 
 	public void Gukern() {
 
+	}
+
+	protected void setxBound(int[] xBound) {
+		this.xBound = xBound;
+	}
+
+	protected void setyBound(int[] yBound) {
+		this.yBound = yBound;
+	}
+
+	public int[] getxBound() {
+		return xBound;
+	}
+
+	public int[] getyBound() {
+		return yBound;
 	}
 
 }

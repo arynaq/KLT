@@ -9,7 +9,7 @@ import java.awt.event.WindowListener;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
-	private MovementManager movementManager;
+	private InputManager movementManager;
 	private long lastTimeAttack = System.currentTimeMillis();
 	private int attackTime = 500;
 	private long timeElapsedAttack = attackTime;
@@ -161,7 +161,7 @@ WindowListener {
 		// ?
 	}
 
-	public void setMovementManager(MovementManager movementManager) {
+	public void setMovementManager(InputManager movementManager) {
 		this.movementManager = movementManager;
 	}
 }

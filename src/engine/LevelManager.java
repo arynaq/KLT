@@ -1,7 +1,7 @@
 package engine;
 
 import gfx.Renderable;
-import gfx.ScrollingTextXP;
+import gfx.ScrollingCombatText;
 
 import java.util.ArrayList;
 
@@ -59,13 +59,12 @@ public class LevelManager {
 		xpChange += 1;
 		if (player.getXP() >= levels.get(playerLevel - 1).getXP()) {
 			levelUp();
-			System.out.println("Level " + playerLevel + "!");
 		}
 		int textX = player.getX()% GameState.getInstance().DIMENSION.width;
 		int textY = player.getY() % GameState.getInstance().DIMENSION.height;
 		scrollingXpText.setX(textX);
 		scrollingXpText.setY(textY);
-		((ScrollingTextXP) scrollingXpText).changeString("+" + xpGain + "XP");
+		((ScrollingCombatText) scrollingXpText).changeString("+" + xpGain + "XP");
 
 	}
 

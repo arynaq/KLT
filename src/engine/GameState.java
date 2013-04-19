@@ -92,4 +92,12 @@ public class GameState {
 		this.state = condition;
 	}
 
+	public boolean isInCurrentMap(Entity e) {
+		int[] xBounds = getWorldMap().getGameMap().getxBound();
+		if (e.getX() >= xBounds[0] && e.getX() <= xBounds[1]) {
+			return true;
+		}
+		return false;
+	}
+
 }
