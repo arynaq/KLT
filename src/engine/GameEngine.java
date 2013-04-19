@@ -2,7 +2,7 @@ package engine;
 
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
-import gfx.ScrollingTextXP;
+import gfx.ScrollingCombatText;
 import gfx.SpriteSheet;
 
 import java.awt.Color;
@@ -24,16 +24,18 @@ public class GameEngine {
 	private LevelManager levelManager;
 	private WorldMap worldMap;
 	private FontLoader fontLoader;
+	private GameEventListener gameEventListener;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, Renderable> renderables,
 			Map<String, ArrayList<BufferedImage>> images,
-			Map<String, GameSound> sounds) {
+			Map<String, GameSound> sounds, GameEventListener listener) {
 
 		this.entities = entities;
 		this.renderables = renderables;
 		this.images = images;
 		this.sounds = sounds;
+		this.gameEventListener = listener;
 		initGameElements();
 
 	}
@@ -56,7 +58,10 @@ public class GameEngine {
 
 	private void initManagers() {
 		levelManager = new LevelManager(player, renderables.get("xpSCT"));
-		levelManager.setDamageSCT((ScrollingTextXP) renderables.get("dmgSCT"));
+		levelManager.setDamageSCT((ScrollingCombatText) renderables.get("dmgSCT"));
+		levelManager.setLevelUpSCT((ScrollingCombatText) renderables
+				.get("levelUpSCT"));
+		levelManager.setHpSCT((ScrollingCombatText) renderables.get("hpSCT"));
 
 	}
 
@@ -88,12 +93,18 @@ public class GameEngine {
 	}
 
 	private void initRenderables() {
-		ScrollingTextXP dmgSCT = new ScrollingTextXP("dmg", 0, 0, 10,
+		ScrollingCombatText dmgSCT = new ScrollingCombatText("dmg", 0, 0, 10,
  Color.red);
-		ScrollingTextXP xpSCT = new ScrollingTextXP("+10XP", 0, 0, 10,
+		ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 10,
+				Color.orange);
+		ScrollingCombatText levelUpSCT = new ScrollingCombatText("", 0, 0, 24,
+				Color.yellow);
+		ScrollingCombatText hpSCT = new ScrollingCombatText("hp", 0, 0, 10,
 				Color.green);
 		renderables.put("xpSCT", xpSCT);
 		renderables.put("dmgSCT", dmgSCT);
+		renderables.put("levelUpSCT", levelUpSCT);
+		renderables.put("hpSCT", hpSCT);
 		// Renderable qPan = new QuestPanel(0, 350, 512, 200, Color.green, 120,
 		// true);
 		// renderables.put("dufern", qPan);
@@ -101,7 +112,8 @@ public class GameEngine {
 	}
 
 	public void update() {
-	updatePlayer();
+		gameEventListener.update();
+		updatePlayer();
 		updateMap();
 
 	}
@@ -122,7 +134,4 @@ public class GameEngine {
 	public LevelManager getLevelManager() {
 		return this.levelManager;
 	}
-
-
-
 }

@@ -7,5 +7,10 @@ public class Potion extends GameItem {
 		id = type + (++GameItem.nextID);
 	}
 
+	@Override
+	public int compareTo(GameItem arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

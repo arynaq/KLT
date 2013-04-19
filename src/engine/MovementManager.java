@@ -37,22 +37,21 @@ public class MovementManager {
 		if (newX >= 0 && newX <= 2047) {
 			player.setX(oldX + direction.getDX()
 					* (player.getSpeedX()));
-			player.setWalking(true);
+			// player.setWalking(true);
 		}
 
 		if (newY >= 0 && newY <= 2047) {
 			player.setY(oldY + direction.getDY()
 					* (player.getSpeedY()));
-			player.setWalking(true);
+			// player.setWalking(true);
 		}
 		int i = player.getY() / GameState.getInstance().getFrameHeight();
 		int j = player.getX() / GameState.getInstance().getFrameHeight();
 		((Animated) player.getRenderable()).move(5);
 		player.setFacing(direction);
 
-	
 
-	
+
 
 	}
 
@@ -65,15 +64,23 @@ public class MovementManager {
 
 	}
 
-	// gjør DMG til player
-	public void testPlayerDamage(int dmg) {
+	// Deals dmg to player
+	public void testPlayerDamage() {
 		levelManager.dealDmg(1);
-		// System.out.println(player.getX() + ", " + player.getY());
 	}
 
-	// Player bruker potion
+	// Player uses potion
 	public void usePotion() {
-		player.usePotion('h');
+		if (player.getPotions().size() > 0) {
+			levelManager.usePotion(player.getPotions().get(0));
+
+		}
+	}
+
+	// Player gets new potion
+	public void givePotion() {
+		int value = 10;
+		player.givePotion(new Potion('h', value));
 	}
 
 	public void giveXp() {

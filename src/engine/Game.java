@@ -10,6 +10,7 @@ public class Game {
 	private static final Game instance = new Game();
 	private long fpsDelta, delta, t0, t1;
 	private int hasNotMovedCount;
+	GameEventListener gameEventListener = new GameEventListener();
 
 	private Game() {
 		factory = new Factory();
@@ -39,12 +40,13 @@ public class Game {
 			// + GameState.getInstance().getState());
 			t0 = time();
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
-
 				engine.update();
 				sfx.play();
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
+				// gameEventListener.processKeys();
+
 
 				if ((fpsDelta - delta) <= 0) {
 					sleep(2);

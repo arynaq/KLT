@@ -6,7 +6,7 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-public class ScrollingTextXP implements Renderable {
+public class ScrollingCombatText implements Renderable {
 
 	private String xpMessage;
 	private int x;
@@ -15,7 +15,7 @@ public class ScrollingTextXP implements Renderable {
 	private Color color;
 	private int oldY;
 
-	public ScrollingTextXP(String message, int x, int y, int size, Color color) {
+	public ScrollingCombatText(String message, int x, int y, int size, Color color) {
 		this.xpMessage = message;
 		this.x = x;
 		this.y = y;
@@ -45,9 +45,9 @@ public class ScrollingTextXP implements Renderable {
 				1 - ((y - oldY) / 100.f));
 		g.setComposite(c);
 		g.setColor(color);
-		g.drawString(xpMessage, x, oldY);
+		g.drawString(xpMessage, x - 5, oldY);
 		g.setComposite(gComp);
-		oldY -= 4;
+		oldY -= 3;
 
 	}
 

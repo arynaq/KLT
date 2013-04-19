@@ -13,9 +13,6 @@ import sfx.GameSound;
 import worldmap.CollisionMap;
 
 public class Factory {
-
-	
-
 	private Map<String, Entity> entities;
 	private Map<String, GameSound> sounds;
 	private Map<String, ArrayList<BufferedImage>> images;
@@ -48,7 +45,8 @@ public class Factory {
 		this.frame = new GameFrame(Color.black);
 		this.collisionMap = new CollisionMap(images.get("collisionWORLDMAP").get(0));
 
-		this.gameEngine = new GameEngine(entities, renderables, images, sounds);
+		this.gameEngine = new GameEngine(entities, renderables, images, sounds,
+				listener);
 		this.movementManager = new MovementManager(gameEngine);
 		this.movementManager.addCollisionMap(collisionMap);
 

@@ -6,6 +6,7 @@ import engine.Entity;
 import engine.GameInput;
 import engine.GameInput.Movement;
 import engine.GameState;
+import engine.LevelManager.Level;
 import engine.Potion;
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
@@ -28,14 +29,14 @@ public class Player extends GameCharacter implements Entity {
 	private GameInput.Movement facing;
 	private int x;
 	private int y;
-	private int speedX = 5;
-	private int speedY = 5;
+	private int speedX = 3;
+	private int speedY = 3;
 	private int playerWidth;
 	private int playerHeight;
-	private boolean isWalking;
+	private Level playerLevel;
 	private int health;
 	private int maxHealth;
-	private int xp;
+	private int playerXP;
 	private int dmg;
 	/**
 	 * The player is initialized with its sprite represented by the renderable.
@@ -68,7 +69,7 @@ public class Player extends GameCharacter implements Entity {
 		this.facing = Movement.RIGHT;
 	}
 
-@Override
+	@Override
 	public Renderable getRenderable() {
 		if (facing == Movement.RIGHT) {
 			currentRenderable = moveEastSheet;
@@ -163,10 +164,6 @@ public class Player extends GameCharacter implements Entity {
 		this.facing = facing;
 	}
 
-	public void setWalking(boolean isWalking) {
-		this.isWalking = isWalking;
-	}
-
 	public int getWidth() {
 		return this.playerWidth;
 	}
@@ -200,39 +197,45 @@ public class Player extends GameCharacter implements Entity {
 	}
 
 	// Bruker HealthPotion for now
-	public void usePotion(char potionType) {
 
-		if (HealthPotions.size() > 0 && health < maxHealth) {
-			System.out
-					.println("USING POTION MAFAKKA IN DA FACE YO GANGSTA NIGGAS BE TRIPPIN YO");
-			if ((maxHealth - health) < HealthPotions.get(0).getValue()) {
-				health = maxHealth;
-				HealthPotions.remove(0);
-			} else {
-				health += HealthPotions.get(0).getValue();
-				HealthPotions.remove(0);
-			}
-		}
-
-	}
 
 	public int getNumPotions() {
 		return HealthPotions.size();
 	}
 
-	public void setXP(int xpGain) {
-		xp += xpGain;
+	public void givePotion(Potion potion) {
+		HealthPotions.add(potion);
 	}
 
-	public int getXP() {
-		return xp;
+	public ArrayList<Potion> getPotions() {
+		return HealthPotions;
+	}
+
+	public void removePotion() {
+		HealthPotions.remove(0);
+	}
+
+
+	public Level getLevels() {
+		return playerLevel;
+	}
+
+	public void setLevels(Level playerLevel) {
+		this.playerLevel = playerLevel;
+		health = playerLevel.getHP();
+		maxHealth = playerLevel.getHP();
+
 	}
 
 	public int getDmg() {
 		return dmg;
 	}
 
-	public void setDmg(int dmg) {
-		this.dmg = dmg;
+	public int getXP() {
+		return playerXP;
+	}
+
+	public void setXP(int playerXP) {
+		this.playerXP += playerXP;
 	}
 }
