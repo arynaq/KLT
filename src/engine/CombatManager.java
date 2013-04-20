@@ -7,120 +7,131 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import characters.Combatable;
 import characters.Player;
 
 public class CombatManager {
-	private Player player;
-	private GameEngine engine;
-	private ScrollingCombatText dmgSCT;
-	private BoundRect boundRect;
+    private Player player;
+    private GameEngine engine;
+    private ScrollingCombatText dmgSCT;
+    private BoundRect boundRect;
 
-	public CombatManager(Player player, Renderable renderable,
-			GameEngine gameEngine) {
-		this.player = player;
-		this.engine = gameEngine;
-		this.dmgSCT = (ScrollingCombatText) renderable;
-		this.boundRect = new BoundRect(0, 0, 0, 0);
+    public CombatManager(Player player, Renderable renderable,
+            GameEngine gameEngine) {
+        this.player = player;
+        this.engine = gameEngine;
+        this.dmgSCT = (ScrollingCombatText) renderable;
+        this.boundRect = new BoundRect(0, 0, 0, 0);
 
-	}
+    }
 
-	/**
-	 * Enables visual bounding boxes for combat, these are drawn with red
-	 * outlines.
-	 */
-	public void enableVisualTesting() {
-		setUpVisualTestOfCombatRange();
-	}
+    /**
+     * Enables visual bounding boxes for combat, these are drawn with red
+     * outlines.
+     */
+    public void enableVisualTesting() {
+        setUpVisualTestOfCombatRange();
+    }
 
-	/**
-	 * For testing only. Draws a rectangle in the direction the player is facing
-	 * and attacks anything within that rectangle.
-	 */
-	private void setUpVisualTestOfCombatRange() {
-		engine.getRenderables().put("attackRectanglePlayer", boundRect);
-	}
+    /**
+     * For testing only. Draws a rectangle in the direction the player is facing
+     * and attacks anything within that rectangle.
+     */
+    private void setUpVisualTestOfCombatRange() {
+        engine.getRenderables().put("attackRectanglePlayer", boundRect);
+    }
 
-	/**
-	 * The player attacks
-	 */
-	public void attackPlayer() {
-		int w = player.getWidth() + player.getAttackRange();
-		int h = player.getHeight();
+    /**
+     * The player attacks
+     */
+    public void attackPlayer() {
+        Combatable c = nearestToPlayer();
 
-		int x = player.getX() + player.getFacing().getDX() * w / 2;
-		int y = player.getY() + player.getFacing().getDY() * h / 2;
-		if (player.getFacing().getDY() < 0)
-			y += player.getAttackRange();
-		
-		boundRect.setX(x % GameState.DIMENSION.width);
-		boundRect.setY(y % GameState.DIMENSION.height);
-		boundRect.setWidth(w);
-		boundRect.setHeight(h);
-		collisionDetection();
+    }
 
-	}
+    private Combatable nearestToPlayer() {
+        Player player = engine.getPlayer();
+        for (String key: engine.getEntities().keySet()){
+            if (key.equals("player"))
+                continue;
+            Entity e = engine.getEntities().get(key);
 
-	private void collisionDetection() {
-	}
+            if (!(e instanceof Combatable))
+                continue;
+            Combatable c = (Combatable) e;
+            if (!player.getAttackBounds().intersects(c.getAttackBounds())) {
+                System.out.println("Cant reach");
+            }
+ else if (player.getAttackBounds().intersects(c.getAttackBounds())) {
+                System.out.println("I can reach other target");
+                System.out.println("My rectangle: " + player.getAttackBounds());
+                System.out.println("Other rectangle: " + c.getAttackBounds());
+                player.attack(c);
+                c.attack(player);
+            }
 
-	/**
-	 * Sets up a bounding rectangle. Can be drawn to show the bounding boxes for
-	 * collisiontesting.
-	 * 
-	 * @author aryann
-	 * 
-	 */
-	class BoundRect implements Renderable {
-		private Rectangle rectangle;
+        }
+        return null;
+    }
 
-		public BoundRect(int x, int y, int width, int height) {
-			this.rectangle = new Rectangle(x, y, width, height);
-		}
+    /**
+     * Sets up a bounding rectangle. Can be drawn to show the bounding boxes for
+     * collisiontesting.
+     * 
+     * @author aryann
+     * 
+     */
+    class BoundRect implements Renderable {
+        private Rectangle rectangle;
 
-		@Override
-		public void render(Graphics2D g) {
-			g.setColor(Color.red);
-			g.drawRect(getX(), getY(), getWidth(), getHeight());
-		}
+        public BoundRect(int x, int y, int width, int height) {
+            this.rectangle = new Rectangle(x, y, width, height);
+        }
 
-		@Override
-		public void render(Graphics2D g, int deltaTime) {
-		}
+        @Override
+        public void render(Graphics2D g) {
+            g.setColor(Color.red);
+            g.drawRect(getX(), getY(), getWidth(), getHeight());
+        }
 
-		@Override
-		public void setX(int x) {
-			rectangle.setLocation(x, getY());
-		}
+        @Override
+        public void render(Graphics2D g, int deltaTime) {
+        }
 
-		@Override
-		public void setY(int y) {
-			rectangle.setLocation(getX(), y);
-		}
+        @Override
+        public void setX(int x) {
+            rectangle.setLocation(x, getY());
+        }
 
-		public void setWidth(int width) {
-			rectangle.setBounds(getX(), getY(), width, getHeight());
-		}
+        @Override
+        public void setY(int y) {
+            rectangle.setLocation(getX(), y);
+        }
 
-		public void setHeight(int height) {
-			rectangle.setBounds(getX(), getY(), getWidth(), height);
-		}
+        public void setWidth(int width) {
+            rectangle.setBounds(getX(), getY(), width, getHeight());
+        }
 
-		public int getWidth() {
-			return rectangle.width;
-		}
+        public void setHeight(int height) {
+            rectangle.setBounds(getX(), getY(), getWidth(), height);
+        }
 
-		public int getHeight() {
-			return rectangle.height;
-		}
+        public int getWidth() {
+            return rectangle.width;
+        }
 
-		public int getX() {
-			return rectangle.x;
-		}
+        public int getHeight() {
+            return rectangle.height;
+        }
 
-		public int getY() {
-			return rectangle.y;
-		}
+        public int getX() {
+            return rectangle.x;
+        }
 
-	}
+        public int getY() {
+            return rectangle.y;
+        }
+
+    }
 
 }

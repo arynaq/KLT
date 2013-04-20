@@ -44,20 +44,25 @@ public class AttackBoundBox implements Renderable {
 	}
 
 	private void setUpBox() {
-		int w = t.getWidth() + t.getAttackRange();
-		int h = t.getHeight();
+	    int x = t.getX();
+	    int y = t.getY();
+        int w = t.getWidth();
+        int h = t.getHeight();
 
-		int x = t.getX() + (t.getWidth() / 2);
-		int y = t.getY();
+        if (t.getFacing().getDX() != 0) {
+            w += t.getAttackRange();
+            x += (t.getWidth() + w * (t.getFacing().getDX() - 1)) / 2;
+        }
 
-		if (t.getFacing().getDX() < 0) {
-			x = x - w;
-		}
+        else {
+            h = t.getWidth() + t.getAttackRange();
+            w = t.getHeight();
+            x -= t.getWidth() / 4;
+            y += (h * (t.getFacing().getDY() - 1) + t.getHeight()) / 2;
+        }
 
-		if (t.getFacing().getDY() < 0) {
-			x = x - w + y / 2;
-		}
 		rectangle.setBounds(x, y, w, h);
+
 	}
 
 	public Rectangle getRectangle() {

@@ -51,5 +51,17 @@ public interface Combatable extends Entity {
 	 */
 	public Rectangle getAttackBounds();
 
+    /**
+     * Get the attackrange of this Combatable.
+     * 
+     * @return
+     */
 	public int getAttackRange();
+
+	    /**
+     * Check whether this Combatable is ready to attack again.
+     * 
+     * @return
+     */
+    public boolean isReadyToAttack();
 }

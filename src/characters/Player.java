@@ -31,7 +31,7 @@ public class Player extends GameCharacter implements Combatable {
 	private int maxHealth;
 	private int xp;
 	private int dmg = 20;
-	private int attackRange = 30;
+    private int attackRange = 50;
 	private AttackBoundBox attackBox;
 	
 	
@@ -193,4 +193,9 @@ public class Player extends GameCharacter implements Combatable {
 	public AttackBoundBox getAttackBox() {
 		return attackBox;
 	}
+
+    @Override
+    public boolean isReadyToAttack() {
+        return true;
+    }
 }

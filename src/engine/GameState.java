@@ -31,7 +31,7 @@ public class GameState {
 	/*
 	 * Determines the highest rate at which the game will run.
 	 */
-	public static final int GAMEFPS = 60;
+    public static final int GAMEFPS = 60;
 	/*
 	 * Determine how fast the player animation walks. 1 is very fast, 5 is very
 	 * slow.

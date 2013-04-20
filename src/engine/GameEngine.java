@@ -95,7 +95,7 @@ public class GameEngine {
 
 	private void initPlayer() {
 		AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
-				images.get("indianaANIMATED"), 4, 4), 100);
+                images.get("playerANIMATED"), 4, 4), 100);
 		player = new Player(sprite);
 	}
 
