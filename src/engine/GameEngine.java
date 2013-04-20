@@ -27,16 +27,18 @@ public class GameEngine {
 	private CombatManager combatManager;
 	private WorldMap worldMap;
 	private FontLoader fontLoader;
+    private GameEventListener inputListener;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, Renderable> renderables,
 			Map<String, ArrayList<BufferedImage>> images,
-			Map<String, GameSound> sounds) {
+            Map<String, GameSound> sounds, GameEventListener listener) {
 
 		this.entities = entities;
 		this.renderables = renderables;
 		this.images = images;
 		this.sounds = sounds;
+        this.inputListener = listener;
 		initGameElements();
 
 	}
@@ -107,14 +109,16 @@ public class GameEngine {
 	}
 
 	public void update() {
+        inputListener.update();
 		updatePlayer();
 		updateMap();
+		
+        ((CyanRectangleEnemy) entities.get("blueEnemy")).setFacing(player
+                .getFacing().opposite());
 
 	}
 	private void updateMap() {
-		int x = player.getX();
-		int y = player.getY();
-		worldMap.updateGameMap(x, y);
+        worldMap.updateGameMap(player.getX(), player.getY());
 	}
 
 	private void updatePlayer() {

@@ -84,6 +84,6 @@ public class InputManager {
 	}
 
 	public void attack() {
-		combatManager.attackPlayer();
+		combatManager.playerAttack();
 	}
 }

@@ -15,6 +15,7 @@ public class CombatManager {
     private GameEngine engine;
     private ScrollingCombatText dmgSCT;
     private BoundRect boundRect;
+    private long t0, timer;
 
     public CombatManager(Player player, Renderable renderable,
             GameEngine gameEngine) {
@@ -44,8 +45,15 @@ public class CombatManager {
     /**
      * The player attacks
      */
-    public void attackPlayer() {
-        Combatable c = nearestToPlayer();
+    public void playerAttack() {
+        long delta = System.currentTimeMillis() - t0;
+        timer += delta;
+        if (timer > player.getAttackCooldown()) {
+            System.out.println("Time passed: " + timer + " player can attack");
+            timer = 0;
+            nearestToPlayer();
+        }
+        t0 = System.currentTimeMillis();
 
     }
 
@@ -59,10 +67,11 @@ public class CombatManager {
             if (!(e instanceof Combatable))
                 continue;
             Combatable c = (Combatable) e;
-            if (!player.getAttackBounds().intersects(c.getAttackBounds())) {
-                System.out.println("Cant reach");
+
+            if (!player.getAttackBounds().intersects(c.getBounds())) {
+                System.out.println("Can't reach");
             }
- else if (player.getAttackBounds().intersects(c.getAttackBounds())) {
+            else {
                 System.out.println("I can reach other target");
                 System.out.println("My rectangle: " + player.getAttackBounds());
                 System.out.println("Other rectangle: " + c.getAttackBounds());

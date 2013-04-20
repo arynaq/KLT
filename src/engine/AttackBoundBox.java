@@ -56,8 +56,9 @@ public class AttackBoundBox implements Renderable {
 
         else {
             h = t.getWidth() + t.getAttackRange();
-            w = t.getHeight();
-            x -= t.getWidth() / 4;
+            // w = t.getHeight(); <<Works for player in all directions
+            w = t.getWidth();
+            // x -= t.getWidth() / 4; << Works for player in all directions
             y += (h * (t.getFacing().getDY() - 1) + t.getHeight()) / 2;
         }
 

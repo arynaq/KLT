@@ -22,14 +22,11 @@ public abstract class GameCharacter implements Entity {
 		return facing;
 	}
 
-	/**
-	 * Sets which cardinal direction this character faces.
-	 * 
-	 * @param facing
-	 */
-	public void setFacing(Movement facing) {
-		this.facing = facing;
-	}
+    @Override
+    public void setFacing(Movement facing) {
+        this.facing = facing;
+    }
+
 	/**
 	 * Returns the x-position of the GameCharacter on the global(worldmap)
 	 * 

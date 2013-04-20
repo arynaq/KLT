@@ -42,14 +42,23 @@ public interface Combatable extends Entity {
 	 */
 	public void getAttacked(int damage);
 
-	/**
-	 * Returns a rectangle object that defines the boundaries of this
-	 * Combatables attack. In our game this rectangle is cast from the players
-	 * center in the direction he is facing.
-	 * 
-	 * @return
-	 */
+	    /**
+     * Returns a rectangle object that defines the boundaries of this
+     * Combatables attack. In our game, for the player, this rectangle is cast
+     * from the players center in the direction he is facing.
+     * 
+     * @return
+     */
 	public Rectangle getAttackBounds();
+
+    /**
+     * Returns a rectangle object that defines the boundaries of this
+     * combatable. In our game, this is used to determine whether an attack is
+     * out of range or not.
+     * 
+     * @return
+     */
+    public Rectangle getBounds();
 
     /**
      * Get the attackrange of this Combatable.
@@ -58,10 +67,11 @@ public interface Combatable extends Entity {
      */
 	public int getAttackRange();
 
-	    /**
-     * Check whether this Combatable is ready to attack again.
+    /**
+     * Returns what the delay between this combatables attacks should be. In
+     * milliseconds.
      * 
      * @return
      */
-    public boolean isReadyToAttack();
+    public int getAttackCooldown();
 }

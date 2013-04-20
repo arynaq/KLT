@@ -22,17 +22,11 @@ public class Factory {
 	private Map<String, Renderable> renderables;
 	private GameEventListener listener;
 	private InputManager movementManager;
-	// private ScreenManager screenManager;
 	private GameFrame frame;
 	private CollisionMap collisionMap;
 	private GameEngine gameEngine;
 	private GraphicsEngine graphicsEngine;
 	private SoundEngine soundEngine;
-
-	// private ImageLoader Iloader;
-	// private SoundLoader Sloader;
-
-	// private ArrayList<GameInput> moveStack;
 
 	public Factory() {
 
@@ -48,7 +42,8 @@ public class Factory {
 		this.frame = new GameFrame(Color.black);
 		this.collisionMap = new CollisionMap(images.get("collisionWORLDMAP").get(0));
 
-		this.gameEngine = new GameEngine(entities, renderables, images, sounds);
+        this.gameEngine = new GameEngine(entities, renderables, images, sounds,
+                listener);
 		this.movementManager = new InputManager(gameEngine);
 		this.movementManager.addCollisionMap(collisionMap);
 
@@ -61,20 +56,14 @@ public class Factory {
 	}
 
 	public GameEngine createGameEngine() {
-		// return new GameEngine(entities, renderables, images, sounds);
 		return gameEngine;
 	}
 
 	public SoundEngine createSoundEngine() {
-		// return new SoundEngine(entities, sounds);
 		return soundEngine;
 	}
 
 	public GraphicsEngine createGraphicsEngine() {
-		// listener.setMovementManager(movementManager);
-		// // listener.setScreenManager(screenManager);
-		// frame.addListener(listener);
-		// return new GraphicsEngine(entities, renderables, images, frame);
 		return graphicsEngine;
 	}
 }

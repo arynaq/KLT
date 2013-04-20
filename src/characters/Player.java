@@ -25,13 +25,14 @@ public class Player extends GameCharacter implements Combatable {
 	private Renderable currentRenderable;
 
 	private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
-	private int speedX = 5;
-	private int speedY = 5;
+    private int speedX = 1;
+    private int speedY = 1;
 	private int health;
 	private int maxHealth;
 	private int xp;
 	private int dmg = 20;
-    private int attackRange = 50;
+    private int attackRange = 20;
+    private int attackCooldown = 5000;
 	private AttackBoundBox attackBox;
 	
 	
@@ -195,7 +196,12 @@ public class Player extends GameCharacter implements Combatable {
 	}
 
     @Override
-    public boolean isReadyToAttack() {
-        return true;
+    public int getAttackCooldown() {
+        return attackCooldown;
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return super.getSpriteBox().getRectangle();
     }
 }

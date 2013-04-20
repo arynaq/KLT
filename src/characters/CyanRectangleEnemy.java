@@ -28,15 +28,17 @@ public class CyanRectangleEnemy implements Combatable {
 	private int height;
 	private int attackRange;
     private State state;
+    private int attackCoolDown = 1000;
+    private Movement facing = Movement.UP;
 
 	public CyanRectangleEnemy(int damage, int health) {
 		this.dmg = 1;
 		this.health = 100;
 		this.x = 375;
 		this.y = 345;
-		this.width = 20;
-		this.height = 20;
-        this.attackRange = 30;
+        this.width = 30;
+        this.height = 30;
+        this.attackRange = 10;
 		this.renderable = new BlueRectangle(width, height);
         this.attackBox = new AttackBoundBox(this);
         this.state = State.ALIVE;
@@ -146,7 +148,23 @@ public class CyanRectangleEnemy implements Combatable {
 
 	@Override
 	public Movement getFacing() {
-		return Movement.LEFT;
+        return facing;
 	}
+
+    @Override
+    public int getAttackCooldown() {
+        return attackCoolDown;
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        Rectangle rect = new Rectangle(x, y, width, height);
+        return rect;
+    }
+
+    @Override
+    public void setFacing(Movement facing) {
+        this.facing = facing;
+    }
 
 }

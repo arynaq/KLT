@@ -23,4 +23,6 @@ public interface Entity {
 
 	public Movement getFacing();
 
+    public void setFacing(Movement facing);
+
 }
