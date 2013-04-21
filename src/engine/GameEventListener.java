@@ -10,7 +10,8 @@ import java.awt.event.WindowListener;
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
 	private MovementManager movementManager;
-	private boolean up, down, left, right, p, o, i, x;
+	private boolean up, down, left, right;
+	long lastTime;
 
 	public GameEventListener() {
 
@@ -111,18 +112,47 @@ WindowListener {
 		case KeyEvent.VK_D:
 			right = true;
 			break;
-		case KeyEvent.VK_I:
-			i = true;
-			break;
 		case KeyEvent.VK_P:
-			p = true;
-			break;
-		case KeyEvent.VK_O:
-			o = true;
+			movementManager.pauseGame();
 			break;
 		case KeyEvent.VK_X:
-			x = true;
+			movementManager.giveXp();
 			break;
+		case KeyEvent.VK_O:
+			movementManager.testPlayerDamage();
+			break;
+		case KeyEvent.VK_U:
+			movementManager.givePotion();
+			break;
+		case KeyEvent.VK_I:
+			movementManager.usePotion();
+			break;
+		case KeyEvent.VK_SPACE:
+			checkIfmoveAllowed("attack");
+			break;
+		case KeyEvent.VK_E:
+			checkIfmoveAllowed("interact");
+			break;
+		case KeyEvent.VK_ENTER:
+			if (GameState.getInstance().getState() == GameCondition.SPLASH) {
+				GameState.getInstance().setState(GameCondition.RUNNING);
+			}
+		}
+	}
+
+	public void checkIfmoveAllowed(String type) {
+		long thisTime = System.currentTimeMillis();
+		if (type == "attack") {
+			if ((lastTime + 600) < thisTime) {
+				System.out.println("Attacking!");
+				lastTime = thisTime;
+			}
+		} else if (type == "interact") {
+			if ((lastTime + 1000) < thisTime) {
+				System.out.println("Interacting!");
+				lastTime = thisTime;
+			}
+
 		}
 	}
 	public void keyReleased(KeyEvent e) {
@@ -139,23 +169,10 @@ WindowListener {
 		case KeyEvent.VK_D:
 			right = false;
 			break;
-		case KeyEvent.VK_I:
-			i = false;
-			break;
-		case KeyEvent.VK_P:
-			p = false;
-			break;
-		case KeyEvent.VK_O:
-			o = false;
-			break;
-		case KeyEvent.VK_X:
-			x = false;
-			break;
 		}
 	}
 
 	public void update() {
-		System.out.println("inni running");
 		if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 			if (up == true) {
 				movementManager.movePlayer(GameInput.Movement.UP);
@@ -169,24 +186,9 @@ WindowListener {
 			if (right == true) {
 				movementManager.movePlayer(GameInput.Movement.RIGHT);
 			}
-			if (p == true) {
-				movementManager.pauseGame();
-			}
-			if (o == true) {
-				movementManager.testPlayerDamage();
-			}
-			if (i == true) {
-				movementManager.usePotion();
-			}
-			if (x == true) {
-				movementManager.giveXp();
-			}
 		}
 		if (GameState.getInstance().getState() == GameCondition.PAUSED) {
-			System.out.println("Inni dritern");
-			if (i == true) {
-				movementManager.resumeGame();
-			}
 		}
+
 	}
 }

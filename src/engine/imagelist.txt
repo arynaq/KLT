@@ -14,3 +14,4 @@ a indiana indianajones.png 4 4
 #a awesome awesome.png 4 4
 w world worldmap.png
 w collision worldCollision.png
+a player2 player2.png 4 4

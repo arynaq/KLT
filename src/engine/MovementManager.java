@@ -39,7 +39,6 @@ public class MovementManager {
 					* (player.getSpeedX()));
 			// player.setWalking(true);
 		}
-
 		if (newY >= 0 && newY <= 2047) {
 			player.setY(oldY + direction.getDY()
 					* (player.getSpeedY()));
@@ -49,10 +48,6 @@ public class MovementManager {
 		int j = player.getX() / GameState.getInstance().getFrameHeight();
 		((Animated) player.getRenderable()).move(5);
 		player.setFacing(direction);
-
-
-
-
 	}
 
 	public void interact() {
@@ -61,26 +56,24 @@ public class MovementManager {
 
 	public void testGameOver() {
 		GameState.getInstance().setState(GameCondition.GAMEOVER);
-
 	}
 
 	// Deals dmg to player
 	public void testPlayerDamage() {
-		levelManager.dealDmg(1);
+		levelManager.dealDmg(10);
 	}
 
 	// Player uses potion
 	public void usePotion() {
 		if (player.getPotions().size() > 0) {
 			levelManager.usePotion(player.getPotions().get(0));
-
 		}
 	}
 
 	// Player gets new potion
 	public void givePotion() {
-		int value = 10;
-		player.givePotion(new Potion('h', value));
+		// int potionvalue = 10;
+		player.givePotion(new Potion('h', 10));
 	}
 
 	public void giveXp() {

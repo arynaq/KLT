@@ -72,6 +72,11 @@ public class Game {
 				gfx.renderPause();
 				sleep(100);
 			}
+			while (GameState.getInstance().getState() == GameCondition.SPLASH) {
+				engine.update();
+				gfx.renderSplash();
+				sleep(100);
+			}
 		}
 	}
 

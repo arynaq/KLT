@@ -88,6 +88,7 @@ public class ImageLoader {
 	private void loadWorldMap(String key, String filename) {
 		key += "WORLDMAP";
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(1);
+		System.out.println(filename);
 		list.add(loadIMG(MAPDIR + filename));
 		images.put(key, list);
 	}

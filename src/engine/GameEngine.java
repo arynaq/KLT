@@ -1,6 +1,7 @@
 package engine;
 
 import gfx.AttackMoveAnimated;
+import gfx.GameHUD;
 import gfx.Renderable;
 import gfx.ScrollingCombatText;
 import gfx.SpriteSheet;
@@ -88,8 +89,10 @@ public class GameEngine {
 
 	private void initPlayer() {
 		AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
-				images.get("indianaANIMATED"), 4, 4), 100);
+				images.get("player2ANIMATED"), 4, 4), 100);
 		player = new Player(sprite);
+		GameHUD hud = new GameHUD(player);
+		renderables.put("playerHUD", hud);
 	}
 
 	private void initRenderables() {
