@@ -1,6 +1,7 @@
 package engine;
 
 import gfx.AttackMoveAnimated;
+import gfx.GameHUD;
 import gfx.Renderable;
 import gfx.ScrollingCombatText;
 import gfx.SpriteSheet;
@@ -10,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
 
-import sfx.GameSound;
 import worldmap.WorldMap;
 import characters.Combatable;
 import characters.CyanRectangleEnemy;
@@ -20,7 +20,6 @@ import characters.Player;
 public class GameEngine {
     private Map<String, Entity> entities;
     private Map<String, ArrayList<BufferedImage>> images;
-    private Map<String, GameSound> sounds;
     private Map<String, Renderable> renderables;
     private Player player;
     private LevelManager levelManager;
@@ -28,16 +27,17 @@ public class GameEngine {
     private WorldMap worldMap;
     private FontLoader fontLoader;
     private GameEventListener inputListener;
+    private SoundEngine soundEngine;
 
     public GameEngine(Map<String, Entity> entities,
             Map<String, Renderable> renderables,
             Map<String, ArrayList<BufferedImage>> images,
-            Map<String, GameSound> sounds, GameEventListener listener) {
+            SoundEngine soundEngine, GameEventListener listener) {
 
         this.entities = entities;
         this.renderables = renderables;
         this.images = images;
-        this.sounds = sounds;
+        this.soundEngine = soundEngine;
         this.inputListener = listener;
         initGameElements();
 
@@ -73,7 +73,8 @@ public class GameEngine {
     }
 
     private void initManagers() {
-        levelManager = new LevelManager(player, renderables.get("xpSCT"));
+        levelManager = new LevelManager(player, renderables.get("xpSCT"),
+                soundEngine);
         levelManager.setLevelUpSCT((ScrollingCombatText) renderables
                 .get("levelUpSCT"));
         combatManager = new CombatManager(player, this);
@@ -104,6 +105,8 @@ public class GameEngine {
         AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
                 images.get("playerANIMATED"), 4, 4), 100);
         player = new Player(sprite);
+        GameHUD hud = new GameHUD(player);
+        renderables.put("gameHUD", hud);
     }
 
     private void initRenderables() {

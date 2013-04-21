@@ -1,6 +1,5 @@
 package engine;
 
-import sfx.ExamplePlayer;
 
 public class Game {
 	private Factory factory;
@@ -38,7 +37,7 @@ public class Game {
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
                 engine.update();
-				sfx.play();
+				sfx.playMusic("beezDul.wav");
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
@@ -65,6 +64,12 @@ public class Game {
 				gfx.renderPause();
 				sleep(100);
 			}
+
+            while (GameState.getInstance().getState() == GameCondition.SPLASH) {
+                engine.update();
+                gfx.renderSplash();
+                sleep(100);
+            }
 		}
 	}
 
@@ -74,8 +79,8 @@ public class Game {
 
 	public static void main(String[] args) {
 		Game game = Game.getInstance();
-		ExamplePlayer ex = new ExamplePlayer();
-		ex.start();
+        // ExamplePlayer ex = new ExamplePlayer();
+        // ex.start();
 		game.init();
 		game.gameLoop();
 	}

@@ -6,18 +6,27 @@ import gfx.Renderable;
 import gfx.Sprite;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Map;
 
-import characters.Player;
+import javax.imageio.ImageIO;
 
 
 
@@ -57,25 +66,9 @@ public class GraphicsEngine {
 
 
 	public void start() {
-		Player player = (Player) entities.get("player");
 		frame.setVisible(true);
 		Renderable currentMap = GameState.getInstance().getCurrentMap();
 		renderables.put("currentMap", currentMap);
-
-		// Renderable bahamut;
-		// int imageWidth = images.get("bahamutANIMATED").get(0).getWidth();
-		// int imageHeight = images.get("bahamutANIMATED").get(0).getHeight();
-		// for (int i = 0; i < width / imageWidth; i++) {
-		// for (int j = 0; j < height / imageHeight; j++) {
-		//
-		// int delay = (int) ((1000 - 10) * Math.random() + 10);
-		// bahamut = new Animated(images.get("bahamutANIMATED"), 4, 4,
-		// 10 + delay);
-		// bahamut.setX(i * imageWidth);
-		// bahamut.setY(j * imageHeight);
-		// renderables.put("" + i + "," + j, bahamut);
-		// }
-		// }
 	}
 
 	public void clearScreen() {
@@ -106,22 +99,7 @@ public class GraphicsEngine {
 			entities.get(key).getRenderable().render(g, delta);
 			entities.get(key).getRenderable().render(g);
 		}
-		
-		renderRectangle(200, 0, 300, 30, "dufern");
-
-		// Tegner Teksten til HUD
-		Player player = (Player) entities.get("player");
-		renderString("HP: " + player.getHealth() + "/" + player.getMaxHealth(),
-				350, 20, 25, Color.black);
-		renderString("Potions: " + player.getNumPotions() + "", 200, 20, 25,
-				Color.black);
-		// showBuffer();
-
-		// renderString("+10xp", player.getX(), player.getY(), 10, Color.green);
 		showBuffer();
-
-		// renderables.get("xp").setX(player.getX());
-		// renderables.get("xp").setY(player.getY());
 
 
 	}
@@ -176,26 +154,108 @@ public class GraphicsEngine {
 		showBuffer();
 	}
 
-	public void renderString(String string, int x, int y, int size, Color color) {
-		Font fontG = g.getFont();
-		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
-		g.setFont(stringFont);
-		g.setColor(color);
-		g.drawString(string, x, y);
-	}
+    // public void renderString(String string, int x, int y, int size, Color
+    // color) {
+    // Font fontG = g.getFont();
+    // Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
+    // g.setFont(stringFont);
+    // g.setColor(color);
+    // g.drawString(string, x, y);
+    // }
+    //
+    // public void renderString(String string, int x, int y, int size) {
+    // Font fontG = g.getFont();
+    // Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
+    // g.setFont(stringFont);
+    // g.setColor(Color.black);
+    // g.drawString(string, x, y);
+    // }
 
-	public void renderString(String string, int x, int y, int size) {
-		Font fontG = g.getFont();
-		Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, size);
-		g.setFont(stringFont);
-		g.setColor(Color.black);
-		g.drawString(string, x, y);
-	}
+    public void renderString(String string, int x, int y, int size,
+            Color color, boolean bold) {
+        Font stringFont;
+        if (bold == true) {
+            stringFont = new Font("Commodore 64 Pixelized", Font.BOLD, size);
+        } else {
+            stringFont = new Font("Commodore 64 Pixelized", Font.PLAIN, size);
+        }
+        int h = y;
+        int w = x;
+        FontRenderContext frc = g.getFontRenderContext();
+        AttributedString as = new AttributedString(string);
+        as.addAttribute(TextAttribute.FONT, stringFont, 0, string.length());
+        AttributedCharacterIterator aci = as.getIterator();
+        TextLayout tl = new TextLayout(aci, frc);
+        float sw = (float) tl.getBounds().getWidth();
+        Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(w
+                - (sw / 2), h));
+
+        g.setColor(Color.black);
+        g.setStroke(new BasicStroke(3f));
+        g.draw(sha);
+        g.setColor(color);
+        g.fill(sha);
+
+    }
 
 	public void renderRectangle(int x, int y, int w, int h,
 			String color) {
 		g.setColor(Color.WHITE);
 		g.fillRect(x, y, w, h);
+	}
+	
+	public void renderSplash() {
+		Color color = new Color(255, 255, 255);
+		g.setColor(color);
+		g.fillRect(0, 0, 512, 512);
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(getClass().getResourceAsStream(
+					"/sprites/kloftasmall3.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		g.drawImage(img, 0, 0, null);
+		int centerX = (GameState.DIMENSION.width / 2);
+		renderString("KLT", centerX, 410, 98, Color.black, Color.white,
+				true);
+		// renderString("alpha", 440, 180, 12, Color.black, Color.white, true);
+		renderString("- The Role Playing Game -", centerX, 430, 14,
+				Color.white, Color.black, false);
+		renderString("START GAME", centerX, 460, 18, Color.white,
+				Color.blue, false);
+		renderString("A game by: Fredrik 'Ferd' Larsen and Aryan Naqid (2013)",
+				centerX, 506, 12, Color.white, Color.black, false);
+		showBuffer();
+	}
+	
+	public void renderString(String string, int x, int y, int size,
+			Color color, Color stroke, boolean bold) {
+		Font stringFont;
+		if (bold == true) {
+			stringFont = new Font("Commodore 64 Pixelized", Font.BOLD,
+					size);
+		} else {
+			stringFont = new Font("Commodore 64 Pixelized", Font.PLAIN,
+					size);
+		}
+		int h = y;
+		int w = x;
+		FontRenderContext frc = g.getFontRenderContext();
+		AttributedString as = new AttributedString(string);
+		as.addAttribute(TextAttribute.FONT, stringFont, 0, string.length());
+		AttributedCharacterIterator aci = as.getIterator();
+		TextLayout tl = new TextLayout(aci, frc);
+		float sw = (float) tl.getBounds().getWidth();
+		Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(w
+				- (sw / 2), h));
+		g.setColor(stroke);
+		g.setStroke(new BasicStroke(3f));
+		g.draw(sha);
+		g.setColor(color);
+		g.fill(sha);
+
 	}
 
 }

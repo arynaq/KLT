@@ -43,7 +43,7 @@ public class GameState {
 	private GameCondition state;
 
 	private GameState() {
-		this.state = GameCondition.RUNNING;
+        this.state = GameCondition.SPLASH;
 		// this.playerMapEntities = new HashMap<String, Entity>();
 		// this.worldMapEntities = new HashMap<String, Entity>();
 	}

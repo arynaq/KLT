@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import sfx.GameSound;
+import javax.sound.sampled.Clip;
+
 import worldmap.CollisionMap;
 
 public class Factory {
@@ -17,7 +18,7 @@ public class Factory {
 	
 
 	private Map<String, Entity> entities;
-	private Map<String, GameSound> sounds;
+	private Map<String, Clip> sounds;
 	private Map<String, ArrayList<BufferedImage>> images;
 	private Map<String, Renderable> renderables;
 	private GameEventListener listener;
@@ -32,25 +33,26 @@ public class Factory {
 
 		this.images = new ConcurrentHashMap<String, ArrayList<BufferedImage>>();
 		this.entities = new ConcurrentHashMap<String, Entity>();
-		this.sounds = new ConcurrentHashMap<String, GameSound>();
+        this.sounds = new ConcurrentHashMap<String, Clip>();
 		this.renderables = new ConcurrentHashMap<String, Renderable>();
 
 		new ImageLoader("imagelist.txt", images);
-		new SoundLoader("soundlist.txt", sounds);
+        new SoundLoader("soundList.txt", sounds);
+        new FontLoader();
 
 		this.listener = new GameEventListener();
 		this.frame = new GameFrame(Color.black);
 		this.collisionMap = new CollisionMap(images.get("collisionWORLDMAP").get(0));
 
-        this.gameEngine = new GameEngine(entities, renderables, images, sounds,
+        this.soundEngine = new SoundEngine(entities, sounds);
+        this.gameEngine = new GameEngine(entities, renderables, images,
+                soundEngine,
                 listener);
 		this.movementManager = new InputManager(gameEngine);
 		this.movementManager.addCollisionMap(collisionMap);
 
 		listener.setMovementManager(movementManager);
 		frame.addListener(listener);
-
-		this.soundEngine = new SoundEngine(entities, sounds);
 		this.graphicsEngine = new GraphicsEngine(entities, renderables, images,
 				frame);
 	}

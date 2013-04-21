@@ -16,6 +16,7 @@ public class LevelManager {
 	private ScrollingCombatText dmgSCT;
 	private ScrollingCombatText levelUpSCT;
 	private ScrollingCombatText hpSCT;
+	private SoundEngine soundEngine;
 
 	/**
 	 * Constructor for LevelManager
@@ -23,9 +24,10 @@ public class LevelManager {
 	 * @param player
 	 * @param scrollingXPText
 	 */
-	public LevelManager(Player player, Renderable scrollingXPText) {
+	public LevelManager(Player player, Renderable scrollingXPText,SoundEngine soundEngine) {
 		this.player = player;
 		this.scrollingXpText = scrollingXPText;
+		this.soundEngine = soundEngine;
 		simpleLevels();
 		initLevel();
 	}
@@ -37,12 +39,7 @@ public class LevelManager {
 		player.setLevels(levels.get(1));
 		player.setXP(0);
 		player.givePotion(new Potion('h', 100));
-		// damageEngine = new DamageEngine();
-		// for (int i = 1; i <= 100; i++) {
-		// for (int j = 1; j <= 10; j++) {
-		// damageEngine.calculateDamage(i);
-		// }
-		// }
+	
 	}
 
 	/**
@@ -54,7 +51,7 @@ public class LevelManager {
 		for (int i = 1; i <= 100; i++) {
 			int reqXP = (int) Math.round(((50 * (i * i * i)) / 3.0)
 					- (100 * (i * i)) + ((850 * i) / 3.0) - 200);
-            levels.add(new Level(i * 10, reqXP, i * 10, i - 1));
+            levels.add(new Level(i * 10, reqXP, i, i - 1));
 		}
 	}
 
@@ -74,19 +71,20 @@ public class LevelManager {
 		scrollingXpText.setY(textY);
 		((ScrollingCombatText) scrollingXpText).changeString("+" + xpGain + "XP");
 	}
-
-    // public void dealDmg(int dmg) {
-    // player.setHealth(player.getHealth() - dmg);
-    // if (player.getHealth() <= 0) {
-    // player.setHealth(0);
-    // GameState.getInstance().setState(GameCondition.GAMEOVER);
-    // }
-    // int textX = player.getX() % GameState.getInstance().DIMENSION.width;
-    // int textY = player.getY() % GameState.getInstance().DIMENSION.height;
-    // dmgSCT.setX(textX);
-    // dmgSCT.setY(textY);
-    // ((ScrollingCombatText) dmgSCT).changeString("-" + dmg + "HP");
-    // }
+	
+	//public void dealDmg(int dmg) {
+	//	player.setHealth(player.getHealth() - dmg);
+	//	soundEngine.playSFX("Pup2.wav");
+		//if (player.getHealth() <= 0) {
+	//		player.setHealth(0);
+	//		GameState.getInstance().setState(GameCondition.GAMEOVER);
+	//	}
+	//	int textX = player.getX() % GameState.getInstance().DIMENSION.width;
+	//	int textY = player.getY() % GameState.getInstance().DIMENSION.height;
+	//	dmgSCT.setX(textX);
+	//	dmgSCT.setY(textY);
+	//	((ScrollingCombatText) dmgSCT).changeString("-" + dmg + "HP");
+//	}
 
 	/**
 	 * Heals the player the amount of healing from the proper potion

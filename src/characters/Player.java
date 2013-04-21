@@ -276,4 +276,8 @@ public class Player extends GameCharacter {
         return playerLevel;
     }
 
+    public int getPotionsSize() {
+        return HealthPotions.size();
+    }
+
 }

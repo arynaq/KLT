@@ -41,29 +41,12 @@ public class ScrollingCombatText implements Renderable {
 		g.setColor(color);
 		g.drawString(xpMessage, x, oldY);
 		g.setComposite(gComp);
-		oldY -= 4;
+		oldY -= 3;
 
 	}
 
 	@Override
 	public void render(Graphics2D g, int deltaTime) {
-		// Composite gComp = g.getComposite();
-		// if (oldY < y - 100) {
-		// return;
-		// }
-		// Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
-		// g.setFont(stringFont);
-		// // g.setColor(new Color((int) (255 * Math.random()), (int) (255 *
-		// Math
-		// // .random()), (int) (255 * Math.random())));
-		// Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-		// 1 - ((y - oldY) / 100.f));
-		// g.setComposite(c);
-		// g.setColor(color);
-		// g.drawString(xpMessage, x, oldY);
-		// g.setComposite(gComp);
-		// oldY -= 4;
-		//
 	}
 
 	@Override
@@ -77,10 +60,5 @@ public class ScrollingCombatText implements Renderable {
 		this.y = y;
 		this.oldY = y;
 	}
-
-	// @Override
-	// public boolean doRender() {
-	// return true;
-	// }
 
 }
