@@ -4,6 +4,9 @@ import gfx.Renderable;
 import gfx.ScrollingCombatText;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import javax.sound.sampled.Clip;
 
 import characters.Player;
 
@@ -15,16 +18,19 @@ public class LevelManager {
 	private ScrollingCombatText dmgSCT;
 	private ScrollingCombatText levelUpSCT;
 	private ScrollingCombatText hpSCT;
-
+	private SoundEngine soundEngine;
+	private Map<String, Clip> sounds;
 	/**
 	 * Constructor for LevelManager
 	 * 
 	 * @param player
 	 * @param scrollingXPText
 	 */
-	public LevelManager(Player player, Renderable scrollingXPText) {
+	public LevelManager(Player player, Renderable scrollingXPText,
+			SoundEngine soundEngine) {
 		this.player = player;
 		this.scrollingXpText = scrollingXPText;
+		this.soundEngine = soundEngine;
 		simpleLevels();
 		initLevel();
 	}
@@ -76,6 +82,7 @@ public class LevelManager {
 
 	public void dealDmg(int dmg) {
 		player.setHealth(player.getHealth() - dmg);
+		soundEngine.playSFX("Pup2.wav");
 		if (player.getHealth() <= 0) {
 			player.setHealth(0);
 			GameState.getInstance().setState(GameCondition.GAMEOVER);
@@ -105,12 +112,14 @@ public class LevelManager {
 						+ (player.getMaxHealth() - player.getHealth()) + "HP");
 				player.setHealth(player.getMaxHealth());
 				player.removePotion();
+				soundEngine.playSFX("Pup28.wav");
 			} else {
 				player.setHealth(player.getHealth()
 						+ player.getPotions().get(0).getValue());
 				((ScrollingCombatText) hpSCT).changeString("+"
 						+ player.getPotions().get(0).getValue() + "HP");
 				player.removePotion();
+				soundEngine.playSFX("Pup28.wav");
 			}
 		}
 	}
@@ -119,6 +128,7 @@ public class LevelManager {
 	 * Is executed when the player has reached the required XP to level up
 	 */
 	public void levelUp() {
+		soundEngine.playSFX("sfx23.wav");
 		int nextlvl = player.getLevels().getLevel() + 1;
 		player.setLevels(levels.get(nextlvl));
 		player.getLevels().setDmg(levels.get(nextlvl).getDmg());

@@ -91,4 +91,8 @@ public class MovementManager {
 	public void addCollisionMap(CollisionMap collisionMap) {
 		this.collisionMap = collisionMap;
 	}
+
+	public void tellEngineToPlayXpSound() {
+
+	}
 }

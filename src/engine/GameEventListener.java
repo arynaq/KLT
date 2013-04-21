@@ -113,25 +113,44 @@ WindowListener {
 			right = true;
 			break;
 		case KeyEvent.VK_P:
-			movementManager.pauseGame();
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				GameState.getInstance().setState(GameCondition.PAUSED);
+			} else if (GameState.getInstance().getState() == GameCondition.PAUSED){
+				GameState.getInstance().setState(GameCondition.RUNNING);
+			}
+
 			break;
 		case KeyEvent.VK_X:
-			movementManager.giveXp();
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				movementManager.giveXp();
+				// movementManager.tellEngineToPlayXpSound();
+			}
 			break;
 		case KeyEvent.VK_O:
-			movementManager.testPlayerDamage();
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				movementManager.testPlayerDamage();
+			}
 			break;
 		case KeyEvent.VK_U:
-			movementManager.givePotion();
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				movementManager.givePotion();
+			}
 			break;
 		case KeyEvent.VK_I:
-			movementManager.usePotion();
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				movementManager.usePotion();
+			}
 			break;
 		case KeyEvent.VK_SPACE:
-			checkIfmoveAllowed("attack");
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				checkIfmoveAllowed("attack");
+			}
 			break;
 		case KeyEvent.VK_E:
-			checkIfmoveAllowed("interact");
+			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
+				checkIfmoveAllowed("interact");
+			}
+
 			break;
 		case KeyEvent.VK_ENTER:
 			if (GameState.getInstance().getState() == GameCondition.SPLASH) {
@@ -186,8 +205,6 @@ WindowListener {
 			if (right == true) {
 				movementManager.movePlayer(GameInput.Movement.RIGHT);
 			}
-		}
-		if (GameState.getInstance().getState() == GameCondition.PAUSED) {
 		}
 
 	}

@@ -159,7 +159,7 @@ public class GraphicsEngine {
 
 
 	public void renderPause() {
-		renderString("Game Paused", 120, 256, 34, Color.black, Color.white,
+		renderString("Game Paused", 256, 256, 34, Color.WHITE, Color.BLACK,
 				false);
 		showBuffer();
 	}

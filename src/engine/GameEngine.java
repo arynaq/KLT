@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
 
-import sfx.GameSound;
 import worldmap.WorldMap;
 import characters.Player;
 
@@ -19,23 +18,25 @@ import characters.Player;
 public class GameEngine {
 	private Map<String, Entity> entities;
 	private Map<String, ArrayList<BufferedImage>> images;
-	private Map<String, GameSound> sounds;
+	// private Map<String, Clip> sounds;
 	private Map<String, Renderable> renderables;
 	private Player player;
 	private LevelManager levelManager;
 	private WorldMap worldMap;
 	private FontLoader fontLoader;
 	private GameEventListener gameEventListener;
+	private SoundEngine soundEngine;
 
 	public GameEngine(Map<String, Entity> entities,
 			Map<String, Renderable> renderables,
 			Map<String, ArrayList<BufferedImage>> images,
-			Map<String, GameSound> sounds, GameEventListener listener) {
+			SoundEngine soundEngine, GameEventListener listener) {
 
 		this.entities = entities;
 		this.renderables = renderables;
 		this.images = images;
-		this.sounds = sounds;
+		this.soundEngine = soundEngine;
+		// this.sounds = soundEngine;
 		this.gameEventListener = listener;
 		initGameElements();
 
@@ -58,7 +59,8 @@ public class GameEngine {
 	}
 
 	private void initManagers() {
-		levelManager = new LevelManager(player, renderables.get("xpSCT"));
+		levelManager = new LevelManager(player, renderables.get("xpSCT"),
+				soundEngine);
 		levelManager.setDamageSCT((ScrollingCombatText) renderables.get("dmgSCT"));
 		levelManager.setLevelUpSCT((ScrollingCombatText) renderables
 				.get("levelUpSCT"));
@@ -137,4 +139,8 @@ public class GameEngine {
 	public LevelManager getLevelManager() {
 		return this.levelManager;
 	}
+
+	// public Map<String, Clip> getSounds() {
+	// return sounds;
+	// }
 }

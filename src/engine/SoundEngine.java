@@ -2,14 +2,17 @@ package engine;
 
 import java.util.Map;
 
-import sfx.GameSound;
+import javax.sound.sampled.Clip;
 
 public class SoundEngine {
 	private Map<String, Entity> entities;
-	private Map<String, GameSound> sounds;
+	private Map<String, Clip> sounds;
+	private boolean playing;
+	private String currentMusic = "";
+	private int currentFrame = 0;
 
 	public SoundEngine(Map<String, Entity> entities,
-			Map<String, GameSound> sounds) {
+ Map<String, Clip> sounds) {
 
 		this.sounds = sounds;
 	}
@@ -19,18 +22,30 @@ public class SoundEngine {
 
 	}
 
-	public void play() {
-		// TODO Auto-generated method stub
+	public void playSFX(String soundName) {
+		sounds.get(soundName).setFramePosition(0);
+		sounds.get(soundName).start();
+	}
 
+	public void playMusic(String soundName) {
+		if (playing && soundName.equals(currentMusic)) {
+			return;
+		}
+		currentMusic = soundName;
+		sounds.get(soundName).setFramePosition(currentFrame);
+		sounds.get(soundName).start();
+		playing = true;
 	}
 
 	public void playerGameOver() {
-		// TODO Auto-generated method stub
+		sounds.get(currentMusic).stop();
 
 	}
 
 	public void pauseGame() {
-		// TODO Auto-generated method stub
+		currentFrame = sounds.get(currentMusic).getFramePosition() - 100;
+		sounds.get(currentMusic).stop();
+		playing = false;
 
 	}
 
