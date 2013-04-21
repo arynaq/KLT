@@ -36,7 +36,7 @@ public class GameState {
      * Determine how fast the player animation walks. 1 is very fast, 50 is very
      * slow.
      */
-    public static final int PLAYERSTEPS = 20;
+    public static final int PLAYERSTEPS = 5;
 	/*
 	 * Determines the state of the game.
 	 */

@@ -18,131 +18,149 @@ import characters.Player;
 
 
 public class GameEngine {
-	private Map<String, Entity> entities;
-	private Map<String, ArrayList<BufferedImage>> images;
-	private Map<String, GameSound> sounds;
-	private Map<String, Renderable> renderables;
-	private Player player;
-	private LevelManager levelManager;
-	private CombatManager combatManager;
-	private WorldMap worldMap;
-	private FontLoader fontLoader;
+    private Map<String, Entity> entities;
+    private Map<String, ArrayList<BufferedImage>> images;
+    private Map<String, GameSound> sounds;
+    private Map<String, Renderable> renderables;
+    private Player player;
+    private LevelManager levelManager;
+    private CombatManager combatManager;
+    private WorldMap worldMap;
+    private FontLoader fontLoader;
     private GameEventListener inputListener;
 
-	public GameEngine(Map<String, Entity> entities,
-			Map<String, Renderable> renderables,
-			Map<String, ArrayList<BufferedImage>> images,
+    public GameEngine(Map<String, Entity> entities,
+            Map<String, Renderable> renderables,
+            Map<String, ArrayList<BufferedImage>> images,
             Map<String, GameSound> sounds, GameEventListener listener) {
 
-		this.entities = entities;
-		this.renderables = renderables;
-		this.images = images;
-		this.sounds = sounds;
+        this.entities = entities;
+        this.renderables = renderables;
+        this.images = images;
+        this.sounds = sounds;
         this.inputListener = listener;
-		initGameElements();
+        initGameElements();
 
-	}
+    }
 
-	public void start() {
-	}
+    public void start() {
+    }
 
-	/**
-	 * This method is responsible for initializing every renderable and entity
-	 * that is needed in the game.
-	 */
-	private void initGameElements() {
-		initRenderables();
-		initPlayer();
-		initEntities();
-		initManagers();
-		initMaps();
-		initFonts();
-		initTest();
-	}
+    /**
+     * This method is responsible for initializing every renderable and entity
+     * that is needed in the game.
+     */
+    private void initGameElements() {
+        initRenderables();
+        initPlayer();
+        initEntities();
+        initManagers();
+        initMaps();
+        initFonts();
+        initTest();
+    }
 
-	/**
-	 * Testing different aspects of the game.
-	 */
-	private void initTest() {
-		renderables.put("playerBOX", player.getSpriteBox());
-		for (String key : entities.keySet()) {
-			Entity e = entities.get(key);
-			AttackBoundBox box = new AttackBoundBox((Combatable) e);
-			renderables.put(box.toString(), box);
-		}
-	}
+    /**
+     * Testing different aspects of the game.
+     */
+    private void initTest() {
+        renderables.put("playerBOX", player.getSpriteBox());
+        for (String key : entities.keySet()) {
+            Entity e = entities.get(key);
+            AttackBoundBox box = new AttackBoundBox((Combatable) e);
+            renderables.put(box.toString(), box);
+        }
+    }
 
-	private void initManagers() {
-		levelManager = new LevelManager(player, renderables.get("xpSCT"));
-		combatManager = new CombatManager(player, renderables.get("dmgSCT"),
-				this);
-	}
+    private void initManagers() {
+        levelManager = new LevelManager(player, renderables.get("xpSCT"));
+        levelManager.setLevelUpSCT((ScrollingCombatText) renderables
+                .get("levelUpSCT"));
+        combatManager = new CombatManager(player, this);
+    }
 
-	public void initFonts() {
-		// fontLoader = new FontLoader();
-	}
+    public void initFonts() {
+        // fontLoader = new FontLoader();
+    }
 
-	private void initMaps() {
-		worldMap = new WorldMap(images.get("worldWORLDMAP"));
-		GameState.getInstance().setWorldMap(worldMap);
-		GameState.getInstance().setCurrentMap(worldMap.getGameMap());
+    private void initMaps() {
+        worldMap = new WorldMap(images.get("worldWORLDMAP"));
+        GameState.getInstance().setWorldMap(worldMap);
+        GameState.getInstance().setCurrentMap(worldMap.getGameMap());
 
-	}
+    }
 
-	private void initEntities() {
-		entities.put("player", player);
-		Entity blueEnemy = new CyanRectangleEnemy(1, 100);
-		entities.put("blueEnemy", blueEnemy);
-	}
+    private void initEntities() {
+        entities.put("player", player);
+        Entity blueEnemy = new CyanRectangleEnemy(1, 100);
+        Entity redEnemy = new CyanRectangleEnemy(1, 100, 50, 50, 20, 300,
+ 345,
+                Color.MAGENTA);
+        entities.put("blueEnemy", blueEnemy);
+        entities.put("redEnemy", redEnemy);
+    }
 
-	private void initPlayer() {
-		AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
+    private void initPlayer() {
+        AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
                 images.get("playerANIMATED"), 4, 4), 100);
-		player = new Player(sprite);
-	}
+        player = new Player(sprite);
+    }
 
-	private void initRenderables() {
-		ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 10,
-				Color.green);
-		renderables.put("xpSCT", xpSCT);
+    private void initRenderables() {
+        ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 12,
+                Color.green);
+        ScrollingCombatText enemySCT = new ScrollingCombatText("", 0, 0, 13,
+                Color.yellow);
+        ScrollingCombatText playerSCT = new ScrollingCombatText("", 0, 0, 14,
+                Color.red);
+        ScrollingCombatText levelUpSCT = new ScrollingCombatText("", 0, 0, 24,
+                Color.yellow);
+        renderables.put("xpSCT", xpSCT);
+        renderables.put("playerSCT", playerSCT);
+        renderables.put("enemySCT", enemySCT);
+        renderables.put("levelUpSCT", levelUpSCT);
 
-	}
+    }
 
-	public void update() {
+    public void update() {
         inputListener.update();
-		updatePlayer();
-		updateMap();
-		
+        updatePlayer();
+        updateMap();
+        combatManager.updateCombatables();
+
         ((CyanRectangleEnemy) entities.get("blueEnemy")).setFacing(player
                 .getFacing().opposite());
+        ((CyanRectangleEnemy) entities.get("redEnemy")).setFacing(player
+                .getFacing().opposite());
 
-	}
-	private void updateMap() {
+    }
+
+    private void updateMap() {
         worldMap.updateGameMap(player.getX(), player.getY());
-	}
+    }
 
-	private void updatePlayer() {
+    private void updatePlayer() {
 
-	}
+    }
 
-	public Player getPlayer() {
-		return (Player) entities.get("player");
-	}
+    public Player getPlayer() {
+        return (Player) entities.get("player");
+    }
 
-	public LevelManager getLevelManager() {
-		return this.levelManager;
-	}
+    public LevelManager getLevelManager() {
+        return this.levelManager;
+    }
 
-	public CombatManager getCombatManager() {
-		return combatManager;
-	}
+    public CombatManager getCombatManager() {
+        return combatManager;
+    }
 
-	public Map<String, Entity> getEntities() {
-		return entities;
-	}
+    public Map<String, Entity> getEntities() {
+        return entities;
+    }
 
-	public Map<String, Renderable> getRenderables() {
-		return renderables;
-	}
+    public Map<String, Renderable> getRenderables() {
+        return renderables;
+    }
 
 }

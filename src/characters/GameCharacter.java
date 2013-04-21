@@ -1,10 +1,17 @@
 package characters;
 
-import engine.Entity;
 import engine.GameInput.Movement;
 import engine.SpriteBoundBox;
 
-public abstract class GameCharacter implements Entity {
+/**
+ * An abstract baseclass for our game. All of our combatables implement this. We
+ * are free to add combatables that are not GameCharachters but the combatables
+ * in our game have so much in common.
+ * 
+ * @author aryann
+ * 
+ */
+public abstract class GameCharacter implements Combatable {
 	private int x;
 	private int y;
 	private int width;
@@ -95,13 +102,13 @@ public abstract class GameCharacter implements Entity {
 		return state;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	public void setY(int y) {
-		this.y = y;
-	}
+    public void setY(int y) {
+        this.y = y;
+    }
 
 	public SpriteBoundBox getSpriteBox() {
 		return spriteBox;

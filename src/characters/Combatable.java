@@ -12,14 +12,14 @@ import engine.Entity;
  * @author aryann
  * 
  */
-public interface Combatable extends Entity {
+public interface Combatable extends Entity, Comparable<Combatable> {
 
 	/**
 	 * Attacks the other Combatable entity.
 	 * 
 	 * @param other
 	 */
-	public void attack(Combatable other);
+    public void attack(Combatable other);
 
 	/**
 	 * Seeks the other Combatable. A* algo is implemented in our game.
@@ -68,10 +68,29 @@ public interface Combatable extends Entity {
 	public int getAttackRange();
 
     /**
-     * Returns what the delay between this combatables attacks should be. In
-     * milliseconds.
+     * Check whether this combatable is ready to attack. Usually we implement a
+     * cooldown, see GameCharacter.
      * 
      * @return
      */
-    public int getAttackCooldown();
+    public boolean isReadyToAttack();
+    
+    /**
+     * Do something doable with the other combatable when you attack it. In our
+     * game the attackers push eachother their full width when they are
+     * attacked.
+     * 
+     * @param other
+     */
+    public void doSomethingToOtherOnAttack(Combatable other);
+
+    /**
+     * Returns the damage this combatable can inflict. Implementation up to
+     * user. The playerclass has a variable damage that is decided by its
+     * current level.
+     * 
+     * @return
+     */
+    public int getDamage();
+
 }

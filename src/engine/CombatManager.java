@@ -1,11 +1,10 @@
 package engine;
 
-import gfx.Renderable;
 import gfx.ScrollingCombatText;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import characters.Combatable;
 import characters.Player;
@@ -13,132 +12,134 @@ import characters.Player;
 public class CombatManager {
     private Player player;
     private GameEngine engine;
-    private ScrollingCombatText dmgSCT;
-    private BoundRect boundRect;
-    private long t0, timer;
+    private ScrollingCombatText enemySCT;
+    private ScrollingCombatText playerSCT;
 
-    public CombatManager(Player player, Renderable renderable,
-            GameEngine gameEngine) {
+    public CombatManager(Player player, GameEngine gameEngine) {
         this.player = player;
         this.engine = gameEngine;
-        this.dmgSCT = (ScrollingCombatText) renderable;
-        this.boundRect = new BoundRect(0, 0, 0, 0);
+        this.enemySCT = (ScrollingCombatText) engine.getRenderables().get(
+                "enemySCT");
+        this.playerSCT = (ScrollingCombatText) engine.getRenderables().get(
+                "playerSCT");
+        System.out.println(enemySCT);
 
     }
 
-    /**
-     * Enables visual bounding boxes for combat, these are drawn with red
-     * outlines.
-     */
-    public void enableVisualTesting() {
-        setUpVisualTestOfCombatRange();
-    }
 
     /**
-     * For testing only. Draws a rectangle in the direction the player is facing
-     * and attacks anything within that rectangle.
-     */
-    private void setUpVisualTestOfCombatRange() {
-        engine.getRenderables().put("attackRectanglePlayer", boundRect);
-    }
-
-    /**
-     * The player attacks
+     * The player attacks if his cooldown is ready.
      */
     public void playerAttack() {
-        long delta = System.currentTimeMillis() - t0;
-        timer += delta;
-        if (timer > player.getAttackCooldown()) {
-            System.out.println("Time passed: " + timer + " player can attack");
-            timer = 0;
-            nearestToPlayer();
+        if (player.isReadyToAttack()) {
+            playerAttackCombatable();
         }
-        t0 = System.currentTimeMillis();
-
     }
 
-    private Combatable nearestToPlayer() {
-        Player player = engine.getPlayer();
-        for (String key: engine.getEntities().keySet()){
+    private void playerAttackCombatable() {
+        for (String key : engine.getEntities().keySet()) {
             if (key.equals("player"))
                 continue;
             Entity e = engine.getEntities().get(key);
-
             if (!(e instanceof Combatable))
                 continue;
             Combatable c = (Combatable) e;
 
-            if (!player.getAttackBounds().intersects(c.getBounds())) {
-                System.out.println("Can't reach");
+            if (!(GameState.getInstance().isInCurrentMap(c))) {
+
+                // System.out.println("The current combatable " + c
+                // + " is not in screen, skipping.");
+                continue;
             }
+
             else {
-                System.out.println("I can reach other target");
-                System.out.println("My rectangle: " + player.getAttackBounds());
-                System.out.println("Other rectangle: " + c.getAttackBounds());
+                // System.out.println("The current combatable " + c
+                // + " is in screen, checking combat");
+            }
+
+            if (player.getAttackBounds().intersects(c.getBounds())) {
+                // System.out.println("Enemy " + c +
+                // " within range, attacking");
                 player.attack(c);
-                c.attack(player);
+                playerSCT.changeString(player.getDamage() + "");
+                playerSCT.setX(c.getX());
+                playerSCT.setY(c.getY());
+                player.doSomethingToOtherOnAttack(c);
             }
 
         }
-        return null;
+
     }
 
     /**
-     * Sets up a bounding rectangle. Can be drawn to show the bounding boxes for
-     * collisiontesting.
+     * The below method returns the Combatable that is nearest to the player, if
+     * no such thing can be found (no enemy on current screen) it returns null.
      * 
-     * @author aryann
-     * 
+     * @return Enemy, null if no enemy on screen.
      */
-    class BoundRect implements Renderable {
-        private Rectangle rectangle;
+    private Combatable nearestToPlayer() {
 
-        public BoundRect(int x, int y, int width, int height) {
-            this.rectangle = new Rectangle(x, y, width, height);
+        List<Combatable> candidates = new ArrayList<Combatable>();
+        for (String key : engine.getEntities().keySet()) {
+
+            if (key.equals("player"))
+                continue;
+
+            Entity e = engine.getEntities().get(key);
+
+            if (!(e instanceof Combatable))
+                continue;
+
+            if (!(GameState.getInstance().isInCurrentMap(e)))
+                continue;
+
+            Combatable c = (Combatable) e;
+            candidates.add(c);
         }
 
-        @Override
-        public void render(Graphics2D g) {
-            g.setColor(Color.red);
-            g.drawRect(getX(), getY(), getWidth(), getHeight());
+        if (candidates.isEmpty()) {
+            System.out.println("No enemies found in current map");
+            return null;
         }
 
-        @Override
-        public void render(Graphics2D g, int deltaTime) {
-        }
+        Collections.sort(candidates);
+        return candidates.get(0);
 
-        @Override
-        public void setX(int x) {
-            rectangle.setLocation(x, getY());
-        }
+    }
 
-        @Override
-        public void setY(int y) {
-            rectangle.setLocation(getX(), y);
-        }
+    public void updateCombatables() {
+        combatablesAttackPlayer();
+        combatablesSearchPlayer();
 
-        public void setWidth(int width) {
-            rectangle.setBounds(getX(), getY(), width, getHeight());
-        }
+    }
 
-        public void setHeight(int height) {
-            rectangle.setBounds(getX(), getY(), getWidth(), height);
-        }
+    private void combatablesSearchPlayer() {
 
-        public int getWidth() {
-            return rectangle.width;
-        }
+    }
 
-        public int getHeight() {
-            return rectangle.height;
-        }
+    private void combatablesAttackPlayer() {
+        for (String key : engine.getEntities().keySet()) {
+            if (key.equals("player"))
+                continue;
+            Entity e = engine.getEntities().get(key);
+            if (!GameState.getInstance().isInCurrentMap(e))
+                continue;
 
-        public int getX() {
-            return rectangle.x;
-        }
+            if (!(e instanceof Combatable))
+                continue;
 
-        public int getY() {
-            return rectangle.y;
+            Combatable c = (Combatable) e;
+
+            if (c.isReadyToAttack()) {
+                if (c.getAttackBounds().intersects(player.getBounds())) {
+                    c.attack(player);
+                    enemySCT.changeString("" + 10);
+                    enemySCT.setX(player.getX());
+                    enemySCT.setY(player.getY());
+                    c.doSomethingToOtherOnAttack(player);
+                }
+            }
+
         }
 
     }

@@ -37,7 +37,7 @@ public class Game {
 			t0 = time();
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
-				engine.update();
+                engine.update();
 				sfx.play();
 				delta = time() - t0;
 				gfx.render((int) delta);
