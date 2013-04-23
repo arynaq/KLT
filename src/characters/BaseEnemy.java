@@ -125,74 +125,17 @@ public abstract class BaseEnemy implements Combatable {
         int dy = this.y - player.getY();
         setFacingRelativeToPlayer(player, dx, dy);
 
-        //
-        // if (this.x - player.getX()>0)
-        // this.x--;
-        // else if (this.x - player.getX()<0){
-        //
-        // }
+        if (dx == 0 && dy == 0)
+            return;
 
-        // if (dx == 0 && dy == 0)
-        // return;
-        //
-        // if (dx * dx == dy * dy)
-        // diagonal = true;
-        // if (dx == 0)
-        // diagonal = false;
-        //
-        // if (diagonal) {
-        // if (dx < 0)
-        // this.x += speed;
-        // if (dy)
-        // }
+        if (dx * dx >= dy * dy) {
+            this.x = (dx > 0) ? this.x - 1 : this.x + 1;
+        }
 
-        // if (diagonal) {
-        // System.out.println("Bro we " + this + " are on the diagonal");
-        // if (Math.abs(dx) < speed) {
-        // this.x = player.getX();
-        // // return;
-        // }
-        //
-        // else if (this.x < player.getX()) {
-        // this.x += speed;
-        // }
-        //
-        // else if (this.x > player.getX()) {
-        // this.x -= speed;
-        // }
-        // }
-        //
-        // else {
-        // if (dx * dx > dy * dy) {
-        // if (Math.abs(dx) < speed) {
-        // this.x = player.getX();
-        // return;
-        // }
-        //
-        // if (this.x < player.getX()) {
-        // this.x += speed;
-        //
-        // }
-        //
-        // else if (this.x > player.getX()) {
-        // this.x -= speed;
-        // }
-        // }
-        //
-        // else if (dy * dy > dx * dx) {
-        // if (Math.abs(dy) < speed) {
-        // this.y = player.getY();
-        // return;
-        // }
-        // if (this.y < player.getY()) {
-        // this.y += speed;
-        // }
-        //
-        // else if (this.y > player.getY()) {
-        // this.y -= speed;
-        // }
-        // }
-        // }
+        else if (dy * dy > dx * dx) {
+            this.y = (dy > 0) ? this.y - 1 : this.y + 1;
+        }
+
     }
 
     @Override
