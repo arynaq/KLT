@@ -31,6 +31,12 @@ public class CollisionMap {
 		return false;
 	}
 
+    public static boolean isWalkable(int x, int y) {
+        if (collisionMap.getRGB(x, y) == -1)
+            return true;
+        return false;
+    }
+
     /**
      * Check if the combatable can walk to the new position given by the new x,y
      * 

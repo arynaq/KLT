@@ -37,7 +37,7 @@ public class LevelManager {
 	 * Initiates levelgeneration and sets player variables accordingly
 	 */
 	public void initLevel() {
-		player.setLevels(levels.get(1));
+        player.setLevels(levels.get(10));
 		player.setXP(0);
 		player.givePotion(new Potion('h', 100));
 	

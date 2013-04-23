@@ -1,6 +1,8 @@
 package engine;
 
+import engine.Entity.State;
 import gfx.ScrollingCombatText;
+import items.Potion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +17,7 @@ public class CombatManager {
     private ScrollingCombatText enemySCT;
     private ScrollingCombatText playerSCT;
     private DamageEngine dmgEngine;
+    private LevelManager levelManager;
 
     public CombatManager(Player player, GameEngine gameEngine) {
         this.player = player;
@@ -23,7 +26,8 @@ public class CombatManager {
                 "enemySCT");
         this.playerSCT = (ScrollingCombatText) engine.getRenderables().get(
                 "playerSCT");
-
+        this.dmgEngine = new DamageEngine();
+        this.levelManager = engine.getLevelManager();
     }
 
 
@@ -31,36 +35,106 @@ public class CombatManager {
      * The player attacks if his cooldown is ready.
      */
     public void playerAttack() {
-        if (player.isReadyToAttack()) {
-            playerAttackCombatable();
-        }
+        if (!player.isReadyToAttack())
+            return;
+        playerAttackCombatable();
+    }
+
+    /**
+     * Updates the combatables AI, they will search and attack the player if
+     * they can reach and find him.
+     */
+    public void updateCombatables() {
+        combatablesSearchPlayer();
+        combatablesAttackPlayer();
+
     }
 
     private void playerAttackCombatable() {
         for (String key : engine.getEntities().keySet()) {
             if (key.equals("player"))
                 continue;
+
             Entity e = engine.getEntities().get(key);
             if (!(e instanceof Combatable))
                 continue;
-            Combatable c = (Combatable) e;
 
-            if (!(GameState.getInstance().isInCurrentMap(c))) {
+            Combatable combatable = (Combatable) e;
+            if (!(GameState.getInstance().isInCurrentMap(combatable)))
                 continue;
-            }
+            if (combatable.getState() == State.DEAD)
+                continue;
 
-            if (player.getAttackBounds().intersects(c.getBounds())) {
+            if (player.getAttackBounds().intersects(combatable.getBounds())) {
                 int dmg = dmgEngine.calculateDamage(player.getDamage());
-                player.attack(c, 1);
-                playerSCT.changeString(player.getDamage() + "");
-                playerSCT.setX(c.getX());
-                playerSCT.setY(c.getY());
-                player.doSomethingToOtherOnAttack(c);
+                player.attack(combatable, dmg);
+                player.doSomethingToOtherOnAttack(combatable);
+                enemySCT.changeString("RAPED: " + dmg);
+                enemySCT.setX(combatable.getX());
+                enemySCT.setY(combatable.getY());
+
+                if (combatable.getState() == State.DEAD) {
+                    levelManager.xpGain(10);
+                    if (Math.random() > 0.0000001) {
+                        player.givePotion(new Potion('h', player.getMaxHealth()));
+                    }
+                }
             }
 
         }
+    }
+
+    private void combatablesSearchPlayer() {
+        for (String key : engine.getEntities().keySet()) {
+            if (key.equals("player"))
+                continue;
+            Entity entity = engine.getEntities().get(key);
+            if (!(entity instanceof Combatable))
+                continue;
+            Combatable combatable = (Combatable) entity;
+            if (!(GameState.getInstance().isInCurrentMap(combatable))) {
+                combatable.reset();
+                continue;
+            }
+
+            if (combatable.getState() == State.DEAD)
+                continue;
+
+            combatable.seek(player);
+
+        }
+    }
+
+    private void combatablesAttackPlayer() {
+        for (String key : engine.getEntities().keySet()) {
+            if (key.equals("player"))
+                continue;
+            Entity e = engine.getEntities().get(key);
+            if (!(e instanceof Combatable))
+                continue;
+            Combatable combatable = (Combatable) e;
+
+            if (combatable.isReadyToAttack()) {
+                if (!(combatable.getAttackBounds().intersects(player.getBounds())))
+                    continue;
+                int dmg = dmgEngine.calculateDamage(combatable.getDamage());
+                combatable.attack(player, dmg);
+                player.getAttacked(dmg);
+                combatable.doSomethingToOtherOnAttack(player);
+                playerSCT.changeString("-" + dmg + "HP");
+                playerSCT.setX(player.getX());
+                playerSCT.setY(player.getY());
+            }
+        }
 
     }
+
+
+
+
+
+
+
 
     /**
      * The below method returns the Combatable that is nearest to the player, if
@@ -97,48 +171,4 @@ public class CombatManager {
         return candidates.get(0);
 
     }
-
-    public void updateCombatables() {
-        // combatablesAttackPlayer();
-        combatablesSearchPlayer();
-
-    }
-
-    private void combatablesSearchPlayer() {
-        for (String key : engine.getEntities().keySet()) {
-            if (key.equals("player"))
-                continue;
-            Entity e = engine.getEntities().get(key);
-            Combatable c = (Combatable) e;
-            c.seek(player);
-        }
-    }
-
-    private void combatablesAttackPlayer() {
-        for (String key : engine.getEntities().keySet()) {
-            if (key.equals("player"))
-                continue;
-            Entity e = engine.getEntities().get(key);
-            if (!GameState.getInstance().isInCurrentMap(e))
-                continue;
-
-            if (!(e instanceof Combatable))
-                continue;
-
-            Combatable c = (Combatable) e;
-
-            if (c.isReadyToAttack()) {
-                if (c.getAttackBounds().intersects(player.getBounds())) {
-                    c.attack(player);
-                    enemySCT.changeString("" + 10);
-                    enemySCT.setX(player.getX());
-                    enemySCT.setY(player.getY());
-                    c.doSomethingToOtherOnAttack(player);
-                }
-            }
-
-        }
-
-    }
-
 }

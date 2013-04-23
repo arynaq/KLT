@@ -94,4 +94,9 @@ public interface Combatable extends Entity, Comparable<Combatable> {
      */
     public int getDamage();
 
+    /**
+     * Method for resetting the combatable.
+     */
+    public void reset();
+
 }

@@ -56,7 +56,6 @@ public class Game {
 				gfx.renderGameOver();
                 sleep(100);
                 System.gc();
-                System.exit(0);
 			}
 
 			while (GameState.getInstance().getState() == GameCondition.PAUSED) {

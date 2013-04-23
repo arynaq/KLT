@@ -24,7 +24,7 @@ public class SplashScreen implements Renderable {
     private BasicStroke defaultStroke;
     private FontRenderContext frc;
     private boolean executedBefore;
-    int centerX;
+    private int centerX;
 
     private Shape title;
     private Shape credits;

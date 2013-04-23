@@ -1,6 +1,7 @@
 package characters;
 
 import engine.AttackBoundBox;
+import engine.GameCondition;
 import engine.GameInput.Movement;
 import engine.GameState;
 import engine.SpriteBoundBox;
@@ -83,7 +84,7 @@ public class Player extends GameCharacter {
         super.setState(State.ALIVE);
         super.setSpriteBox(new SpriteBoundBox(this));
         this.attackBox = new AttackBoundBox(this);
-        this.playerLevel = new Level(1);
+        this.playerLevel = new Level(99);
         if (System.getProperty("os.name").equals("Linux")) {
             speedX = 7;
             speedY = 7;
@@ -188,6 +189,11 @@ public class Player extends GameCharacter {
     @Override
     public void getAttacked(int damage) {
         this.health -= damage;
+        if (health <= 0) {
+            setState(State.DEAD);
+            health = 0;
+            GameState.getInstance().setState(GameCondition.GAMEOVER);
+        }
     }
 
     public int getAttackRange() {
@@ -233,29 +239,24 @@ public class Player extends GameCharacter {
         int y = 0;
         int dx = this.getFacing().getDX();
         int dy = this.getFacing().getDY();
+        int feetX = other.getX() + (w / 2);
+        int feetY = other.getY() + h;
+
         while (x <= w) {
-            if (other.getX() <= 0
-                    || other.getX() + w >= GameState.DIMENSION.width - 1) {
+            if (!CollisionMap.isWalkable(feetX + dx, feetY + dy))
                 break;
-            }
-            if (!CollisionMap
-                    .isWalkable(other, other.getX() + dx, other.getY())) {
-                break;
-            }
             other.setX(other.getX() + dx);
             x++;
+            feetX += dx;
+
         }
 
         while (y <= h) {
-            if (other.getY() <= 0
-                    || other.getY() + h >= GameState.DIMENSION.width - 1)
+            if (!CollisionMap.isWalkable(feetX + dx, feetY + dy))
                 break;
-            if (!CollisionMap
-                    .isWalkable(other, other.getX(), other.getY() + dy)) {
-                break;
-            }
             other.setY(other.getY() + dy);
             y++;
+            feetY += dy;
         }
 
     }
@@ -299,6 +300,10 @@ public class Player extends GameCharacter {
 
     public int getPotionsSize() {
         return HealthPotions.size();
+    }
+
+    @Override
+    public void reset() {
     }
 
 }

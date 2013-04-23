@@ -2,6 +2,7 @@ package characters;
 
 import java.awt.Rectangle;
 
+import worldmap.CollisionMap;
 import engine.AttackBoundBox;
 import engine.GameInput.Movement;
 
@@ -24,6 +25,11 @@ public abstract class BaseEnemy implements Combatable {
     private int lastx;
     private int lasty;
 
+    private final int resetHealth;
+    private final int resetX;
+    private final int resetY;
+    private final State resetState;
+
     public BaseEnemy(int x, int y, int width, int height, int damage,
             int health, int attackRange, int attackCooldown) {
         this.x = x;
@@ -32,13 +38,21 @@ public abstract class BaseEnemy implements Combatable {
         this.height = height;
         this.dmg = damage;
         this.health = health;
+        System.out.println("I was given hp: " + health);
         this.attackRange = attackRange;
         this.attackCooldown = attackCooldown;
         this.bounds = new Rectangle(x, y, width, height);
+
+        // Save states for resetting
+        this.resetHealth = health;
+        this.resetState = State.ALIVE;
+        this.resetX = x;
+        this.resetY = y;
+
     }
 
     public BaseEnemy(int x, int y, int width, int height, int speed) {
-        this(x, y, width, height, 1, 30, 20, 1000);
+        this(x, y, width, height, 1, 150, 20, 10000);
         this.speed = speed;
     }
 
@@ -124,13 +138,15 @@ public abstract class BaseEnemy implements Combatable {
 
     @Override
     public void seek(Player player) {
+        setFacingRelativeToPlayer(player);
         int dx, dy, xface, yface;
         if (this.x - player.getX() >= 0) {
             xface = 1;
         } else {
             xface = -1;
         }
-        if (this.y - player.getY() >= 0) {
+        if (this.y - // TODO Auto-generated method stub
+                player.getY() >= 0) {
             yface = 1;
         } else {
             yface = -1;
@@ -198,28 +214,13 @@ public abstract class BaseEnemy implements Combatable {
         lasty = player.getY();
     }
 
-    // @Override
-    // public void seek(Player player) {
-    // int dx = this.x - player.getX();
-    // int dy = this.y - player.getY();
-    // setFacingRelativeToPlayer(player, dx, dy);
-    //
-    // if (dx == 0 && dy == 0)
-    // return;
-    //
-    // if (dx * dx >= dy * dy) {
-    // this.x = (dx > 0) ? this.x - 1 : this.x + 1;
-    // }
-    //
-    // else if (dy * dy > dx * dx) {
-    // this.y = (dy > 0) ? this.y - 1 : this.y + 1;
-    // }
-    //
-    // }
-
     @Override
     public void getAttacked(int damage) {
         this.health -= damage;
+        if (health <= 0) {
+            health = 0;
+            this.state = State.DEAD;
+        }
     }
 
     @Override
@@ -266,14 +267,52 @@ public abstract class BaseEnemy implements Combatable {
         return dmg;
     }
 
-    private void setFacingRelativeToPlayer(Player player, int dx, int dy) {
-
+    private void setFacingRelativeToPlayer(Player player) {
+        int dx = this.x - player.getX();
+        int dy = this.y - player.getY();
         if (dx * dx > dy * dy) {
             setFacing((dx < 0) ? Movement.RIGHT : Movement.LEFT);
         }
 
         else if (dy * dy > dx * dx) {
             setFacing((dy < 0) ? Movement.DOWN : Movement.UP);
+        }
+    }
+
+    @Override
+    public void reset() {
+        this.x = resetX;
+        this.y = resetY;
+        this.state = resetState;
+        this.health = resetHealth;
+    }
+
+    @Override
+    public void doSomethingToOtherOnAttack(Combatable other) {
+        int w = other.getWidth();
+        int h = other.getHeight();
+        int x = 0;
+        int y = 0;
+        int dx = this.getFacing().getDX();
+        int dy = this.getFacing().getDY();
+        int feetX = other.getX() + (w / 2);
+        int feetY = other.getY() + h;
+
+        while (x <= w) {
+            if (!CollisionMap.isWalkable(feetX + dx, feetY + dy))
+                break;
+            other.setX(other.getX() + dx);
+            x++;
+            feetX += dx;
+
+        }
+
+        while (y <= h) {
+            if (!CollisionMap.isWalkable(feetX + dx, feetY + dy))
+                break;
+            other.setY(other.getY() + dy);
+            y++;
+            feetY += dy;
         }
     }
 

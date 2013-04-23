@@ -40,8 +40,8 @@ public class Factory {
         // this.images = new ConcurrentHashMap<String,
         // ArrayList<BufferedImage>>();
         this.images = new HashMap<String, ArrayList<BufferedImage>>();
-        // this.entities = new ConcurrentHashMap<String, Entity>();
-        this.entities = new HashMap<String, Entity>();
+        this.entities = new ConcurrentHashMap<String, Entity>();
+        // this.entities = new HashMap<String, Entity>();
         // this.sounds = new ConcurrentHashMap<String, Clip>();
         this.sounds = new HashMap<String, Clip>();
         this.renderables = new ConcurrentHashMap<String, Renderable>();

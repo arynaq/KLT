@@ -45,7 +45,8 @@ public class ScrollingCombatText implements Renderable {
 				1 - ((y - oldY) / 100.f));
 		g.setComposite(c);
 		g.setColor(color);
-		g.drawString(xpMessage, x, oldY);
+        g.drawString(xpMessage, x % GameState.DIMENSION.width, oldY
+                % GameState.DIMENSION.height);
 		g.setComposite(gComp);
 		oldY -= 3;
 

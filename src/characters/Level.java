@@ -20,7 +20,6 @@ package characters;
 		}
 
         public Level(int i) {
-        this(10, 0, 1, 0);
         }
 
         public int getHP() {

@@ -3,10 +3,12 @@ package worldmap;
 import gfx.Renderable;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class GameMap implements Renderable {
 	BufferedImage image;
+    private Rectangle bounds = new Rectangle();
 	private int[] xBound;
 	private int[] yBound;
 
@@ -61,5 +63,14 @@ public class GameMap implements Renderable {
 	public int[] getyBound() {
 		return yBound;
 	}
+	
+    public Rectangle getBounds() {
+        int x = xBound[0];
+        int y = yBound[0];
+        int w = xBound[1];
+        int h = yBound[1];
+        bounds.setBounds(x, y, w, h);
+        return bounds;
+    }
 
 }

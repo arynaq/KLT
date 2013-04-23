@@ -143,7 +143,6 @@ WindowListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-                // checkIfmoveAllowed("attack");
                 movementManager.attack();
 			}
 			break;

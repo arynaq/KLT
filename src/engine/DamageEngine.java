@@ -4,7 +4,7 @@ public class DamageEngine {
 	private int minDmg;
 	private int maxDmg;
 	private int dealDmg;
-	private double critChance = 0.15;
+    private double critChance = 0.15;
 	private boolean isCrit = false;
 
 	    /**
@@ -19,17 +19,25 @@ public class DamageEngine {
         maxDmg = dmg * 2;
 		if (Math.random() < critChance) {
 			isCrit = true;
-			dealDmg = maxDmg * 2;
 		} else {
 			dealDmg = minDmg + (int) (Math.random() * ((maxDmg - minDmg) + 1));
-			isCrit = false;
+            if (isCrit) {
+                // System.out.println("============");
+                // System.out.println("Was going to do dmg: " + dealDmg);
+                // dealDmg *= 2;
+                // System.out.println("But got a crit: " + dealDmg);
+                // System.out.println("============");
+                isCrit = false;
+            }
+
+            // isCrit = false;
 		}
-		if (isCrit == true) {
-			System.out.println("Crit: " + dealDmg + ".");
-		} else {
-			System.out.println("Dmg: " + dmg + "." + " DealDmg: " + dealDmg
-					+ ".");
-		}
+//		if (isCrit == true) {
+//			System.out.println("Crit: " + dealDmg + ".");
+//		} else {
+////			System.out.println("Dmg: " + dmg + "." + " DealDmg: " + dealDmg
+////					+ ".");
+        // }
         return dealDmg;
 	}
 }

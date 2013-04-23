@@ -29,22 +29,22 @@ public class InputManager {
 	}
 
 	public void movePlayer(Movement direction) {
-		int oldX = player.getX();
-		int oldY = player.getY();
+        int oldX = player.getX() + (player.getWidth() / 2);
+        int oldY = player.getY() + player.getHeight();
 		int newX = oldX + direction.getDX() * player.getSpeedX();
 		int newY = oldY + direction.getDY() * player.getSpeedY();
 
-		if (!collisionMap.isWalkable(player, direction)) {
+        if (!CollisionMap.isWalkable(newX, newY)) {
 			player.setFacing(direction);
 			return;
 		}
 		if (newX >= 0 && newX <= 2047) {
-			player.setX(oldX + direction.getDX()
+            player.setX(player.getX() + direction.getDX()
 					* (player.getSpeedX()));
 		}
 
 		if (newY >= 0 && newY <= 2047) {
-			player.setY(oldY + direction.getDY()
+            player.setY(player.getY() + direction.getDY()
 					* (player.getSpeedY()));
 		}
 
