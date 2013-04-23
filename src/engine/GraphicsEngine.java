@@ -78,6 +78,10 @@ public class GraphicsEngine {
             for (String key : renderables.keySet()) {
                 if (key.equals("currentMap"))
                     continue;
+                if (key.equals("gameOverScreen"))
+                    continue;
+                if (key.equals("pauseScreen"))
+                    continue;
                 renderables.get(key).render(g);
                 renderables.get(key).render(g, delta);
 

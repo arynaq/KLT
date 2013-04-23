@@ -74,13 +74,17 @@ public class CombatManager {
                 enemySCT.setY(combatable.getY());
 
                 if (combatable.getState() == State.DEAD) {
-                    levelManager.xpGain(10);
-                    if (Math.random() > 0.0000001) {
-                        player.givePotion(new Potion('h', player.getMaxHealth()));
-                    }
+                    levelManager.xpGain(50);
+                    rollTheDiceAndGivePlayerLoot();
                 }
             }
 
+        }
+    }
+
+    private void rollTheDiceAndGivePlayerLoot() {
+        if (Math.random() > 0.9) {
+            player.givePotion(new Potion('h', player.getMaxHealth()));
         }
     }
 

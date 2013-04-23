@@ -57,6 +57,7 @@ public class Game {
                 sleep(100);
                 System.gc();
 			}
+			  engine.getRenderables().remove("gameOverScreen");
 
 			while (GameState.getInstance().getState() == GameCondition.PAUSED) {
                 delta = time() - t0;

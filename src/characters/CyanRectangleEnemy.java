@@ -13,7 +13,8 @@ import gfx.Renderable;
 
 /**
  * A simple targetdummy which can attack and be attacked, represented by a
- * square. This is used for testing.
+ * square. This is used for testing and to make evil despotic rectangles who
+ * seek to rule the world.
  * 
  * @author aryann
  * 
