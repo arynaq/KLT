@@ -21,6 +21,8 @@ public abstract class BaseEnemy implements Combatable {
     private long t0, timer;
     private int speed, speedCounter;
     private boolean diagonal;
+    private int lastx;
+    private int lasty;
 
     public BaseEnemy(int x, int y, int width, int height, int damage,
             int health, int attackRange, int attackCooldown) {
@@ -119,24 +121,101 @@ public abstract class BaseEnemy implements Combatable {
         other.getAttacked(dmg);
     }
 
+
     @Override
     public void seek(Player player) {
-        int dx = this.x - player.getX();
-        int dy = this.y - player.getY();
-        setFacingRelativeToPlayer(player, dx, dy);
+        int dx, dy, xface, yface;
+        if (this.x - player.getX() >= 0) {
+            xface = 1;
+        } else {
+            xface = -1;
+        }
+        if (this.y - player.getY() >= 0) {
+            yface = 1;
+        } else {
+            yface = -1;
+        }
+        dx = Math.abs(this.x - player.getX());
+        dy = Math.abs(this.y - player.getY());
 
         if (dx == 0 && dy == 0)
             return;
+        if (player.getX() != lastx || player.getY() != lasty) {
+            diagonal = false;
+        }
+        if (dx == dy)
+            diagonal = true;
 
-        if (dx * dx >= dy * dy) {
-            this.x = (dx > 0) ? this.x - 1 : this.x + 1;
+        if (Math.abs(dx - dy) <= speed) {
+            diagonal = true;
         }
 
-        else if (dy * dy > dx * dx) {
-            this.y = (dy > 0) ? this.y - 1 : this.y + 1;
+        if (dx == 0)
+            diagonal = false;
+        if (diagonal) {
+            if (dx < speed) {
+                this.x = player.getX();
+                // return;
+            } else if (xface == -1) {
+                this.x += speed;
+            } else if (xface == 1) {
+                this.x -= speed;
+            }
         }
 
+        else {
+            if (dx > dy) {
+                if (dx < speed) {
+                    this.x = player.getX();
+                    return;
+                }
+
+                if (this.x < player.getX()) {
+                    this.x += speed;
+
+                }
+
+                else if (this.x > player.getX()) {
+                    this.x -= speed;
+                }
+            }
+
+            else if (dy > dx) {
+                if (dy < speed) {
+                    this.y = player.getY();
+                    return;
+                }
+                if (this.y < player.getY()) {
+                    this.y += speed;
+                }
+
+                else if (this.y > player.getY()) {
+                    this.y -= speed;
+                }
+            }
+        }
+        lastx = player.getX();
+        lasty = player.getY();
     }
+
+    // @Override
+    // public void seek(Player player) {
+    // int dx = this.x - player.getX();
+    // int dy = this.y - player.getY();
+    // setFacingRelativeToPlayer(player, dx, dy);
+    //
+    // if (dx == 0 && dy == 0)
+    // return;
+    //
+    // if (dx * dx >= dy * dy) {
+    // this.x = (dx > 0) ? this.x - 1 : this.x + 1;
+    // }
+    //
+    // else if (dy * dy > dx * dx) {
+    // this.y = (dy > 0) ? this.y - 1 : this.y + 1;
+    // }
+    //
+    // }
 
     @Override
     public void getAttacked(int damage) {
