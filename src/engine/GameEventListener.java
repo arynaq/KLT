@@ -156,7 +156,6 @@ WindowListener {
 		case KeyEvent.VK_ENTER:
 			if (GameState.getInstance().getState() == GameCondition.SPLASH) {
 				GameState.getInstance().setState(GameCondition.RUNNING);
-                movementManager.clearSplash();
 			}
 		}
 	}

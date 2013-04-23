@@ -74,6 +74,11 @@ public class AttackBoundBox implements Renderable {
 
 	}
 
+    /**
+     * Get the bounding box that defines the attackrange.
+     * 
+     * @return
+     */
 	public Rectangle getRectangle() {
 		setUpBox();
 		return rectangle;

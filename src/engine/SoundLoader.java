@@ -22,7 +22,6 @@ public class SoundLoader {
 	public void loadSounds(String soundlistFile) {
 		Scanner readFile = null;
 		InputStream is = getClass().getResourceAsStream(soundlistFile);
-        System.out.println(soundlistFile);
 		readFile = new Scanner(is);
 
 		while (readFile.hasNextLine()) {

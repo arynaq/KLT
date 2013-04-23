@@ -14,42 +14,43 @@ import engine.Entity;
  */
 public interface Combatable extends Entity, Comparable<Combatable> {
 
-	/**
-	 * Attacks the other Combatable entity.
-	 * 
-	 * @param other
-	 */
-    public void attack(Combatable other);
+    /**
+     * Attacks the other combatable, dealing the specified damage.
+     * 
+     * @param other
+     * @param dmg
+     */
+    public void attack(Combatable other, int dmg);
 
-	/**
-	 * Seeks the other Combatable. A* algo is implemented in our game.
-	 * 
-	 * @param other
-	 */
-	public void seek(Combatable other);
+    /**
+     * Seeks the other Combatable. A* algo is implemented in our game.
+     * 
+     * @param other
+     */
+    public void seek(Combatable other);
 
-	/**
-	 * Seeks the player. A* is implemented in our game.
-	 * 
-	 * @param player
-	 */
-	public void seek(Player player);
+    /**
+     * Seeks the player. A* is implemented in our game.
+     * 
+     * @param player
+     */
+    public void seek(Player player);
 
-	/**
-	 * Take damage.
-	 * 
-	 * @param damage
-	 */
-	public void getAttacked(int damage);
+    /**
+     * Take damage.
+     * 
+     * @param damage
+     */
+    public void getAttacked(int damage);
 
-	    /**
+    /**
      * Returns a rectangle object that defines the boundaries of this
      * Combatables attack. In our game, for the player, this rectangle is cast
      * from the players center in the direction he is facing.
      * 
      * @return
      */
-	public Rectangle getAttackBounds();
+    public Rectangle getAttackBounds();
 
     /**
      * Returns a rectangle object that defines the boundaries of this
@@ -65,7 +66,7 @@ public interface Combatable extends Entity, Comparable<Combatable> {
      * 
      * @return
      */
-	public int getAttackRange();
+    public int getAttackRange();
 
     /**
      * Check whether this combatable is ready to attack. Usually we implement a
@@ -74,7 +75,7 @@ public interface Combatable extends Entity, Comparable<Combatable> {
      * @return
      */
     public boolean isReadyToAttack();
-    
+
     /**
      * Do something doable with the other combatable when you attack it. In our
      * game the attackers push eachother their full width when they are

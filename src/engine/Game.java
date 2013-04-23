@@ -49,15 +49,14 @@ public class Game {
 				else {
 					sleep(fpsDelta - delta);
 				}
-
-
 			}
 
 			while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
 				sfx.playerGameOver();
 				gfx.renderGameOver();
+                sleep(100);
                 System.gc();
-				sleep(100);
+                System.exit(0);
 			}
 
 			while (GameState.getInstance().getState() == GameCondition.PAUSED) {
@@ -70,11 +69,13 @@ public class Game {
 			}
 
             while (GameState.getInstance().getState() == GameCondition.SPLASH) {
-                // engine.update();
                 gfx.renderSplash();
                 System.gc();
                 sleep(100);
             }
+            engine.getRenderables().remove("splash");
+            engine.getImages().remove("splashBACKGROUND");
+
 		}
 	}
 

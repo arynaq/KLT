@@ -7,15 +7,16 @@ public class DamageEngine {
 	private double critChance = 0.15;
 	private boolean isCrit = false;
 
-	/**
-	 * Simple damage calculations, crit deals 2x dmg while normal attack is
-	 * between min and max.
-	 * 
-	 * @param dmg
-	 */
-	public void calculateDamage(int dmg) {
+	    /**
+     * Simple damage calculations, crit deals 2x dmg while normal attack is
+     * between min and max.
+     * 
+     * @param dmg
+     * @return
+     */
+    public int calculateDamage(int dmg) {
 		minDmg = dmg;
-		maxDmg = dmg * 3;
+        maxDmg = dmg * 2;
 		if (Math.random() < critChance) {
 			isCrit = true;
 			dealDmg = maxDmg * 2;
@@ -29,6 +30,7 @@ public class DamageEngine {
 			System.out.println("Dmg: " + dmg + "." + " DealDmg: " + dealDmg
 					+ ".");
 		}
+        return dealDmg;
 	}
 }
 

@@ -71,6 +71,7 @@ public class GameEngine {
         for (String key : entities.keySet()) {
             Entity e = entities.get(key);
             AttackBoundBox box = new AttackBoundBox((Combatable) e);
+            System.out.println(box);
             renderables.put(box.toString(), box);
         }
     }
@@ -97,16 +98,15 @@ public class GameEngine {
 
     private void initEntities() {
         entities.put("player", player);
-        Entity blueEnemy = new CyanRectangleEnemy(1, 100);
-        Entity redEnemy = new CyanRectangleEnemy(1, 100, 50, 50, 20, 300,
- 345,
-                Color.MAGENTA);
-        Entity yellowEnemy = new CyanRectangleEnemy(1, 100, 20, 15, 18, 300,
-                345, Color.YELLOW);
-        Entity greyEnemy = new CyanRectangleEnemy(1, 100, 17, 23, 8, 300, 345,
-                Color.MAGENTA);
-        Entity whiteEnemy = new CyanRectangleEnemy(1, 100, 28, 33, 10, 300,
-                345, Color.MAGENTA);
+        Entity blueEnemy = new CyanRectangleEnemy(100, 100, 20, 15, 1,
+                Color.blue);
+        Entity redEnemy = new CyanRectangleEnemy(180, 230, 29, 17, 2, Color.red);
+        Entity whiteEnemy = new CyanRectangleEnemy(180, 190, 28, 37, 3,
+                Color.white);
+        Entity yellowEnemy = new CyanRectangleEnemy(100, 300, 15, 19, 5,
+                Color.yellow);
+        Entity greyEnemy = new CyanRectangleEnemy(150, 250, 30, 30, 9,
+                Color.gray);
         entities.put("blueEnemy", blueEnemy);
         entities.put("redEnemy", redEnemy);
         entities.put("white", whiteEnemy);
@@ -147,12 +147,12 @@ public class GameEngine {
         updateMap();
         combatManager.updateCombatables();
 
-        for (String key : entities.keySet()) {
-            if (key.equals("player"))
-                continue;
-            Combatable c = (Combatable) entities.get(key);
-            c.setFacing(player.getFacing().opposite());
-        }
+        // for (String key : entities.keySet()) {
+        // if (key.equals("player"))
+        // continue;
+        // Combatable c = (Combatable) entities.get(key);
+        // c.setFacing(player.getFacing().opposite());
+        // }
 
     }
 

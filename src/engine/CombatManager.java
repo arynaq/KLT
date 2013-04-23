@@ -14,6 +14,7 @@ public class CombatManager {
     private GameEngine engine;
     private ScrollingCombatText enemySCT;
     private ScrollingCombatText playerSCT;
+    private DamageEngine dmgEngine;
 
     public CombatManager(Player player, GameEngine gameEngine) {
         this.player = player;
@@ -45,21 +46,12 @@ public class CombatManager {
             Combatable c = (Combatable) e;
 
             if (!(GameState.getInstance().isInCurrentMap(c))) {
-                //
-                // System.out.println("The current combatable " + c
-                // + " is not in screen, skipping.");
                 continue;
             }
 
-            else {
-                // System.out.println("The current combatable " + c
-                // + " is in screen, checking combat");
-            }
-
             if (player.getAttackBounds().intersects(c.getBounds())) {
-                // System.out.println("Enemy " + c +
-                // " within range, attacking");
-                player.attack(c);
+                int dmg = dmgEngine.calculateDamage(player.getDamage());
+                player.attack(c, 1);
                 playerSCT.changeString(player.getDamage() + "");
                 playerSCT.setX(c.getX());
                 playerSCT.setY(c.getY());

@@ -84,6 +84,10 @@ public class Player extends GameCharacter {
         super.setSpriteBox(new SpriteBoundBox(this));
         this.attackBox = new AttackBoundBox(this);
         this.playerLevel = new Level(1);
+        if (System.getProperty("os.name").equals("Linux")) {
+            speedX = 7;
+            speedY = 7;
+        }
     }
 
     @Override
@@ -165,8 +169,8 @@ public class Player extends GameCharacter {
     }
 
     @Override
-    public void attack(Combatable other) {
-        other.getAttacked(getDamage());
+    public void attack(Combatable other, int damage) {
+        other.getAttacked(damage);
     }
 
     @Override

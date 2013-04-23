@@ -59,7 +59,7 @@ public class LevelManager {
             // + ": without round, "
             // + (int) (((50 * (i * i * i)) / 3.0)
             // - (100 * (i * i)) + ((850 * i) / 3.0) - 200));
-            levels.add(new Level(i * 10, reqXP, i, i - 1));
+            levels.add(new Level(i * 10, reqXP, (i * 2) - 2, i - 1));
 		}
 	}
 
