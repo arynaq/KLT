@@ -2,7 +2,9 @@ package engine;
 
 import gfx.AttackMoveAnimated;
 import gfx.GameHUD;
+import gfx.GameOverScreen;
 import gfx.IntroText;
+import gfx.PauseScreen;
 import gfx.Renderable;
 import gfx.ScrollingCombatText;
 import gfx.SplashScreen;
@@ -125,6 +127,13 @@ public class GameEngine {
     private void initRenderables() {
         SplashScreen splash = new SplashScreen();
         renderables.put("splash", splash);
+
+        PauseScreen pauseScreen = new PauseScreen();
+        renderables.put("pauseScreen", pauseScreen);
+
+        GameOverScreen gameOverScreen = new GameOverScreen();
+        renderables.put("gameOverScreen", gameOverScreen);
+
         ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 12,
                 Color.green);
         ScrollingCombatText enemySCT = new ScrollingCombatText("", 0, 0, 13,

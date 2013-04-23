@@ -81,7 +81,7 @@ public class GameHUD implements Renderable {
          */
         renderString(LEVELSHAPE, Color.yellow);
         if (levelChanged()) {
-            lvlShape = getShape("" + player.getLevels().getLevel(), 40, 40);
+            lvlShape = getShape("" + player.getLevels().getLevel(), 40, 40, 'c');
         }
         renderString(lvlShape, Color.white);
 
@@ -91,7 +91,7 @@ public class GameHUD implements Renderable {
         renderString(XPSHAPE, Color.yellow);
         if (XPChanged()) {
             xpShape = getShape(player.getXP() + "/"
-                    + player.getLevels().getReqXP(), 70, 505);
+                    + player.getLevels().getReqXP(), 5, 505, 'l');
         }
         renderString(xpShape, Color.white);
 
@@ -101,7 +101,8 @@ public class GameHUD implements Renderable {
         renderString(HPSHAPE, Color.yellow);
         if (HPChanged()) {
             hpShape = getShape(
-                    player.getHealth() + "/" + player.getMaxHealth(), 455, 40);
+                    player.getHealth() + "/" + player.getMaxHealth(), 507, 40,
+                    'r');
         }
         renderString(hpShape, Color.white);
 
@@ -111,7 +112,7 @@ public class GameHUD implements Renderable {
         // renderString("Potion", 455, 485, 10, Color.yellow, true);
         renderString(POTIONSHAPE, Color.yellow);
         if (potionChanged()) {
-            potShape = getShape("" + player.getPotionsSize(), 455, 505);
+            potShape = getShape("" + player.getPotionsSize(), 455, 505, 'c');
         }
         renderString(potShape, Color.white);
         // renderString("" + player.getPotionsSize(), 455, 505, 18,
@@ -122,7 +123,8 @@ public class GameHUD implements Renderable {
     }
 
 
-    private Shape getShape(String string, int x, int y) {
+    private Shape getShape(String string, int x, int y, char align) {
+        Shape shape = null;
         int h = y;
         int w = x;
         AttributedString as = new AttributedString(string);
@@ -130,9 +132,20 @@ public class GameHUD implements Renderable {
         AttributedCharacterIterator aci = as.getIterator();
         TextLayout tl = new TextLayout(aci, frc);
         float sw = (float) tl.getBounds().getWidth();
-        Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(w
-                - (sw / 2), h));
+        if (align == 'c') {
+            shape = tl.getOutline(AffineTransform.getTranslateInstance(w
+                    - (sw / 2), h));
+
+        } else if (align == 'r') {
+            shape = tl.getOutline(AffineTransform.getTranslateInstance(
+                    (w - sw), h));
+
+        } else if (align == 'l') {
+            shape = tl.getOutline(AffineTransform.getTranslateInstance((w), h));
+
+        }
         return shape;
+
     }
 
     @Override
@@ -222,7 +235,7 @@ public class GameHUD implements Renderable {
         /*
          * Set "HP"
          */
-        w = 455;
+        w = 480;
         h = 20;
         as = new AttributedString("Health");
         as.addAttribute(TextAttribute.FONT, staticFont, 0, "Health".length());
@@ -242,8 +255,8 @@ public class GameHUD implements Renderable {
         aci = as.getIterator();
         tl = new TextLayout(aci, frc);
         sw = (float) tl.getBounds().getWidth();
-        XPSHAPE = tl.getOutline(AffineTransform.getTranslateInstance(w
-                - (sw / 2), h));
+        XPSHAPE = tl.getOutline(AffineTransform.getTranslateInstance(w - (sw),
+                h));
 
         /*
          * Set "Potion"

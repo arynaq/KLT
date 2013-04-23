@@ -160,6 +160,10 @@ public class Player extends GameCharacter {
         return HealthPotions.size();
     }
 
+    public Potion getPotion() {
+        return HealthPotions.get(0);
+    }
+
     public void setXP(int xpGain) {
         xp += xpGain;
     }
