@@ -1,6 +1,8 @@
 package characters;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -44,7 +46,7 @@ public class CyanRectangleEnemy implements Combatable {
         this.renderable = new BlueRectangle(width, height, color);
         this.attackBox = new AttackBoundBox(this);
         this.state = State.ALIVE;
-        this.attackCooldown = 500;
+        this.attackCooldown = 5000;
 	}
 
     public CyanRectangleEnemy(int damage, int health, int width, int height,
@@ -73,6 +75,23 @@ public class CyanRectangleEnemy implements Combatable {
 
 	@Override
 	public void seek(Player player) {
+        if (this.x > player.getX()) {
+            this.x--;
+            this.x--;
+        }
+
+        else if (this.x < player.getX())
+            this.x++;
+
+        else if (this.y > player.getY())
+            this.y--;
+
+        else if (this.y < player.getY())
+            this.y++;
+        else {
+            // System.out.println("Found player");
+        }
+
 	}
 
 	@Override
@@ -87,11 +106,11 @@ public class CyanRectangleEnemy implements Combatable {
 
 	@Override
 	public Renderable getRenderable() {
-        if (!GameState.getInstance().isInCurrentMap(this)) {
-            renderable.setX(GameState.DIMENSION.width + 1);
-            renderable.setY(GameState.DIMENSION.height + 1);
-            return renderable;
-        }
+        // if (!GameState.getInstance().isInCurrentMap(this)) {
+        // renderable.setX(GameState.DIMENSION.width + 1);
+        // renderable.setY(GameState.DIMENSION.height + 1);
+        // return renderable;
+        // }
         renderable.setX(x);
         renderable.setY(y);
 		return renderable;
@@ -126,8 +145,14 @@ public class CyanRectangleEnemy implements Combatable {
 
 		@Override
 		public void render(Graphics2D g) {
+            Composite cG = g.getComposite();
+            Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                    0.5f);
+            g.setComposite(c);
             g.setColor(color);
-            g.fillRect(x, y, width, height);
+            g.fillRect(x % GameState.DIMENSION.width, y
+                    % GameState.DIMENSION.height, width, height);
+            g.setComposite(cG);
 		}
 
 		@Override
@@ -253,6 +278,12 @@ public class CyanRectangleEnemy implements Combatable {
         }
         t0 = System.currentTimeMillis();
         return ret;
+    }
+
+    @Override
+    public int getDamage() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }

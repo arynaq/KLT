@@ -86,4 +86,9 @@ public class InputManager {
 	public void attack() {
 		combatManager.playerAttack();
 	}
+
+    public void clearSplash() {
+        engine.getRenderables().remove("splash");
+        engine.getImages().remove("splashBACKGROUND");
+    }
 }

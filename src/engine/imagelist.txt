@@ -11,3 +11,4 @@
 a player player2.png 4 4
 w world worldmap.png
 w collision worldCollision.png
+b splash kloftasmall3.png

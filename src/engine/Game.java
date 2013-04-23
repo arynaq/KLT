@@ -26,7 +26,7 @@ public class Game {
 		sleep(10);
 		gfx.start();
 		sleep(10);
-		sfx.start();
+        sfx.start();
 		sleep(10);
 	}
 
@@ -37,7 +37,7 @@ public class Game {
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
                 engine.update();
-				sfx.playMusic("beezDul.wav");
+                sfx.playMusic("beezDul.wav");
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
@@ -56,18 +56,23 @@ public class Game {
 			while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
 				sfx.playerGameOver();
 				gfx.renderGameOver();
+                System.gc();
 				sleep(100);
 			}
 
 			while (GameState.getInstance().getState() == GameCondition.PAUSED) {
+                delta = time() - t0;
 				sfx.pauseGame();
 				gfx.renderPause();
+                engine.updatePaused(delta);
+                t0 = time();
 				sleep(100);
 			}
 
             while (GameState.getInstance().getState() == GameCondition.SPLASH) {
-                engine.update();
+                // engine.update();
                 gfx.renderSplash();
+                System.gc();
                 sleep(100);
             }
 		}

@@ -3,7 +3,6 @@ package characters;
 import engine.AttackBoundBox;
 import engine.GameInput.Movement;
 import engine.GameState;
-import engine.LevelManager.Level;
 import engine.SpriteBoundBox;
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
@@ -11,6 +10,16 @@ import items.Potion;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import worldmap.CollisionMap;
+
+/**
+ * This class holds the player, multiple players allowed but only the first will
+ * respond to input in our game.
+ * 
+ * @author arynaq
+ * 
+ */
 
 public class Player extends GameCharacter {
 
@@ -26,8 +35,8 @@ public class Player extends GameCharacter {
     private Renderable currentRenderable;
 
     private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
-    private int speedX = 3;
-    private int speedY = 3;
+    private int speedX = 2;
+    private int speedY = 2;
     private int health;
     private int maxHealth;
     private int xp;
@@ -51,28 +60,30 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * The player is initialized with its sprite being fully animated.
+     * The player is initialized with its sprite being fully animated. This is
+     * the player we use in the game.
      * 
-     * @param animatedSpriteSheet
+     * @param attackMoveAnimated
      */
-    public Player(AttackMoveAnimated animatedSpriteSheet) {
+    public Player(AttackMoveAnimated attackMoveAnimated) {
         super.setX(120);
         super.setY(340);
 
-        this.fullSheet = animatedSpriteSheet;
-        this.moveSouthSheet = animatedSpriteSheet.getSouthMovementSheet();
-        this.moveWestSheet = animatedSpriteSheet.getWestMovementSheet();
-        this.moveEastSheet = animatedSpriteSheet.getEastMovementSheet();
-        this.moveNorthSheet = animatedSpriteSheet.getNorthMovementSheet();
+        this.fullSheet = attackMoveAnimated;
+        this.moveSouthSheet = attackMoveAnimated.getSouthMovementSheet();
+        this.moveWestSheet = attackMoveAnimated.getWestMovementSheet();
+        this.moveEastSheet = attackMoveAnimated.getEastMovementSheet();
+        this.moveNorthSheet = attackMoveAnimated.getNorthMovementSheet();
 
-        super.setWidth(animatedSpriteSheet.getSheeet().getImages().get(0)
+        super.setWidth(attackMoveAnimated.getSheeet().getImages().get(0)
                 .getWidth());
-        super.setHeight(animatedSpriteSheet.getSheeet().getImages().get(0)
+        super.setHeight(attackMoveAnimated.getSheeet().getImages().get(0)
                 .getHeight());
         super.setFacing(Movement.RIGHT);
         super.setState(State.ALIVE);
         super.setSpriteBox(new SpriteBoundBox(this));
         this.attackBox = new AttackBoundBox(this);
+        this.playerLevel = new Level(1);
     }
 
     @Override
@@ -82,7 +93,6 @@ public class Player extends GameCharacter {
         }
 
         else if (getFacing() == Movement.LEFT) {
-
             currentRenderable = moveWestSheet;
         }
 
@@ -93,6 +103,7 @@ public class Player extends GameCharacter {
         else if (getFacing() == Movement.DOWN) {
             currentRenderable = moveSouthSheet;
         }
+
         updateCurrentRenderable();
         return currentRenderable;
     }
@@ -203,10 +214,12 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * Pushes the other combatable we are attacking. $Devnote: We could abstract
+     * Pushes the other combatable we are attacking. By default the other
+     * combatable is pushed his full width/height.$Devnote: We could abstract
      * this method in a base combatclass since every combatable in our game just
      * pushes a target back if they are attacked but we have some cool futures
-     * in mind. We want this to be unique. TODO Do that.$
+     * in mind, like a special attack that blows the enemy out of the screen,
+     * oneshotting it. We want this to be unique. TODO Do that.$
      */
     @Override
     public void doSomethingToOtherOnAttack(Combatable other) {
@@ -221,6 +234,10 @@ public class Player extends GameCharacter {
                     || other.getX() + w >= GameState.DIMENSION.width - 1) {
                 break;
             }
+            if (!CollisionMap
+                    .isWalkable(other, other.getX() + dx, other.getY())) {
+                break;
+            }
             other.setX(other.getX() + dx);
             x++;
         }
@@ -229,6 +246,10 @@ public class Player extends GameCharacter {
             if (other.getY() <= 0
                     || other.getY() + h >= GameState.DIMENSION.width - 1)
                 break;
+            if (!CollisionMap
+                    .isWalkable(other, other.getX(), other.getY() + dy)) {
+                break;
+            }
             other.setY(other.getY() + dy);
             y++;
         }
@@ -241,8 +262,6 @@ public class Player extends GameCharacter {
         long delta = System.currentTimeMillis() - t0;
         timer += delta;
         if (timer > attackCooldown) {
-            System.out.println(this + ": " + timer + "has passed, cooldown is "
-                    + attackCooldown + " ready to attack.");
             timer = 0;
             ret = true;
         } else {
@@ -254,8 +273,6 @@ public class Player extends GameCharacter {
 
     @Override
     public int getDamage() {
-        System.out.println("I am getting damage, my current dmg is: "
-                + playerLevel.getDmg());
         return playerLevel.getDmg();
     }
 

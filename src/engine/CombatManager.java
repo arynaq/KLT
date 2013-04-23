@@ -22,7 +22,6 @@ public class CombatManager {
                 "enemySCT");
         this.playerSCT = (ScrollingCombatText) engine.getRenderables().get(
                 "playerSCT");
-        System.out.println(enemySCT);
 
     }
 
@@ -46,7 +45,7 @@ public class CombatManager {
             Combatable c = (Combatable) e;
 
             if (!(GameState.getInstance().isInCurrentMap(c))) {
-
+                //
                 // System.out.println("The current combatable " + c
                 // + " is not in screen, skipping.");
                 continue;
@@ -108,13 +107,19 @@ public class CombatManager {
     }
 
     public void updateCombatables() {
-        combatablesAttackPlayer();
+        // combatablesAttackPlayer();
         combatablesSearchPlayer();
 
     }
 
     private void combatablesSearchPlayer() {
-
+        for (String key : engine.getEntities().keySet()) {
+            if (key.equals("player"))
+                continue;
+            Entity e = engine.getEntities().get(key);
+            Combatable c = (Combatable) e;
+            c.seek(player);
+        }
     }
 
     private void combatablesAttackPlayer() {

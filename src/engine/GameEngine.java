@@ -2,8 +2,10 @@ package engine;
 
 import gfx.AttackMoveAnimated;
 import gfx.GameHUD;
+import gfx.IntroText;
 import gfx.Renderable;
 import gfx.ScrollingCombatText;
+import gfx.SplashScreen;
 import gfx.SpriteSheet;
 
 import java.awt.Color;
@@ -28,6 +30,7 @@ public class GameEngine {
     private FontLoader fontLoader;
     private GameEventListener inputListener;
     private SoundEngine soundEngine;
+    private long pauseTimer;
 
     public GameEngine(Map<String, Entity> entities,
             Map<String, Renderable> renderables,
@@ -73,7 +76,8 @@ public class GameEngine {
     }
 
     private void initManagers() {
-        levelManager = new LevelManager(player, renderables.get("xpSCT"),
+        levelManager = new LevelManager(player,
+                (ScrollingCombatText) renderables.get("xpSCT"),
                 soundEngine);
         levelManager.setLevelUpSCT((ScrollingCombatText) renderables
                 .get("levelUpSCT"));
@@ -97,8 +101,17 @@ public class GameEngine {
         Entity redEnemy = new CyanRectangleEnemy(1, 100, 50, 50, 20, 300,
  345,
                 Color.MAGENTA);
+        Entity yellowEnemy = new CyanRectangleEnemy(1, 100, 20, 15, 18, 300,
+                345, Color.YELLOW);
+        Entity greyEnemy = new CyanRectangleEnemy(1, 100, 17, 23, 8, 300, 345,
+                Color.MAGENTA);
+        Entity whiteEnemy = new CyanRectangleEnemy(1, 100, 28, 33, 10, 300,
+                345, Color.MAGENTA);
         entities.put("blueEnemy", blueEnemy);
         entities.put("redEnemy", redEnemy);
+        entities.put("white", whiteEnemy);
+        entities.put("yellow", yellowEnemy);
+        entities.put("grey", greyEnemy);
     }
 
     private void initPlayer() {
@@ -110,6 +123,8 @@ public class GameEngine {
     }
 
     private void initRenderables() {
+        SplashScreen splash = new SplashScreen();
+        renderables.put("splash", splash);
         ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 12,
                 Color.green);
         ScrollingCombatText enemySCT = new ScrollingCombatText("", 0, 0, 13,
@@ -122,6 +137,7 @@ public class GameEngine {
         renderables.put("playerSCT", playerSCT);
         renderables.put("enemySCT", enemySCT);
         renderables.put("levelUpSCT", levelUpSCT);
+        renderables.put("bsTxt", new IntroText());
 
     }
 
@@ -131,10 +147,12 @@ public class GameEngine {
         updateMap();
         combatManager.updateCombatables();
 
-        ((CyanRectangleEnemy) entities.get("blueEnemy")).setFacing(player
-                .getFacing().opposite());
-        ((CyanRectangleEnemy) entities.get("redEnemy")).setFacing(player
-                .getFacing().opposite());
+        for (String key : entities.keySet()) {
+            if (key.equals("player"))
+                continue;
+            Combatable c = (Combatable) entities.get(key);
+            c.setFacing(player.getFacing().opposite());
+        }
 
     }
 
@@ -164,6 +182,25 @@ public class GameEngine {
 
     public Map<String, Renderable> getRenderables() {
         return renderables;
+    }
+
+    public Map<String, ArrayList<BufferedImage>> getImages() {
+        return images;
+    }
+
+    /**
+     * Decides what to do during pause. We are just gonna force the
+     * garbagecollector every minute.
+     * 
+     * @param delta
+     */
+    public void updatePaused(long delta) {
+        pauseTimer += delta;
+        if (pauseTimer > 1000 * 60) {
+            System.out.println("Game paused, kicking in garbagecollector");
+            System.gc();
+            pauseTimer = 0;
+        }
     }
 
 }

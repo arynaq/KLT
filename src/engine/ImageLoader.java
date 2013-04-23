@@ -64,12 +64,25 @@ public class ImageLoader {
 				loadCharacterPortrait(strings[1], strings[2]);
 			}
 
+            // SplashBackGround
+			if (line.startsWith("b")){
+                String[] strings = line.split("\\s+");
+                loadSplashBackground(strings[1], strings[2]);
+			}
+
 		}
 		readFile.close();
 	}
 
 	
-	private void loadCharacterPortrait(String key, String fileName) {
+    private void loadSplashBackground(String key, String fileName) {
+        key += "BACKGROUND";
+        ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(1);
+        list.add(loadIMG(SPRITEDIR + fileName));
+        images.put(key, list);
+    }
+
+    private void loadCharacterPortrait(String key, String fileName) {
 		key += "PORTRAIT";
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(1);
 		list.add(loadIMG(PORTRAITDIR + fileName));

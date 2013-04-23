@@ -143,7 +143,8 @@ WindowListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-				checkIfmoveAllowed("attack");
+                // checkIfmoveAllowed("attack");
+                movementManager.attack();
 			}
 			break;
 		case KeyEvent.VK_E:
@@ -155,6 +156,7 @@ WindowListener {
 		case KeyEvent.VK_ENTER:
 			if (GameState.getInstance().getState() == GameCondition.SPLASH) {
 				GameState.getInstance().setState(GameCondition.RUNNING);
+                movementManager.clearSplash();
 			}
 		}
 	}

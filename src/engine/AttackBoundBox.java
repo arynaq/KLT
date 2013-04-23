@@ -8,6 +8,16 @@ import java.awt.Rectangle;
 
 import characters.Combatable;
 
+/**
+ * Returns a boundingbox for the given combatable. This boundingbox is a
+ * rectangle that includes the attackers dimensions and the range of his attack.
+ * Also renderable for the sake of testing, the boxes will be visible with a red
+ * outline.
+ * 
+ * @author arynaq
+ * 
+ */
+
 public class AttackBoundBox implements Renderable {
 	Combatable t;
 	Rectangle rectangle;
@@ -56,9 +66,7 @@ public class AttackBoundBox implements Renderable {
 
         else {
             h = t.getWidth() + t.getAttackRange();
-            // w = t.getHeight(); // <<Works for player in all directions
             w = t.getWidth();
-            // x -= t.getWidth() / 4; // << Works for player in all directions
             y += (h * (t.getFacing().getDY() - 1) + t.getHeight()) / 2;
         }
 

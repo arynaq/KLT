@@ -6,6 +6,8 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import engine.GameState;
+
 public class ScrollingCombatText implements Renderable {
 
 	private String xpMessage;
@@ -29,6 +31,10 @@ public class ScrollingCombatText implements Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
+        if (x < 0 && x > GameState.DIMENSION.width)
+            return;
+        if (y < 0 && y > GameState.DIMENSION.width)
+            return;
 		if (oldY < y - 100) {
 			return;
 		}
