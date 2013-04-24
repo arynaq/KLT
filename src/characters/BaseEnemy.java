@@ -38,12 +38,23 @@ public abstract class BaseEnemy implements Combatable {
         this.height = height;
         this.dmg = damage;
         this.health = health;
-        System.out.println("I was given hp: " + health);
         this.attackRange = attackRange;
         this.attackCooldown = attackCooldown;
         this.bounds = new Rectangle(x, y, width, height);
+        this.setFacing(Movement.RIGHT);
+        this.attackBox = new AttackBoundBox(this);
+        this.bounds = new Rectangle(x, y, width, height);
+        this.speed = 1;
 
-        // Save states for resetting
+        System.out.println(this + " created with:");
+        System.out.println("x,y,width,height: " + x + "," + y + "," + width
+                + "," + height);
+        System.out.println("dmg,health,speed,atkCD,atkRange: " + damage + ","
+                + health
+ + "," + speed + "," + attackCooldown + ","
+                + attackRange);
+
+        // Save states for reset
         this.resetHealth = health;
         this.resetState = State.ALIVE;
         this.resetX = x;
@@ -139,14 +150,15 @@ public abstract class BaseEnemy implements Combatable {
     @Override
     public void seek(Player player) {
         setFacingRelativeToPlayer(player);
+        System.out.println("My speed is: " + speed);
         int dx, dy, xface, yface;
+
         if (this.x - player.getX() >= 0) {
             xface = 1;
         } else {
             xface = -1;
         }
-        if (this.y - // TODO Auto-generated method stub
-                player.getY() >= 0) {
+        if (this.y - player.getY() >= 0) {
             yface = 1;
         } else {
             yface = -1;
@@ -171,7 +183,7 @@ public abstract class BaseEnemy implements Combatable {
         if (diagonal) {
             if (dx < speed) {
                 this.x = player.getX();
-                // return;
+                System.out.println("setting x to playerx");
             } else if (xface == -1) {
                 this.x += speed;
             } else if (xface == 1) {

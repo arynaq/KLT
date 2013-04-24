@@ -150,9 +150,10 @@ public class CombatManager {
             if (!(combatable.getAttackBounds().intersects(player.getBounds())))
                 continue;
 
+
+
             int dmg = dmgEngine.calculateDamage(combatable.getDamage());
             combatable.attack(player, dmg);
-            player.getAttacked(dmg);
             combatable.doSomethingToOtherOnAttack(player);
             playerSCT.changeString("-" + dmg + "HP", Color.red);
             playerSCT.setX(player.getX());

@@ -1,15 +1,12 @@
 package characters;
 
+import engine.GameState;
+import gfx.Renderable;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
-import engine.AttackBoundBox;
-import engine.GameInput.Movement;
-import engine.GameState;
-import gfx.Renderable;
 
 /**
  * A simple targetdummy which can attack and be attacked, represented by a
@@ -25,18 +22,13 @@ public class CyanRectangleEnemy extends BaseEnemy {
     public CyanRectangleEnemy(int x, int y, int width, int height, Color color) {
         super(x, y, width, height);
         this.renderable = new BlueRectangle(x, y, width, height, color);
-        setFacing(Movement.UP);
-        setAttackBox(new AttackBoundBox(this));
-        setBounds(new Rectangle(x, y, width, height));
     }
 
     public CyanRectangleEnemy(int x, int y, int width, int height, int speed,
             Color color) {
         super(x, y, width, height, speed);
         this.renderable = new BlueRectangle(x, y, width, height, color);
-        setFacing(Movement.UP);
-        setAttackBox(new AttackBoundBox(this));
-        setBounds(new Rectangle(x, y, width, height));
+
     }
 
     @Override

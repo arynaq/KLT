@@ -18,6 +18,7 @@ import java.util.Map;
 import worldmap.WorldMap;
 import characters.Combatable;
 import characters.CyanRectangleEnemy;
+import characters.HumanoidEnemy;
 import characters.Player;
 
 
@@ -91,6 +92,49 @@ public class GameEngine {
         entities.put("player", player);
         Entity blueEnemy = new CyanRectangleEnemy(100 + 512, 100, 20, 15, 1,
                 Color.blue);
+        entities.put("blueEnemy", blueEnemy);
+
+
+        AttackMoveAnimated trollSprite = new AttackMoveAnimated(
+                new SpriteSheet(images.get("trollANIMATED"), 4, 4), 100);
+        // AttackMoveAnimated oldManSprite = new AttackMoveAnimated(
+        // new SpriteSheet(images.get("oldmanANIMATED"), 4, 4), 100);
+        // AttackMoveAnimated ghostSprite = new AttackMoveAnimated(
+        // new SpriteSheet(images.get("ghostANIMATED"), 4, 4), 100);
+        // AttackMoveAnimated bruteSprite = new AttackMoveAnimated(
+        // new SpriteSheet(images.get("bruteANIMATED"), 4, 4), 100);
+        // AttackMoveAnimated oldWomanSprite = new AttackMoveAnimated(
+        // new SpriteSheet(images.get("oldwomanANIMATED"), 4, 4), 100);
+        // AttackMoveAnimated germanSprite = new AttackMoveAnimated(
+        // new SpriteSheet(images.get("germanANIMATED"), 4, 4), 100);
+
+        Entity troll = new HumanoidEnemy(trollSprite, 120, 340, 100, 2,
+                10000);
+        // Entity oldman = new HumanoidEnemy(oldManSprite, 130 + 1024, 330, 100,
+        // 2, 10000);
+        // Entity ghost = new HumanoidEnemy(ghostSprite, 130, 360 + 512, 100, 2,
+        // 10000);
+        // Entity brute = new HumanoidEnemy(bruteSprite, 120 + 512, 360, 100, 2,
+        // 10000);
+        // Entity oldwoman = new HumanoidEnemy(oldWomanSprite, 100 + 512, 320,
+        // 100, 2,
+        // 10000);
+        // Entity german = new HumanoidEnemy(germanSprite, 100, 300, 100, 2,
+        // 10000);
+
+        entities.put("troll", troll);
+        // entities.put("oldman", oldman);
+        // entities.put("ghost", ghost);
+        // entities.put("brute", brute);
+        // entities.put("oldwoman", oldwoman);
+        // entities.put("german", german);
+
+        // a oldman EnemyFour.png 4 4
+        // a ghost EnemyThree.png 4 4
+        // a brute EnemyTwo.png 4 4
+        // a baldman npc1.png 4 4
+        // a oldwoman npc3.png 4 4
+        // a german npc4.png 4 4
         // Entity redEnemy = new CyanRectangleEnemy(180, 230, 29, 17, 2,
         // Color.red);
         // Entity whiteEnemy = new CyanRectangleEnemy(180, 190, 28, 37, 2,
@@ -99,7 +143,7 @@ public class GameEngine {
         // Color.yellow);
         // Entity greyEnemy = new CyanRectangleEnemy(150, 250, 30, 30, 2,
         // Color.gray);
-        entities.put("blueEnemy", blueEnemy);
+
         // entities.put("redEnemy", redEnemy);
         // entities.put("white", whiteEnemy);
         // entities.put("yellow", yellowEnemy);
