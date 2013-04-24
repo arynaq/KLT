@@ -26,16 +26,15 @@ import worldmap.CollisionMap;
 
 public class Player extends GameCharacter {
 
-    private Renderable fullSheet;
-    private Renderable moveSouthSheet;
-    private Renderable moveWestSheet;
-    private Renderable moveEastSheet;
-    private Renderable moveNorthSheet;
-    private Renderable attackSouthSheet;
-    private Renderable attackWestSheet;
-    private Renderable attackEastSheet;
-    private Renderable attackNorthSheet;
-    private Renderable currentRenderable;
+    private Animated moveSouthSheet;
+    private Animated moveWestSheet;
+    private Animated moveEastSheet;
+    private Animated moveNorthSheet;
+    private Animated attackSouthSheet;
+    private Animated attackWestSheet;
+    private Animated attackEastSheet;
+    private Animated attackNorthSheet;
+    private Animated currentRenderable;
 
     private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
     private int speedX = 2;
@@ -60,7 +59,6 @@ public class Player extends GameCharacter {
         super.setX(120);
         super.setY(340);
 
-        this.fullSheet = attackMoveAnimated;
         this.moveSouthSheet = attackMoveAnimated.getSouthMovementSheet();
         this.moveWestSheet = attackMoveAnimated.getWestMovementSheet();
         this.moveEastSheet = attackMoveAnimated.getEastMovementSheet();
@@ -88,9 +86,6 @@ public class Player extends GameCharacter {
     @Override
     public Renderable getRenderable() {
         return (attacking ? attackRenderable() : movementRenderable());
-
-
-
     }
 
     private Renderable movementRenderable() {
@@ -114,22 +109,32 @@ public class Player extends GameCharacter {
     }
 
     private Renderable attackRenderable() {
-        if (attacking) {
-            if (((Animated) currentRenderable).isOver()) {
-                System.out.println("On last frame");
+        if (getFacing() == Movement.RIGHT) {
+            if (attackEastSheet.isOver())
                 attacking = false;
-                if (getFacing() == Movement.RIGHT)
-                    currentRenderable = moveEastSheet;
-                updateCurrentRenderable();
-                return currentRenderable;
-            }
-
-            if (getFacing() == Movement.RIGHT)
-                currentRenderable = attackEastSheet;
-            updateCurrentRenderable();
-            return currentRenderable;
+            currentRenderable =  attackEastSheet;
         }
-        return null;
+        
+        else if (getFacing() == Movement.LEFT){
+            if (attackWestSheet.isOver())
+                attacking = false;
+            currentRenderable = attackWestSheet;
+        }
+        
+        else if (getFacing() == Movement.UP) {
+            if (attackNorthSheet.isOver())
+                attacking = false;
+            currentRenderable = attackNorthSheet;
+        }
+
+        else if (getFacing() == Movement.DOWN){
+            if (attackSouthSheet.isOver())
+                attacking = false;
+            currentRenderable = attackSouthSheet;
+        }
+        
+        updateCurrentRenderable();
+        return currentRenderable;
     }
 
     private void updateCurrentRenderable() {
@@ -139,7 +144,10 @@ public class Player extends GameCharacter {
     }
 
     private void resetAttackRenderables() {
-        ((Animated) attackEastSheet).reset();
+        attackEastSheet.reset();
+        attackNorthSheet.reset();
+        attackWestSheet.reset();
+        attackSouthSheet.reset();
     }
 
     public int getSpeedX() {
