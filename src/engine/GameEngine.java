@@ -127,14 +127,18 @@ public class GameEngine {
     }
 
     public void update(long delta) {
-        if (!introTxt.isOver())
-            return;
         timer += delta;
-        t0 = System.currentTimeMillis();
+        if (!introTxt.isOver()) {
+            timer = 0;
+            return;
+        }
+
         if (timer >= (1000.0 / GameState.GAMEFPS)) {
+
         } else {
             return;
         }
+        t0 = System.currentTimeMillis();
         inputListener.update();
         updatePlayer();
         updateMap();

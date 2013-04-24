@@ -28,9 +28,11 @@ public class GameState {
 	 * Singleton for this class.
 	 */
 	private static final GameState instance = new GameState();
-	/*
-	 * Determines the highest rate at which the game will run.
-	 */
+    /*
+     * Determines the highest rate at which the game will run. This is closely
+     * related to movement (we only read input fps times per second) so movement
+     * will behave unexpectedly over 60 fps.
+     */
     public static int GAMEFPS = 60;
     /*
      * Determine how fast the player animation walks. 1 is very fast, 50 is very

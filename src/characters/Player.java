@@ -37,8 +37,8 @@ public class Player extends GameCharacter {
     private Animated currentRenderable;
 
     private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
-    private int speedX = 1;
-    private int speedY = 1;
+    private int speedX;
+    private int speedY;
     private int health;
     private int maxHealth;
     private int xp;
@@ -77,10 +77,10 @@ public class Player extends GameCharacter {
         super.setSpriteBox(new SpriteBoundBox(this));
         this.attackBox = new AttackBoundBox(this);
         this.playerLevel = new Level(99);
-        if (System.getProperty("os.name").equals("Linux")) {
-            speedX = 7;
-            speedY = 7;
-        }
+
+        // Ensure moves relatively
+        this.speedX = (int) Math.round(120.0 / GameState.GAMEFPS);
+        this.speedY = speedX;
     }
 
     @Override

@@ -52,10 +52,6 @@ public class HumanoidEnemy extends BaseEnemy {
             return currentRenderable;
         }
 
-
-
-
-
         if (getX() != oldX || getY() != oldY)
             doMove = true;
         else

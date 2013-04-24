@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -12,40 +13,15 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SoundLoader {
-	private Map<String, Clip> sounds;
+    private Map<String, Clip> sounds;
 
-	public SoundLoader(String soundlistName, Map<String, Clip> sounds) {
-		this.sounds = sounds;
-		loadSounds(soundlistName);
+    public SoundLoader(String soundlistName, Map<String, Clip> sounds) {
+        this.sounds = sounds;
+        loadSounds(soundlistName);
         System.out.println("Done loading sounds from file.");
-	}
+    }
 
-    // public void loadSounds(String soundlistFile) {
-    // Scanner readFile = null;
-    // InputStream is = getClass().getResourceAsStream(soundlistFile);
-    // readFile = new Scanner(is);
-    //
-    // while (readFile.hasNextLine()) {
-    // String line = readFile.nextLine();
-    // try {
-    // AudioInputStream audio = AudioSystem
-    // .getAudioInputStream(SoundLoader.class
-    // .getResourceAsStream("/sounds/" + line));
-    // Clip clip = AudioSystem.getClip();
-    // clip.open(audio);
-    // sounds.put(line, clip);
-    // } catch (UnsupportedAudioFileException uae) {
-    // System.out.println(uae);
-    // } catch (IOException ioe) {
-    // System.out.println(ioe);
-    // } catch (LineUnavailableException lua) {
-    // System.out.println(lua);
-    // }
-    // }
-    // readFile.close();
-    //
-    // }
-	public void loadSounds(String soundlistFile) {
+    public void loadSounds(String soundlistFile) {
         Scanner readFile = null;
         InputStream is = getClass().getResourceAsStream(soundlistFile);
         readFile = new Scanner(is);
@@ -56,9 +32,11 @@ public class SoundLoader {
                 continue;
             String[] args = line.split("\\s+");
             try {
+                InputStream in = getClass().getResourceAsStream(
+                        "/sounds/" + args[1]);
+                BufferedInputStream bin = new BufferedInputStream(in, 1024 * 8);
                 AudioInputStream audio = AudioSystem
-                        .getAudioInputStream(SoundLoader.class
-                                .getResourceAsStream("/sounds/" + args[1]));
+                        .getAudioInputStream(bin);
                 Clip clip = AudioSystem.getClip();
                 clip.open(audio);
                 sounds.put(args[0], clip);

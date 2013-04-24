@@ -47,7 +47,7 @@ public abstract class BaseEnemy implements Combatable {
         this.setFacing(Movement.RIGHT);
         this.attackBox = new AttackBoundBox(this);
         this.bounds = new Rectangle(x, y, width, height);
-        this.speed = 2;
+        this.speed = 1;
         //
         // System.out.println(this + " created with:");
         // System.out.println("x,y,width,height: " + x + "," + y + "," + width

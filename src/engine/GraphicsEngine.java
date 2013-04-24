@@ -72,31 +72,33 @@ public class GraphicsEngine {
 
     public void render(int delta) {
         timer += delta;
-        t0 = System.currentTimeMillis();
         if (timer >= (1000.0 / GameState.GAMEFPS)) {
+
         } else
             return;
-        do {
-            clearScreen();
-            renderables.get("currentMap").render(g);
-            for (String key : renderables.keySet()) {
-                if (key.equals("currentMap"))
-                    continue;
-                if (key.equals("gameOverScreen"))
-                    continue;
-                if (key.equals("pauseScreen"))
-                    continue;
-                renderables.get(key).render(g);
-                renderables.get(key).render(g, (int) timer);
 
-            }
-            for (String key : entities.keySet()) {
-                entities.get(key).getRenderable().render(g, (int) timer);
-                entities.get(key).getRenderable().render(g);
-            }
-            showBuffer();
-        } while (bufferStrategy.contentsLost());
-        timer = 0;
+        t0 = System.currentTimeMillis();
+        clearScreen();
+        renderables.get("currentMap").render(g);
+        for (String key : renderables.keySet()) {
+            if (key.equals("currentMap"))
+                continue;
+            if (key.equals("gameOverScreen"))
+                continue;
+            if (key.equals("pauseScreen"))
+                continue;
+            renderables.get(key).render(g);
+            renderables.get(key).render(g, (int) timer);
+
+        }
+        for (String key : entities.keySet()) {
+            entities.get(key).getRenderable().render(g, (int) timer);
+            entities.get(key).getRenderable().render(g);
+        }
+        showBuffer();
+        long t1 = System.currentTimeMillis() - t0;
+        timer += -(1000.0) / GameState.GAMEFPS + t1;
+
     }
 
     public void renderGameOver() {
