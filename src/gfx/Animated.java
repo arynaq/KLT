@@ -87,7 +87,6 @@ public class Animated implements Renderable {
 			return;
 		frameUpdate(deltaTime);
 		g.drawImage(currentImage, x, y, null);
-		System.out.println("Drawing player with delta");
 	}
 
 	@Override

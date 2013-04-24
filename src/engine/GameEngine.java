@@ -63,7 +63,6 @@ public class GameEngine {
         initManagers();
         initMaps();
         initFonts();
-        // initTest();
     }
 
 
@@ -242,7 +241,7 @@ public class GameEngine {
      * Testing different aspects of the game. Sets up the visual bounding boes
      * that define the sprite bounds and the attackbounds.
      */
-    private void initTest() {
+    public void initTest() {
         renderables.put("playerBOX", player.getSpriteBox());
         for (String key : entities.keySet()) {
             Entity e = entities.get(key);

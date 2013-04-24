@@ -65,13 +65,16 @@ public class Game {
 				gfx.renderPause();
                 engine.updatePaused(delta);
                 t0 = time();
-				sleep(100);
+                sleep(100);
 			}
 
             while (GameState.getInstance().getState() == GameCondition.SPLASH) {
+                if (GameState.getInstance().isEnableVisualTesting()) {
+                    engine.initTest();
+                }
                 gfx.renderSplash();
                 System.gc();
-                sleep(100);
+                sleep(1000);
             }
             engine.getRenderables().remove("splash");
             engine.getImages().remove("splashBACKGROUND");
@@ -84,9 +87,11 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
+        if (args.length != 0 && args[0].equals("doTest=true")) {
+            System.out.println("Time in main: " + System.currentTimeMillis());
+            GameState.getInstance().setEnableVisualTesting(true);
+        }
 		Game game = Game.getInstance();
-        // ExamplePlayer ex = new ExamplePlayer();
-        // ex.start();
 		game.init();
 		game.gameLoop();
 	}

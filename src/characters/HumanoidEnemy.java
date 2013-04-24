@@ -25,7 +25,7 @@ public class HumanoidEnemy extends BaseEnemy {
             int health, int damage,
             int attackCooldown) {
         super(x, y, animation.getSheeet().getFrame(0).getWidth(), animation
-                .getSheeet().getFrame(0).getHeight(), damage, health, 20,
+                .getSheeet().getFrame(0).getHeight(), damage, health, 0,
                 attackCooldown);
 
         this.moveWest = animation.getWestMovementSheet();

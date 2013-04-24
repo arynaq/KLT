@@ -47,6 +47,12 @@ public class GameState {
      */
     private boolean audioSupported = true;
 
+    /**
+     * Should we enable boolean testing? This is set by the arguments to the the
+     * main in Game.java
+     */
+    private boolean enableVisualTesting;
+
 	private GameState() {
         this.state = GameCondition.SPLASH;
 	}
@@ -108,6 +114,14 @@ public class GameState {
 
     public void setAudioSupported(boolean audioSupported) {
         this.audioSupported = audioSupported;
+    }
+
+    public boolean isEnableVisualTesting() {
+        return enableVisualTesting;
+    }
+
+    public void setEnableVisualTesting(boolean enableVisualTesting) {
+        this.enableVisualTesting = enableVisualTesting;
     }
 
 }

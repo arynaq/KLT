@@ -150,7 +150,6 @@ public abstract class BaseEnemy implements Combatable {
     @Override
     public void seek(Player player) {
         setFacingRelativeToPlayer(player);
-        System.out.println("My speed is: " + speed);
         int dx, dy, xface, yface;
 
         if (this.x - player.getX() >= 0) {
