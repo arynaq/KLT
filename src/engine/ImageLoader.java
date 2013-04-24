@@ -64,12 +64,25 @@ public class ImageLoader {
 				loadCharacterPortrait(strings[1], strings[2]);
 			}
 
+            // SplashBackGround
+			if (line.startsWith("b")){
+                String[] strings = line.split("\\s+");
+                loadSplashBackground(strings[1], strings[2]);
+			}
+
 		}
 		readFile.close();
 	}
 
 	
-	private void loadCharacterPortrait(String key, String fileName) {
+    private void loadSplashBackground(String key, String fileName) {
+        key += "BACKGROUND";
+        ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(1);
+        list.add(loadIMG(SPRITEDIR + fileName));
+        images.put(key, list);
+    }
+
+    private void loadCharacterPortrait(String key, String fileName) {
 		key += "PORTRAIT";
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(1);
 		list.add(loadIMG(PORTRAITDIR + fileName));
@@ -88,7 +101,6 @@ public class ImageLoader {
 	private void loadWorldMap(String key, String filename) {
 		key += "WORLDMAP";
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>(1);
-		System.out.println(filename);
 		list.add(loadIMG(MAPDIR + filename));
 		images.put(key, list);
 	}
@@ -111,11 +123,13 @@ public class ImageLoader {
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
 		BufferedImage img = loadIMG(SPRITEDIR + fileName);
 		BufferedImage subimg = null;
-		int frameWidth = img.getWidth() / Integer.valueOf(col);
-		int frameHeight = img.getHeight() / Integer.valueOf(row);
+        int frameWidth = img.getWidth() / Integer.valueOf(row);
+        int frameHeight = img.getHeight() / Integer.valueOf(col);
+
 		
 		for(int i=0; i<Integer.valueOf(col); i++)
 			for (int j = 0; j < Integer.valueOf(row); j++) {
+
 				subimg = img.getSubimage(j * frameWidth, i * frameHeight,
 						frameWidth, frameHeight);
 				list.add(subimg);

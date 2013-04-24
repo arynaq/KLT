@@ -1,208 +1,136 @@
 package engine;
 
-import gfx.Renderable;
 import gfx.ScrollingCombatText;
+import items.Potion;
 
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Map;
 
-import javax.sound.sampled.Clip;
-
+import characters.Level;
 import characters.Player;
 
 public class LevelManager {
-	private ArrayList<Level> levels;
-	private Player player;
-	private Renderable scrollingXpText;
-	private DamageEngine damageEngine;
-	private ScrollingCombatText dmgSCT;
-	private ScrollingCombatText levelUpSCT;
-	private ScrollingCombatText hpSCT;
-	private SoundEngine soundEngine;
-	private Map<String, Clip> sounds;
-	/**
-	 * Constructor for LevelManager
-	 * 
-	 * @param player
-	 * @param scrollingXPText
-	 */
-	public LevelManager(Player player, Renderable scrollingXPText,
-			SoundEngine soundEngine) {
-		this.player = player;
-		this.scrollingXpText = scrollingXPText;
-		this.soundEngine = soundEngine;
-		simpleLevels();
-		initLevel();
-	}
+    private ArrayList<Level> levels;
+    private Player player;
+    private ScrollingCombatText scrollingXpText;
+    private DamageEngine damageEngine;
+    private ScrollingCombatText dmgSCT;
+    private ScrollingCombatText levelUpSCT;
+    private ScrollingCombatText hpSCT;
+    private SoundEngine soundEngine;
 
-	/**
-	 * Initiates levelgeneration and sets player variables accordingly
-	 */
-	public void initLevel() {
-		player.setLevels(levels.get(1));
-		player.setXP(0);
-		player.givePotion(new Potion('h', 100));
-		// damageEngine = new DamageEngine();
-		// for (int i = 1; i <= 100; i++) {
-		// for (int j = 1; j <= 10; j++) {
-		// damageEngine.calculateDamage(i);
-		// }
-		// }
-	}
+    /**
+     * Constructor for LevelManager
+     * 
+     * @param player
+     * @param scrollingXPText
+     */
+    public LevelManager(Player player, ScrollingCombatText scrollingXPText,
+            SoundEngine soundEngine) {
+        this.player = player;
+        this.scrollingXpText = scrollingXPText;
+        this.soundEngine = soundEngine;
+        simpleLevels();
+        initLevel();
+    }
 
-	/**
-	 * Simple levelGenerator.
-	 */
-	public void simpleLevels() {
-		// experienceFormula = (50x³/3)-100x² + (850x/3.0) - 200)
-		levels = new ArrayList<Level>();
-		for (int i = 1; i <= 100; i++) {
-			int reqXP = (int) Math.round(((50 * (i * i * i)) / 3.0)
-					- (100 * (i * i)) + ((850 * i) / 3.0) - 200);
-			levels.add(new Level(i * 10, reqXP, i - 10, i - 1));
-		}
-	}
+    /**
+     * Initiates levelgeneration and sets player variables accordingly
+     */
+    public void initLevel() {
+        player.setLevels(levels.get(1));
+        player.setXP(0);
+        player.givePotion(new Potion('h', 100));
 
-	/**
-	 * Awards the player experience and levels him up accordingly.
-	 * 
-	 * @param xpGain
-	 */
-	public void xpGain(int xpGain) {
-		player.setXP(xpGain);
-		if (player.getXP() >= player.getLevels().getReqXP()) {
-			levelUp();
-		}
-		int textX = player.getX()% GameState.getInstance().DIMENSION.width;
-		int textY = player.getY() % GameState.getInstance().DIMENSION.height;
-		scrollingXpText.setX(textX);
-		scrollingXpText.setY(textY);
-		((ScrollingCombatText) scrollingXpText).changeString("+" + xpGain + "XP");
-	}
+    }
 
-	public void dealDmg(int dmg) {
-		player.setHealth(player.getHealth() - dmg);
-		soundEngine.playSFX("Pup2.wav");
-		if (player.getHealth() <= 0) {
-			player.setHealth(0);
-			GameState.getInstance().setState(GameCondition.GAMEOVER);
-		}
-		int textX = player.getX() % GameState.getInstance().DIMENSION.width;
-		int textY = player.getY() % GameState.getInstance().DIMENSION.height;
-		dmgSCT.setX(textX);
-		dmgSCT.setY(textY);
-		((ScrollingCombatText) dmgSCT).changeString("-" + dmg + "HP");
-	}
+    /**
+     * Simple levelGenerator.
+     */
+    public void simpleLevels() {
+        // experienceFormula = (50x³/3)-100x² + (850x/3.0) - 200)
+        levels = new ArrayList<Level>();
+        for (int i = 1; i <= 100; i++) {
+            int reqXP = (int) Math.round(((50 * (i * i * i)) / 3.0)
+                    - (100 * (i * i)) + ((850 * i) / 3.0) - 200);
+            levels.add(new Level(i * 10, reqXP, (i * 2) - 2, i - 1));
+        }
+    }
 
-	/**
-	 * Heals the player the amount of healing from the proper potion
-	 * 
-	 * @param potion
-	 */
-	public void usePotion(Potion potion) {
-		int textX = player.getX() % GameState.getInstance().DIMENSION.width;
-		int textY = player.getY() % GameState.getInstance().DIMENSION.height;
-		if (player.getNumPotions() > 0
-				&& player.getHealth() < player.getMaxHealth()) {
-			hpSCT.setX(textX);
-			hpSCT.setY(textY);
-			if ((player.getMaxHealth() - player.getHealth()) < player
-					.getPotions().get(0).getValue()) {
-				((ScrollingCombatText) hpSCT).changeString("+"
-						+ (player.getMaxHealth() - player.getHealth()) + "HP");
-				player.setHealth(player.getMaxHealth());
-				player.removePotion();
-				soundEngine.playSFX("Pup28.wav");
-			} else {
-				player.setHealth(player.getHealth()
-						+ player.getPotions().get(0).getValue());
-				((ScrollingCombatText) hpSCT).changeString("+"
-						+ player.getPotions().get(0).getValue() + "HP");
-				player.removePotion();
-				soundEngine.playSFX("Pup28.wav");
-			}
-		}
-	}
+    /**
+     * Awards the player experience and levels him up accordingly.
+     * 
+     * @param xpGain
+     */
+    public void xpGain(int xpGain) {
+        player.setXP(xpGain);
+        if (player.getXP() >= player.getLevels().getReqXP()) {
+            levelUp();
+            soundEngine.playLevelUp();
+        }
+        int textX = player.getX() % GameState.DIMENSION.width;
+        GameState.getInstance();
+        int textY = player.getY() % GameState.DIMENSION.height;
+        scrollingXpText.setX(textX);
+        scrollingXpText.setY(textY);
+        ((ScrollingCombatText) scrollingXpText).changeString("+" + xpGain
+                + "XP", Color.green);
+    }
 
-	/**
-	 * Is executed when the player has reached the required XP to level up
-	 */
-	public void levelUp() {
-		soundEngine.playSFX("sfx23.wav");
-		int nextlvl = player.getLevels().getLevel() + 1;
-		player.setLevels(levels.get(nextlvl));
-		player.getLevels().setDmg(levels.get(nextlvl).getDmg());
-		player.getLevels().setReqXP(levels.get(nextlvl).getReqXP());
-		int textX = player.getX() % GameState.getInstance().DIMENSION.width;
-		int textY = player.getY() % GameState.getInstance().DIMENSION.height;
-		levelUpSCT.setX(textX - 30);
-		levelUpSCT.setY(textY - 20);
-		((ScrollingCombatText) levelUpSCT).changeString("LEVEL "
-				+ player.getLevels().getLevel()
-				+ "!");
-	}
 
-	/**
-	 * Level class contains hp, required XP for level up and the damage level of
-	 * the player.
-	 * 
-	 * @author frela
-	 * 
-	 */
-	public class Level {
-		private int hp;
-		private int reqXP;
-		private int dmg;
-		private int level;
+    /**
+     * Heals the player the amount of healing from the proper potion
+     * 
+     * @param potion
+     */
+    public void usePotion(Potion potion) {
+        int textX = player.getX() % GameState.getInstance().DIMENSION.width;
+        int textY = player.getY() % GameState.getInstance().DIMENSION.height;
+        if (player.getNumPotions() > 0
+                && player.getHealth() < player.getMaxHealth()) {
+            hpSCT.setX(textX);
+            hpSCT.setY(textY);
+            if ((player.getMaxHealth() - player.getHealth()) < player
+                    .getPotions().get(0).getValue()) {
+                ((ScrollingCombatText) hpSCT).changeString("+"
+                        + (player.getMaxHealth() - player.getHealth()) + "HP");
+                player.setHealth(player.getMaxHealth());
+                player.removePotion();
+            } else {
+                player.setHealth(player.getHealth()
+                        + player.getPotions().get(0).getValue());
+                ((ScrollingCombatText) hpSCT).changeString("+"
+                        + player.getPotions().get(0).getValue() + "HP");
+                player.removePotion();
+            }
+        }
+    }
 
-		public Level(int hp, int reqXP, int dmg, int level) {
-			this.hp = hp;
-			this.reqXP = reqXP;
-			this.dmg = dmg;
-			this.level = level;
-		}
-		public int getHP() {
-			return hp;
-		}
+    /**
+     * Is executed when the player has reached the required XP to level up
+     */
+    public void levelUp() {
+        int nextlvl = player.getLevels().getLevel() + 1;
+        player.setLevels(levels.get(nextlvl));
+        player.getLevels().setDmg(levels.get(nextlvl).getDmg());
+        player.getLevels().setReqXP(levels.get(nextlvl).getReqXP());
+        int textX = player.getX() % GameState.getInstance().DIMENSION.width;
+        int textY = player.getY() % GameState.getInstance().DIMENSION.height;
+        levelUpSCT.setX(textX - 30);
+        levelUpSCT.setY(textY - 20);
+        ((ScrollingCombatText) levelUpSCT).changeString("LEVEL "
+                + player.getLevels().getLevel() + "!", Color.yellow);
+    }
 
-		public void setHP(int hp) {
-			this.hp = hp;
-		}
+    public void setDamageSCT(ScrollingCombatText SCT) {
+        this.dmgSCT = SCT;
+    }
 
-		public int getDmg() {
-			return dmg;
-		}
+    public void setLevelUpSCT(ScrollingCombatText SCT) {
+        this.levelUpSCT = SCT;
+    }
 
-		public void setDmg(int dmg) {
-			this.dmg = dmg;
-		}
-
-		public int getReqXP() {
-			return reqXP;
-		}
-
-		public void setReqXP(int reqXP) {
-			this.reqXP = reqXP;
-		}
-
-		public int getLevel() {
-			return level;
-		}
-
-		public void setLevel(int level) {
-			this.level = level;
-		}
-	}
-
-	public void setDamageSCT(ScrollingCombatText SCT){
-		this.dmgSCT = SCT;
-	}
-
-	public void setLevelUpSCT(ScrollingCombatText SCT) {
-		this.levelUpSCT = SCT;
-	}
-
-	public void setHpSCT(ScrollingCombatText SCT) {
-		this.hpSCT = SCT;
-	}
+    public void setHpSCT(ScrollingCombatText SCT) {
+        this.hpSCT = SCT;
+    }
 }

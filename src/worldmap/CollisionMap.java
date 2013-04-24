@@ -2,15 +2,16 @@ package worldmap;
 
 import java.awt.image.BufferedImage;
 
+import characters.Combatable;
 import characters.GameCharacter;
 import engine.Entity;
 import engine.GameInput.Movement;
 
 public class CollisionMap {
-	private BufferedImage collisionMap;
+    private static BufferedImage collisionMap;
 
 	public CollisionMap(BufferedImage collisionMap) {
-		this.collisionMap = collisionMap;
+        CollisionMap.collisionMap = collisionMap;
 	}
 
 	/**
@@ -20,7 +21,7 @@ public class CollisionMap {
 	 * @param direction
 	 * @return
 	 */
-	public boolean isWalkable(GameCharacter character, Movement direction) {
+    public static boolean isWalkable(GameCharacter character, Movement direction) {
 		int midX = character.getX() + direction.getDX() * character.getSpeedX();
 		int midY = character.getY() + direction.getDY() * character.getSpeedY();
 		if (collisionMap.getRGB(midX + character.getWidth() / 2 - 2, midY
@@ -30,7 +31,28 @@ public class CollisionMap {
 		return false;
 	}
 
-	public boolean isWalkableTwo(Entity entity, Movement direction) {
+    public static boolean isWalkable(int x, int y) {
+        if (collisionMap.getRGB(x, y) == -1)
+            return true;
+        return false;
+    }
+
+    /**
+     * Check if the combatable can walk to the new position given by the new x,y
+     * 
+     * @param combatable
+     * @param dx
+     * @param dy
+     * @return
+     */
+    public static boolean isWalkable(Combatable combatable, int x, int y) {
+        if (collisionMap.getRGB(x, y) == -1) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isWalkableTwo(Entity entity, Movement direction) {
 		return false;
 	}
 

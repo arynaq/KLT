@@ -7,9 +7,7 @@ public class Game {
 	private SoundEngine sfx;
 	private GameEngine engine;
 	private static final Game instance = new Game();
-	private long fpsDelta, delta, t0, t1;
-	private int hasNotMovedCount;
-	GameEventListener gameEventListener = new GameEventListener();
+	private long fpsDelta, delta, t0;
 
 	private Game() {
 		factory = new Factory();
@@ -28,49 +26,55 @@ public class Game {
 		sleep(10);
 		gfx.start();
 		sleep(10);
-		sfx.start();
+        //sfx.start();
 		sleep(10);
 	}
 
 	public void gameLoop() {
+
 		while (true){
-			// System.out.println("Game is started in: "
-			// + GameState.getInstance().getState());
 			t0 = time();
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
-				sfx.playMusic("beezDul.wav");
-				engine.update();
+
+                engine.update();
+                sfx.start();
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
+
 				if ((fpsDelta - delta) <= 0) {
 					sleep(2);
-				} else {
+				}else {
 					sleep(fpsDelta - delta);
 				}
-
-
 			}
-			// System.out.println("Game changed to: "
-			// + GameState.getInstance().getState());
 
 			while (GameState.getInstance().getState() == GameCondition.GAMEOVER) {
 				sfx.playerGameOver();
 				gfx.renderGameOver();
-				sleep(100);
+                sleep(100);
+                System.gc();
 			}
+            // engine.getRenderables().remove("gameOverScreen");
 
 			while (GameState.getInstance().getState() == GameCondition.PAUSED) {
-
+                delta = time() - t0;
 				sfx.pauseGame();
 				gfx.renderPause();
+                engine.updatePaused(delta);
+                t0 = time();
 				sleep(100);
 			}
-			while (GameState.getInstance().getState() == GameCondition.SPLASH) {
-				engine.update();
-				gfx.renderSplash();
-				sleep(100);
-			}
+
+            while (GameState.getInstance().getState() == GameCondition.SPLASH) {
+                sfx.splash();
+                gfx.renderSplash();
+                System.gc();
+                sleep(100);
+            }
+            engine.getRenderables().remove("splash");
+            engine.getImages().remove("splashBACKGROUND");
+
 		}
 	}
 
@@ -80,8 +84,8 @@ public class Game {
 
 	public static void main(String[] args) {
 		Game game = Game.getInstance();
-		// ExamplePlayer ex = new ExamplePlayer();
-		// ex.start();
+        // ExamplePlayer ex = new ExamplePlayer();
+        // ex.start();
 		game.init();
 		game.gameLoop();
 	}

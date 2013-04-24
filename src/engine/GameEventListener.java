@@ -9,7 +9,7 @@ import java.awt.event.WindowListener;
 
 public class GameEventListener implements KeyListener, MouseListener,
 WindowListener {
-	private MovementManager movementManager;
+    private InputManager movementManager;
 	private boolean up, down, left, right;
 	long lastTime;
 
@@ -94,7 +94,7 @@ WindowListener {
 		// ?
 	}
 
-	public void setMovementManager(MovementManager movementManager) {
+    public void setMovementManager(InputManager movementManager) {
 		this.movementManager = movementManager;
 	}
 
@@ -128,12 +128,12 @@ WindowListener {
 			break;
 		case KeyEvent.VK_O:
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-				movementManager.testPlayerDamage();
+                // movementManager.testPlayerDamage();
 			}
 			break;
 		case KeyEvent.VK_U:
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-				movementManager.givePotion();
+                // movementManager.givePotion();
 			}
 			break;
 		case KeyEvent.VK_I:
@@ -143,7 +143,7 @@ WindowListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-				checkIfmoveAllowed("attack");
+                movementManager.attack();
 			}
 			break;
 		case KeyEvent.VK_E:

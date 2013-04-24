@@ -1,16 +1,34 @@
 package items;
 
-public class Potion extends GameItem {
+public class Potion implements Comparable<Potion> {
+	private char type;
+	private int value;
 
-	public Potion(){
-		type = "PTN";
-		id = type + (++GameItem.nextID);
+	public Potion(char type, int value) {
+		this.type = type;
+		this.value = value;
 	}
 
-	@Override
-	public int compareTo(GameItem arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+	public char getType() {
+		return type;
 	}
+
+	public void setType(char type) {
+		this.type = type;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+    @Override
+    public int compareTo(Potion o) {
+        return getValue() - o.getValue();
+
+    }
 
 }

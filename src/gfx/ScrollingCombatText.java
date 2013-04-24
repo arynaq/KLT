@@ -6,70 +6,59 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import engine.GameState;
+
 public class ScrollingCombatText implements Renderable {
 
-	private String xpMessage;
+    private String xpMessage;
+    private Font stringFont;
 	private int x;
 	private int y;
-	private int size;
 	private Color color;
-	private int oldY;
+    private final Color resetColor;
+    private int oldY;
+    private int gameHeight =  GameState.DIMENSION.height;
+    private int gameWidth = GameState.DIMENSION.width;
+
 
 	public ScrollingCombatText(String message, int x, int y, int size, Color color) {
 		this.xpMessage = message;
 		this.x = x;
 		this.y = y;
-		this.size = size;
-		this.color = color;
-	}
+        this.color = color;
+        this.resetColor = color;
+        this.stringFont = new Font("Commodore 64 Pixelized", Font.BOLD, size);
+        // new Font(Font.SANS_SERIF, Font.BOLD, size);
+    }
 
-	public void changeString(String newString) {
+    public void changeString(String newString, Color color) {
 		this.xpMessage = newString;
-	}
-
-	public void changeColor(Color color) {
-		this.color = color;
+        this.color = color;
 	}
 
 	@Override
 	public void render(Graphics2D g) {
-		Composite gComp = g.getComposite();
-		if (oldY < y - 100) {
-			return;
-		}
-		Font stringFont = new Font("Monospace", Font.BOLD, size);
-		g.setFont(stringFont);
-		// g.setColor(new Color((int) (255 * Math.random()), (int) (255 * Math
-		// .random()), (int) (255 * Math.random())));
-		Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				1 - ((y - oldY) / 100.f));
-		g.setComposite(c);
-		g.setColor(color);
-		g.drawString(xpMessage, x - 5, oldY);
-		g.setComposite(gComp);
-		oldY -= 3;
+        if (x < 0 && x > gameWidth)
+            return;
+        if (y < 0 && y > gameWidth)
+            return;
+        if (oldY < y - gameHeight / 3) {
+            return;
+        }
+        Composite gComp = g.getComposite();
+        g.setFont(stringFont);
+        Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                1 - 0.8f * ((y - oldY) / (float) (gameHeight / 3)));
+        g.setComposite(c);
+        g.setColor(color);
+        g.drawString(xpMessage, x % gameWidth, oldY % gameHeight);
+        g.setComposite(gComp);
+        oldY -= 1.5;
 
-	}
+    }
 
-	@Override
-	public void render(Graphics2D g, int deltaTime) {
-		// Composite gComp = g.getComposite();
-		// if (oldY < y - 100) {
-		// return;
-		// }
-		// Font stringFont = new Font(Font.SANS_SERIF, Font.BOLD, 25);
-		// g.setFont(stringFont);
-		// // g.setColor(new Color((int) (255 * Math.random()), (int) (255 *
-		// Math
-		// // .random()), (int) (255 * Math.random())));
-		// Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-		// 1 - ((y - oldY) / 100.f));
-		// g.setComposite(c);
-		// g.setColor(color);
-		// g.drawString(xpMessage, x, oldY);
-		// g.setComposite(gComp);
-		// oldY -= 4;
-		//
+    @Override
+    public void render(Graphics2D g, int deltaTime) {
 	}
 
 	@Override
@@ -84,9 +73,12 @@ public class ScrollingCombatText implements Renderable {
 		this.oldY = y;
 	}
 
-	// @Override
-	// public boolean doRender() {
-	// return true;
-	// }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setColor() {
+        this.color = resetColor;
+    }
 
 }

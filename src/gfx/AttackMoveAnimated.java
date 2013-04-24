@@ -28,19 +28,19 @@ public class AttackMoveAnimated extends Animated {
 	}
 
 	public Animated getSouthAttackSheet() {
-		return null;
+        return getRowAnimated(4, 150);
 	}
 
 	public Animated getWestAttackSheet() {
-		return null;
+        return getRowAnimated(5, 150);
 	}
 
 	public Animated getEastAttackSheet(){
-		return null;
+        return getRowAnimated(6, 150);
 	}
 
 	public Animated getNorthAttackSheet() {
-		return null;
+        return getRowAnimated(7, 150);
 	}
 
 }

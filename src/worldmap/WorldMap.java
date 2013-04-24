@@ -34,6 +34,11 @@ public class WorldMap {
 		}
 
 		currentMap = new GameMap(subMaps.get(0).get(0));
+		int[] xBound = new int[] { 0, GameState.DIMENSION.width };
+		int[] yBound = new int[] { 0, GameState.DIMENSION.height };
+
+		currentMap.setxBound(xBound);
+		currentMap.setyBound(yBound);
 	}
 
 
@@ -48,7 +53,14 @@ public class WorldMap {
 	public void updateGameMap(int x, int y) {
 		int i = y / GameState.getInstance().getFrameHeight();
 		int j = x / GameState.getInstance().getFrameWidth();
+		int[] xBound = new int[] { j * GameState.DIMENSION.width,
+				(j + 1) * GameState.DIMENSION.width };
+		int[] yBound = new int[] { i * GameState.DIMENSION.width,
+				(i + 1) * GameState.DIMENSION.width };
+
 		currentMap.setImage(subMaps.get(i).get(j));
+		currentMap.setxBound(xBound);
+		currentMap.setyBound(yBound);
 	}
 
 }

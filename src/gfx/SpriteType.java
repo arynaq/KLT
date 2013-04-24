@@ -1,6 +1,11 @@
 package gfx;
 
-
+/**
+ * Not used in game, do as you wish with it.
+ * 
+ * @author Maki
+ * 
+ */
 
 public enum SpriteType {
 	PLAYER, DOG, COW, TREE, CAR, PLAYERANIM, DOGANIM, COWANIM, TREEANIM;
