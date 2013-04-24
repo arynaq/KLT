@@ -47,6 +47,7 @@ public class CyanRectangleEnemy extends BaseEnemy {
     public Renderable getRenderable() {
         renderable.setX(getX());
         renderable.setY(getY());
+        renderable.setState(getState());
         if (!GameState.getInstance().isInCurrentMap(this)) {
             renderable.setOutOfMap(true);
         }
@@ -56,6 +57,12 @@ public class CyanRectangleEnemy extends BaseEnemy {
         return renderable;
     }
 
+    /**
+     * This is the renderable of this enemy.
+     * 
+     * @author arynaq
+     * 
+     */
     class BlueRectangle implements Renderable {
         int width, height, x, y;
         private Color color;

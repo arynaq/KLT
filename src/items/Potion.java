@@ -27,12 +27,7 @@ public class Potion implements Comparable<Potion> {
 
     @Override
     public int compareTo(Potion o) {
-        if (this.getValue() == o.getValue())
-            return 0;
-        else if (this.getValue() < o.getValue())
-            return -1;
-        else
-            return 1;
+        return getValue() - o.getValue();
 
     }
 

@@ -117,8 +117,12 @@ public class Animated implements Renderable {
 	}
 
 	public Animated getRowAnimated(int rowNumber) {
-		return new Animated(sheet.getRow(rowNumber));
+        return new Animated(sheet.getRow(rowNumber));
 	}
+
+    public Animated getRowAnimated(int rowNumber, int frameDelay) {
+        return new Animated(sheet.getRow(rowNumber), frameDelay);
+    }
 
 	/**
 	 * Used to push this animation one frame ahead. Steps define how many times
@@ -141,5 +145,9 @@ public class Animated implements Renderable {
 	public void reset() {
 		currentFrame = 0;
 	}
+
+    public boolean isOver() {
+        return currentFrame == lastFrame;
+    }
 
 }

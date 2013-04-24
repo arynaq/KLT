@@ -34,8 +34,9 @@ public class IntroText implements Renderable {
             indx++;
             timer = 0;
         }
+        g.setColor(Color.white);
         g.setFont(font);
-        g.drawString(s, 100, 100);
+        g.drawString(s, 10, 100);
 
     }
 

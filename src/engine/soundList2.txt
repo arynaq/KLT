@@ -1,0 +1,6 @@
+#First is the keyword, second is the filename
+levelUp Pup31.wav
+loot sfx23.wav
+potion Pup28.wav
+mainMusic beezDul.wav
+attack Pup2.wav

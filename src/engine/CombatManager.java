@@ -4,6 +4,7 @@ import engine.Entity.State;
 import gfx.ScrollingCombatText;
 import items.Potion;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ public class CombatManager {
     private GameEngine engine;
     private ScrollingCombatText enemySCT;
     private ScrollingCombatText playerSCT;
+    private ScrollingCombatText lootSCT;
     private DamageEngine dmgEngine;
     private LevelManager levelManager;
 
@@ -26,8 +28,10 @@ public class CombatManager {
                 "enemySCT");
         this.playerSCT = (ScrollingCombatText) engine.getRenderables().get(
                 "playerSCT");
+        this.lootSCT = new ScrollingCombatText("", 0, 0, 14, Color.GREEN);
         this.dmgEngine = new DamageEngine();
         this.levelManager = engine.getLevelManager();
+        this.engine.getRenderables().put("lootSCT", lootSCT);
     }
 
 
@@ -37,6 +41,7 @@ public class CombatManager {
     public void playerAttack() {
         if (!player.isReadyToAttack())
             return;
+        player.setAttacking(true);
         playerAttackCombatable();
     }
 
@@ -67,13 +72,20 @@ public class CombatManager {
 
             if (player.getAttackBounds().intersects(combatable.getBounds())) {
                 int dmg = dmgEngine.calculateDamage(player.getDamage());
+                boolean isCrit = dmgEngine.isCrit();
                 player.attack(combatable, dmg);
                 player.doSomethingToOtherOnAttack(combatable);
-                enemySCT.changeString("RAPED: " + dmg);
+                engine.getSoundEngine().playPlayerAttack();
+
+                if(isCrit)
+                    enemySCT.changeString("CRITICAL! " + dmg, Color.YELLOW);
+                else
+                    enemySCT.changeString("Hit: " + dmg, Color.yellow);
                 enemySCT.setX(combatable.getX());
                 enemySCT.setY(combatable.getY());
 
                 if (combatable.getState() == State.DEAD) {
+                    engine.getSoundEngine().playEnemyDead();
                     levelManager.xpGain(50);
                     rollTheDiceAndGivePlayerLoot();
                 }
@@ -82,12 +94,21 @@ public class CombatManager {
         }
     }
 
+    /**
+     * Gives the player loot when he kills an enemy. Just a 10% chance to get a
+     * potion for now, one that heals relative to the level. Quite overpowered,
+     * we know.
+     */
     private void rollTheDiceAndGivePlayerLoot() {
         if (Math.random() > 0.9) {
-            player.givePotion(new Potion('h', player.getMaxHealth()));
+            player.givePotion(new Potion('h', player.getMaxHealth() / 2));
+            lootSCT.changeString("Gained a potion!", Color.green);
         }
     }
 
+    /**
+     * Let all of the combatables try and get closer to the player.
+     */
     private void combatablesSearchPlayer() {
         for (String key : engine.getEntities().keySet()) {
             if (key.equals("player"))
@@ -95,12 +116,12 @@ public class CombatManager {
             Entity entity = engine.getEntities().get(key);
             if (!(entity instanceof Combatable))
                 continue;
+
             Combatable combatable = (Combatable) entity;
             if (!(GameState.getInstance().isInCurrentMap(combatable))) {
                 combatable.reset();
                 continue;
             }
-
             if (combatable.getState() == State.DEAD)
                 continue;
 
@@ -109,26 +130,35 @@ public class CombatManager {
         }
     }
 
+    /**
+     * Let combatables attack the player, if they are able and within range.
+     */
     private void combatablesAttackPlayer() {
         for (String key : engine.getEntities().keySet()) {
+
             if (key.equals("player"))
                 continue;
             Entity e = engine.getEntities().get(key);
             if (!(e instanceof Combatable))
                 continue;
-            Combatable combatable = (Combatable) e;
 
-            if (combatable.isReadyToAttack()) {
-                if (!(combatable.getAttackBounds().intersects(player.getBounds())))
-                    continue;
-                int dmg = dmgEngine.calculateDamage(combatable.getDamage());
-                combatable.attack(player, dmg);
-                player.getAttacked(dmg);
-                combatable.doSomethingToOtherOnAttack(player);
-                playerSCT.changeString("-" + dmg + "HP");
-                playerSCT.setX(player.getX());
-                playerSCT.setY(player.getY());
-            }
+            Combatable combatable = (Combatable) e;
+            if (combatable.getState() == State.DEAD)
+                continue;
+            if (!combatable.isReadyToAttack())
+                continue;
+            if (!(combatable.getAttackBounds().intersects(player.getBounds())))
+                continue;
+
+            int dmg = dmgEngine.calculateDamage(combatable.getDamage());
+            combatable.attack(player, dmg);
+            player.getAttacked(dmg);
+            combatable.doSomethingToOtherOnAttack(player);
+            playerSCT.changeString("-" + dmg + "HP", Color.red);
+            playerSCT.setX(player.getX());
+            playerSCT.setY(player.getY());
+            engine.getSoundEngine().playEnemyAttack();
+
         }
 
     }
@@ -174,5 +204,15 @@ public class CombatManager {
         Collections.sort(candidates);
         return candidates.get(0);
 
+    }
+
+    public void usePotion() {
+        Potion potion = player.usePotion('h');
+        if (potion==null)
+            return;
+        lootSCT.changeString("HEALED: " + potion.getValue(), Color.green);
+        lootSCT.setX(player.getX());
+        lootSCT.setY(player.getY());
+        engine.getSoundEngine().playPotion();
     }
 }

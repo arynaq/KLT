@@ -42,10 +42,13 @@ public class GameState {
 	 */
 	private GameCondition state;
 
+    /*
+     * Is audio supported on this hardware? Decided by soundloader.
+     */
+    private boolean audioSupported = true;
+
 	private GameState() {
         this.state = GameCondition.SPLASH;
-		// this.playerMapEntities = new HashMap<String, Entity>();
-		// this.worldMapEntities = new HashMap<String, Entity>();
 	}
 
 	public static GameState getInstance() {
@@ -98,5 +101,13 @@ public class GameState {
         }
 		return false;
 	}
+
+    public boolean isAudioSupported() {
+        return audioSupported;
+    }
+
+    public void setAudioSupported(boolean audioSupported) {
+        this.audioSupported = audioSupported;
+    }
 
 }

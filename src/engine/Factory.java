@@ -48,14 +48,14 @@ public class Factory {
         // this.renderables = new HashMap<String, Renderable>();
 
 		new ImageLoader("imagelist.txt", images);
-        new SoundLoader("soundList.txt", sounds);
+        new SoundLoader("soundList2.txt", sounds);
         new FontLoader();
 
 		this.listener = new GameEventListener();
 		this.frame = new GameFrame(Color.black);
 		this.collisionMap = new CollisionMap(images.get("collisionWORLDMAP").get(0));
 
-        this.soundEngine = new SoundEngine(entities, sounds);
+        this.soundEngine = new SoundEngine(sounds);
         this.gameEngine = new GameEngine(entities, renderables, images,
                 soundEngine,
                 listener);

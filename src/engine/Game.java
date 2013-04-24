@@ -37,7 +37,7 @@ public class Game {
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
                 engine.update();
-                sfx.playMusic("beezDul.wav");
+                sfx.playMusic();
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
@@ -57,7 +57,7 @@ public class Game {
                 sleep(100);
                 System.gc();
 			}
-			  engine.getRenderables().remove("gameOverScreen");
+            // engine.getRenderables().remove("gameOverScreen");
 
 			while (GameState.getInstance().getState() == GameCondition.PAUSED) {
                 delta = time() - t0;

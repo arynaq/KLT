@@ -108,7 +108,7 @@ public class GameEngine {
 
     private void initPlayer() {
         AttackMoveAnimated sprite = new AttackMoveAnimated(new SpriteSheet(
-                images.get("playerANIMATED"), 4, 4), 100);
+                images.get("playerANIMATED"), 8, 4), 100);
         player = new Player(sprite);
         GameHUD hud = new GameHUD(player);
         renderables.put("gameHUD", hud);
@@ -206,6 +206,10 @@ public class GameEngine {
             System.out.println(box);
             renderables.put(box.toString(), box);
         }
+    }
+
+    public SoundEngine getSoundEngine() {
+        return soundEngine;
     }
 
 

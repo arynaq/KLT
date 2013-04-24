@@ -3,6 +3,7 @@ package engine;
 import gfx.ScrollingCombatText;
 import items.Potion;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import characters.Level;
@@ -53,7 +54,6 @@ public class LevelManager {
             int reqXP = (int) Math.round(((50 * (i * i * i)) / 3.0)
                     - (100 * (i * i)) + ((850 * i) / 3.0) - 200);
             levels.add(new Level(i * 10, reqXP, (i * 2) - 2, i - 1));
-            System.out.println("Required xp for lvl " + i + " is: " + reqXP);
         }
     }
 
@@ -66,13 +66,15 @@ public class LevelManager {
         player.setXP(xpGain);
         if (player.getXP() >= player.getLevels().getReqXP()) {
             levelUp();
+            soundEngine.playLevelUp();
         }
-        int textX = player.getX() % GameState.getInstance().DIMENSION.width;
-        int textY = player.getY() % GameState.getInstance().DIMENSION.height;
+        int textX = player.getX() % GameState.DIMENSION.width;
+        GameState.getInstance();
+        int textY = player.getY() % GameState.DIMENSION.height;
         scrollingXpText.setX(textX);
         scrollingXpText.setY(textY);
         ((ScrollingCombatText) scrollingXpText).changeString("+" + xpGain
-                + "XP");
+                + "XP", Color.green);
     }
 
 
@@ -117,7 +119,7 @@ public class LevelManager {
         levelUpSCT.setX(textX - 30);
         levelUpSCT.setY(textY - 20);
         ((ScrollingCombatText) levelUpSCT).changeString("LEVEL "
-                + player.getLevels().getLevel() + "!");
+                + player.getLevels().getLevel() + "!", Color.yellow);
     }
 
     public void setDamageSCT(ScrollingCombatText SCT) {

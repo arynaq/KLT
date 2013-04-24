@@ -8,7 +8,7 @@
 #Ex:
 #a player PLAYERANIMATED.png 4 4
 #...key = player.touppercase + "ANIMATED"
-a player player2.png 4 4
+a player playeratk3.png 4 8
 w world worldmap.png
 w collision worldCollision.png
 b splash kloftasmall3.png

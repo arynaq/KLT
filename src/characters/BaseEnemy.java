@@ -52,7 +52,7 @@ public abstract class BaseEnemy implements Combatable {
     }
 
     public BaseEnemy(int x, int y, int width, int height, int speed) {
-        this(x, y, width, height, 1, 20, 20, 10000);
+        this(x, y, width, height, 1, 20, width, 1500);
         this.speed = speed;
     }
 

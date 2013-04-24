@@ -123,11 +123,13 @@ public class ImageLoader {
 		ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
 		BufferedImage img = loadIMG(SPRITEDIR + fileName);
 		BufferedImage subimg = null;
-		int frameWidth = img.getWidth() / Integer.valueOf(col);
-		int frameHeight = img.getHeight() / Integer.valueOf(row);
+        int frameWidth = img.getWidth() / Integer.valueOf(row);
+        int frameHeight = img.getHeight() / Integer.valueOf(col);
+
 		
 		for(int i=0; i<Integer.valueOf(col); i++)
 			for (int j = 0; j < Integer.valueOf(row); j++) {
+
 				subimg = img.getSubimage(j * frameWidth, i * frameHeight,
 						frameWidth, frameHeight);
 				list.add(subimg);

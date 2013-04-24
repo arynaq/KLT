@@ -5,12 +5,14 @@ import engine.GameCondition;
 import engine.GameInput.Movement;
 import engine.GameState;
 import engine.SpriteBoundBox;
+import gfx.Animated;
 import gfx.AttackMoveAnimated;
 import gfx.Renderable;
 import items.Potion;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import worldmap.CollisionMap;
 
@@ -46,19 +48,7 @@ public class Player extends GameCharacter {
     private long t0, timer;
     private AttackBoundBox attackBox;
     private Level playerLevel;
-
-    /**
-     * The player is initialized with its sprite represented by the renderable.
-     * 
-     * @param renderable
-     */
-    public Player(Renderable renderable) {
-        super.setX(120);
-        super.setY(340);
-        this.fullSheet = renderable;
-        super.setFacing(Movement.RIGHT);
-        super.setState(State.ALIVE);
-    }
+    private boolean attacking;
 
     /**
      * The player is initialized with its sprite being fully animated. This is
@@ -75,6 +65,10 @@ public class Player extends GameCharacter {
         this.moveWestSheet = attackMoveAnimated.getWestMovementSheet();
         this.moveEastSheet = attackMoveAnimated.getEastMovementSheet();
         this.moveNorthSheet = attackMoveAnimated.getNorthMovementSheet();
+        this.attackSouthSheet = attackMoveAnimated.getSouthAttackSheet();
+        this.attackWestSheet = attackMoveAnimated.getWestAttackSheet();
+        this.attackEastSheet = attackMoveAnimated.getEastAttackSheet();
+        this.attackNorthSheet = attackMoveAnimated.getNorthAttackSheet();
 
         super.setWidth(attackMoveAnimated.getSheeet().getImages().get(0)
                 .getWidth());
@@ -93,6 +87,13 @@ public class Player extends GameCharacter {
 
     @Override
     public Renderable getRenderable() {
+        return (attacking ? attackRenderable() : movementRenderable());
+
+
+
+    }
+
+    private Renderable movementRenderable() {
         if (getFacing() == Movement.RIGHT) {
             currentRenderable = moveEastSheet;
         }
@@ -108,15 +109,37 @@ public class Player extends GameCharacter {
         else if (getFacing() == Movement.DOWN) {
             currentRenderable = moveSouthSheet;
         }
-
         updateCurrentRenderable();
         return currentRenderable;
+    }
+
+    private Renderable attackRenderable() {
+        if (attacking) {
+            if (((Animated) currentRenderable).isOver()) {
+                System.out.println("On last frame");
+                attacking = false;
+                if (getFacing() == Movement.RIGHT)
+                    currentRenderable = moveEastSheet;
+                updateCurrentRenderable();
+                return currentRenderable;
+            }
+
+            if (getFacing() == Movement.RIGHT)
+                currentRenderable = attackEastSheet;
+            updateCurrentRenderable();
+            return currentRenderable;
+        }
+        return null;
     }
 
     private void updateCurrentRenderable() {
         currentRenderable.setX(getX() % GameState.DIMENSION.width);
         currentRenderable.setY(getY() % GameState.DIMENSION.height);
 
+    }
+
+    private void resetAttackRenderables() {
+        ((Animated) attackEastSheet).reset();
     }
 
     public int getSpeedX() {
@@ -143,17 +166,22 @@ public class Player extends GameCharacter {
         maxHealth = newMaxHealth;
     }
 
-    // Bruker HealthPotion for now
-    public void usePotion(char potionType) {
+    /**
+     * Uses and returns a potion.
+     * @param potionType
+     * @return
+     */
+    public Potion usePotion(char potionType) {
         if (HealthPotions.size() > 0 && health < maxHealth) {
             if ((maxHealth - health) < HealthPotions.get(0).getValue()) {
                 health = maxHealth;
-                HealthPotions.remove(0);
+                return HealthPotions.remove(0);
             } else {
                 health += HealthPotions.get(0).getValue();
-                HealthPotions.remove(0);
+                return HealthPotions.remove(0);
             }
         }
+        return null;
 
     }
 
@@ -264,11 +292,14 @@ public class Player extends GameCharacter {
     @Override
     public boolean isReadyToAttack() {
         boolean ret;
+        attacking = true;
         long delta = System.currentTimeMillis() - t0;
         timer += delta;
         if (timer > attackCooldown) {
             timer = 0;
             ret = true;
+            resetAttackRenderables();
+            attacking = true;
         } else {
             ret = false;
         }
@@ -292,6 +323,7 @@ public class Player extends GameCharacter {
 
     public void givePotion(Potion potion) {
         HealthPotions.add(potion);
+        Collections.sort(HealthPotions);
     }
 
     public Level getLevels() {
@@ -304,6 +336,10 @@ public class Player extends GameCharacter {
 
     @Override
     public void reset() {
+    }
+
+    public void setAttacking(boolean b) {
+        this.attacking = b;
     }
 
 }

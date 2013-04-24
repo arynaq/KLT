@@ -64,7 +64,7 @@ public class InputManager {
 
 	// Player bruker potion
 	public void usePotion() {
-		player.usePotion('h');
+        combatManager.usePotion();
 	}
 
 	public void giveXp() {
