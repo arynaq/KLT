@@ -36,14 +36,14 @@ public class Game {
 			t0 = time();
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
-                engine.update();
+                engine.update(time() - t0);
                 sfx.playMusic();
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
 
 				if ((fpsDelta - delta) <= 0) {
-					sleep(2);
+                    sleep(5);
 				}
 
 				else {

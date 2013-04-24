@@ -24,6 +24,7 @@ public class GraphicsEngine {
     private Map<String, Renderable> renderables;
     private int width;
     private int height;
+    private long timer, t0;
 
     private Graphics2D g;
     private BufferStrategy bufferStrategy;
@@ -72,6 +73,12 @@ public class GraphicsEngine {
     }
 
     public void render(int delta) {
+        timer += delta;
+        t0 = System.currentTimeMillis();
+        if (timer >= (1000.0 / 60)) {
+        } else
+            return;
+
         do {
             clearScreen();
             renderables.get("currentMap").render(g);
@@ -83,16 +90,17 @@ public class GraphicsEngine {
                 if (key.equals("pauseScreen"))
                     continue;
                 renderables.get(key).render(g);
-                renderables.get(key).render(g, delta);
+                renderables.get(key).render(g, (int) timer);
 
             }
             for (String key : entities.keySet()) {
-                entities.get(key).getRenderable().render(g, delta);
+                entities.get(key).getRenderable().render(g, (int) timer);
                 entities.get(key).getRenderable().render(g);
             }
             showBuffer();
         } while (bufferStrategy.contentsLost());
-
+        timer = (long) (timer - (1000.0 / 60))
+                + (System.currentTimeMillis() - t0);
     }
 
     public void renderGameOver() {

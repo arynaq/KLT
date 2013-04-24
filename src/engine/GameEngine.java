@@ -34,6 +34,7 @@ public class GameEngine {
     private GameEventListener inputListener;
     private SoundEngine soundEngine;
     private long pauseTimer;
+    private long timer, t0;
 
     public GameEngine(Map<String, Entity> entities,
             Map<String, Renderable> renderables,
@@ -182,11 +183,21 @@ public class GameEngine {
 
     }
 
-    public void update() {
+    public void update(long delta) {
+        timer += delta;
+        t0 = System.currentTimeMillis();
+        if (timer >= (1000.0 / 60)) {
+            System.out.println("60 FPS passed");
+        } else {
+            return;
+        }
         inputListener.update();
         updatePlayer();
         updateMap();
         combatManager.updateCombatables();
+        timer = (long) (timer - (1000.0 / 60))
+                + (System.currentTimeMillis() - t0);
+        System.out.println("Remainder: " + timer);
 
     }
 
