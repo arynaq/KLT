@@ -350,4 +350,8 @@ public class Player extends GameCharacter {
         this.attacking = b;
     }
 
+    public boolean isAttacking() {
+        return attacking;
+    }
+
 }

@@ -48,7 +48,8 @@ public class InputManager {
 					* (player.getSpeedY()));
 		}
 
-		((Animated) player.getRenderable()).move(GameState.PLAYERSTEPS);
+        if (!player.isAttacking())
+		    ((Animated) player.getRenderable()).move(GameState.PLAYERSTEPS);
 		player.setFacing(direction);
 
 	}
