@@ -9,13 +9,11 @@
 #a player PLAYERANIMATED.png 4 4
 #...key = player.touppercase + "ANIMATED"
 a player playeratk3.png 4 8
-a troll EnemyOne.png 4 4
-a oldman EnemyFour.png 4 4
-a ghost EnemyThree.png 4 4
-a brute EnemyTwo.png 4 4
-a baldman npc1.png 4 4
-a oldwoman npc3.png 4 4
-a german npc4.png 4 4
+a EnemyOne EnemyOne.png 4 4
+a EnemyFour EnemyFour.png 4 4
+a EnemyThree EnemyThree.png 4 4
+a EnemyTwo EnemyTwo.png 4 4
+a Gukern player2.png 4 4 
 w world worldmap.png
 w collision worldCollision.png
 b splash kloftasmall3.png

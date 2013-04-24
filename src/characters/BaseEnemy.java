@@ -15,6 +15,7 @@ public abstract class BaseEnemy implements Combatable {
     private int y;
     private int width;
     private int height;
+    private int xp;
     private int attackRange;
     private State state;
     private int attackCooldown;
@@ -30,8 +31,9 @@ public abstract class BaseEnemy implements Combatable {
     private final int resetY;
     private final State resetState;
 
+
     public BaseEnemy(int x, int y, int width, int height, int damage,
-            int health, int attackRange, int attackCooldown) {
+            int health, int xp, int attackRange, int attackCooldown) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -39,31 +41,33 @@ public abstract class BaseEnemy implements Combatable {
         this.dmg = damage;
         this.health = health;
         this.attackRange = attackRange;
+        this.xp = xp;
         this.attackCooldown = attackCooldown;
         this.bounds = new Rectangle(x, y, width, height);
         this.setFacing(Movement.RIGHT);
         this.attackBox = new AttackBoundBox(this);
         this.bounds = new Rectangle(x, y, width, height);
-        this.speed = 1;
-
-        System.out.println(this + " created with:");
-        System.out.println("x,y,width,height: " + x + "," + y + "," + width
-                + "," + height);
-        System.out.println("dmg,health,speed,atkCD,atkRange: " + damage + ","
-                + health
- + "," + speed + "," + attackCooldown + ","
-                + attackRange);
+        this.speed = 2;
+        //
+        // System.out.println(this + " created with:");
+        // System.out.println("x,y,width,height: " + x + "," + y + "," + width
+        // + "," + height);
+        // System.out.println("dmg,health,speed,atkCD,atkRange,xp: " + damage
+        // + ","
+        // + health + "," + speed + "," + attackCooldown + ","
+        // + attackRange + "," + xp);
 
         // Save states for reset
         this.resetHealth = health;
         this.resetState = State.ALIVE;
         this.resetX = x;
         this.resetY = y;
+        this.timer = 0;
 
     }
 
     public BaseEnemy(int x, int y, int width, int height, int speed) {
-        this(x, y, width, height, 1, 20, width, 1500);
+        this(x, y, width, height, 1, 10, 20, width, 1500);
         this.speed = speed;
     }
 
@@ -182,7 +186,7 @@ public abstract class BaseEnemy implements Combatable {
         if (diagonal) {
             if (dx < speed) {
                 this.x = player.getX();
-                System.out.println("setting x to playerx");
+
             } else if (xface == -1) {
                 this.x += speed;
             } else if (xface == 1) {
@@ -324,7 +328,13 @@ public abstract class BaseEnemy implements Combatable {
             other.setY(other.getY() + dy);
             y++;
             feetY += dy;
+
         }
+    }
+
+    @Override
+    public int getXP() {
+        return this.xp;
     }
 
 }

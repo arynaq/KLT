@@ -16,10 +16,9 @@ public class Tester {
     }
 
     public void removeThySelf(int key) {
-        System.out.println("Before: " + testers);
-        System.out.println(this + "removed");
+
         testers.remove(key);
-        System.out.println("After: " + testers);
+
     }
 
     public static void main(String[] args) {

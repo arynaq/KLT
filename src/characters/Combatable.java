@@ -99,4 +99,11 @@ public interface Combatable extends Entity, Comparable<Combatable> {
      */
     public void reset();
 
+    /**
+     * Returns the XP this combatable rewards on death.
+     * 
+     * @return
+     */
+    public int getXP();
+
 }

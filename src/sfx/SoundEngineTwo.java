@@ -7,4 +7,12 @@ public class SoundEngineTwo {
 
     public void playMusic() {
     }
+
+    public Map<String, GameSound> getSounds() {
+        return sounds;
+    }
+
+    public void setSounds(Map<String, GameSound> sounds) {
+        this.sounds = sounds;
+    }
 }

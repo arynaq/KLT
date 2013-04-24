@@ -3,10 +3,7 @@ package engine;
 import gfx.GameFrame;
 import gfx.Renderable;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -50,6 +47,7 @@ public class GraphicsEngine {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         clearScreen();
+        System.out.println("GraphicsEngine loaded.");
     }
 
 
@@ -75,10 +73,9 @@ public class GraphicsEngine {
     public void render(int delta) {
         timer += delta;
         t0 = System.currentTimeMillis();
-        if (timer >= (1000.0 / 60)) {
+        if (timer >= (1000.0 / GameState.GAMEFPS)) {
         } else
             return;
-
         do {
             clearScreen();
             renderables.get("currentMap").render(g);
@@ -99,50 +96,17 @@ public class GraphicsEngine {
             }
             showBuffer();
         } while (bufferStrategy.contentsLost());
-        timer = (long) (timer - (1000.0 / 60))
-                + (System.currentTimeMillis() - t0);
+        timer = 0;
     }
 
     public void renderGameOver() {
-        Composite cG = g.getComposite();
-        Composite c = AlphaComposite.getInstance(AlphaComposite.DST_IN, 0.9f);
-        Font fontG = g.getFont();
-        Font messageFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
-        String message = "GAME OVER";
-
-        g.setFont(messageFont);
-        fontMetrics = g.getFontMetrics();
-        int offsetX = fontMetrics.stringWidth(message) / 2;
-        int offsetY = fontMetrics.getHeight() / 2;
-
-
-        g.setComposite(c);
         clearScreen();
-        g.setComposite(cG);
-        g.setColor(Color.green);
-        g.drawString(message, (width / 2) - offsetX, (height / 2) - offsetY);
-        g.setFont(fontG);
+        renderables.get("gameOverScreen").render(g);
         showBuffer();
     }
 
     public void renderPause() {
-        Composite cG = g.getComposite();
-        Composite c = AlphaComposite.getInstance(AlphaComposite.DST_IN, 0.9f);
-        Font fontG = g.getFont();
-        Font messageFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
-        String message = "PAUSED";
-
-        g.setFont(messageFont);
-        fontMetrics = g.getFontMetrics();
-        int offsetX = fontMetrics.stringWidth(message) / 2;
-        int offsetY = fontMetrics.getHeight() / 2;
-
-        g.setComposite(c);
-        clearScreen();
-        g.setComposite(cG);
-        g.setColor(Color.black);
-        g.drawString(message, (width / 2) - offsetX, (height / 2) - offsetY);
-        g.setFont(fontG);
+        renderables.get("pauseScreen").render(g);
         showBuffer();
     }
 

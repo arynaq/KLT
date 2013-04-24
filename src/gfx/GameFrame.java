@@ -51,6 +51,7 @@ public class GameFrame {
         // RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         // g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
         // RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        System.out.println("GameFrame set up.");
 		clearScreen();
 
 	}

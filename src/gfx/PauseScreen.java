@@ -62,7 +62,7 @@ public class PauseScreen implements Renderable {
 
     private void setUpShapes(Graphics2D g) {
         frc = g.getFontRenderContext();
-        title = getShape("PAUSE", centerX, 256, "title");
+        title = getShape("PAUSED", centerX, 256, "title");
     }
 
     private Shape getShape(String string, int x, int y, String type) {

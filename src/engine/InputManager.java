@@ -26,6 +26,7 @@ public class InputManager {
 		this.levelManager = engine.getLevelManager();
 		this.combatManager = engine.getCombatManager();
 		entities = this.engine.getEntities();
+        System.out.println("Inputmanager loaded.");
 	}
 
 	public void movePlayer(Movement direction) {
@@ -69,7 +70,7 @@ public class InputManager {
 	}
 
 	public void giveXp() {
-		levelManager.xpGain(10);
+        // levelManager.xpGain(10);
 	}
 
 	public void resumeGame() {
@@ -85,6 +86,10 @@ public class InputManager {
 	}
 
 	public void attack() {
+        if (!(engine.getintroTxt().isOver())) {
+            engine.getintroTxt().skipLine();
+            return;
+        }
 		combatManager.playerAttack();
 	}
 }

@@ -14,6 +14,7 @@ public class Animated implements Renderable {
 	private BufferedImage currentImage;
 	private boolean timeIndependant;
 	private int moveCount;
+    private boolean doNotRender = false;
 
 	/**
 	 * Constructs a new animated sprite that is moving in time, the next frame
@@ -75,6 +76,8 @@ public class Animated implements Renderable {
 
 	@Override
 	public void render(Graphics2D g) {
+        if (doNotRender)
+            return;
 		if (timeIndependant)
 			return;
 		g.drawImage(currentImage, x, y, null);
@@ -83,6 +86,8 @@ public class Animated implements Renderable {
 
 	@Override
 	public void render(Graphics2D g, int deltaTime) {
+        if (doNotRender)
+            return;
 		if (!timeIndependant)
 			return;
 		frameUpdate(deltaTime);
@@ -147,6 +152,14 @@ public class Animated implements Renderable {
 
     public boolean isOver() {
         return currentFrame == lastFrame;
+    }
+
+    public boolean isDoNotRender() {
+        return doNotRender;
+    }
+
+    public void setDoNotRender(boolean doNotRender) {
+        this.doNotRender = doNotRender;
     }
 
 }

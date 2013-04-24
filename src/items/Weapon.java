@@ -20,4 +20,10 @@ public class Weapon extends GameItem {
 			this.cooldown = cooldown;
 		}
 	}
+
+    @Override
+    public int compareTo(GameItem o) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

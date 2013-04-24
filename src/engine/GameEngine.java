@@ -17,8 +17,6 @@ import java.util.Map;
 
 import worldmap.WorldMap;
 import characters.Combatable;
-import characters.CyanRectangleEnemy;
-import characters.HumanoidEnemy;
 import characters.Player;
 
 
@@ -33,6 +31,7 @@ public class GameEngine {
     private FontLoader fontLoader;
     private GameEventListener inputListener;
     private SoundEngine soundEngine;
+    private IntroText introTxt;
     private long pauseTimer;
     private long timer, t0;
 
@@ -47,6 +46,8 @@ public class GameEngine {
         this.soundEngine = soundEngine;
         this.inputListener = listener;
         initGameElements();
+
+        System.out.println("GameEngine loaded.");
 
     }
 
@@ -90,64 +91,6 @@ public class GameEngine {
 
     private void initEntities() {
         entities.put("player", player);
-        Entity blueEnemy = new CyanRectangleEnemy(100 + 512, 100, 20, 15, 1,
-                Color.blue);
-        entities.put("blueEnemy", blueEnemy);
-
-
-        AttackMoveAnimated trollSprite = new AttackMoveAnimated(
-                new SpriteSheet(images.get("trollANIMATED"), 4, 4), 100);
-        // AttackMoveAnimated oldManSprite = new AttackMoveAnimated(
-        // new SpriteSheet(images.get("oldmanANIMATED"), 4, 4), 100);
-        // AttackMoveAnimated ghostSprite = new AttackMoveAnimated(
-        // new SpriteSheet(images.get("ghostANIMATED"), 4, 4), 100);
-        // AttackMoveAnimated bruteSprite = new AttackMoveAnimated(
-        // new SpriteSheet(images.get("bruteANIMATED"), 4, 4), 100);
-        // AttackMoveAnimated oldWomanSprite = new AttackMoveAnimated(
-        // new SpriteSheet(images.get("oldwomanANIMATED"), 4, 4), 100);
-        // AttackMoveAnimated germanSprite = new AttackMoveAnimated(
-        // new SpriteSheet(images.get("germanANIMATED"), 4, 4), 100);
-
-        Entity troll = new HumanoidEnemy(trollSprite, 120, 340, 100, 2,
-                10000);
-        // Entity oldman = new HumanoidEnemy(oldManSprite, 130 + 1024, 330, 100,
-        // 2, 10000);
-        // Entity ghost = new HumanoidEnemy(ghostSprite, 130, 360 + 512, 100, 2,
-        // 10000);
-        // Entity brute = new HumanoidEnemy(bruteSprite, 120 + 512, 360, 100, 2,
-        // 10000);
-        // Entity oldwoman = new HumanoidEnemy(oldWomanSprite, 100 + 512, 320,
-        // 100, 2,
-        // 10000);
-        // Entity german = new HumanoidEnemy(germanSprite, 100, 300, 100, 2,
-        // 10000);
-
-        entities.put("troll", troll);
-        // entities.put("oldman", oldman);
-        // entities.put("ghost", ghost);
-        // entities.put("brute", brute);
-        // entities.put("oldwoman", oldwoman);
-        // entities.put("german", german);
-
-        // a oldman EnemyFour.png 4 4
-        // a ghost EnemyThree.png 4 4
-        // a brute EnemyTwo.png 4 4
-        // a baldman npc1.png 4 4
-        // a oldwoman npc3.png 4 4
-        // a german npc4.png 4 4
-        // Entity redEnemy = new CyanRectangleEnemy(180, 230, 29, 17, 2,
-        // Color.red);
-        // Entity whiteEnemy = new CyanRectangleEnemy(180, 190, 28, 37, 2,
-        // Color.white);
-        // Entity yellowEnemy = new CyanRectangleEnemy(100, 300, 15, 19, 2,
-        // Color.yellow);
-        // Entity greyEnemy = new CyanRectangleEnemy(150, 250, 30, 30, 2,
-        // Color.gray);
-
-        // entities.put("redEnemy", redEnemy);
-        // entities.put("white", whiteEnemy);
-        // entities.put("yellow", yellowEnemy);
-        // entities.put("grey", greyEnemy);
     }
 
     private void initPlayer() {
@@ -163,9 +106,9 @@ public class GameEngine {
         renderables.put("splash", splash);
         PauseScreen pauseScreen = new PauseScreen();
         renderables.put("pauseScreen", pauseScreen);
-
         GameOverScreen gameOverScreen = new GameOverScreen();
         renderables.put("gameOverScreen", gameOverScreen);
+        introTxt = new IntroText();
         ScrollingCombatText xpSCT = new ScrollingCombatText("+10XP", 0, 0, 12,
                 Color.green);
         ScrollingCombatText enemySCT = new ScrollingCombatText("+10XP", 0, 0,
@@ -179,15 +122,16 @@ public class GameEngine {
         renderables.put("playerSCT", playerSCT);
         renderables.put("enemySCT", enemySCT);
         renderables.put("levelUpSCT", levelUpSCT);
-        renderables.put("bsTxt", new IntroText());
+        renderables.put("bsTxt", introTxt);
 
     }
 
     public void update(long delta) {
+        if (!introTxt.isOver())
+            return;
         timer += delta;
         t0 = System.currentTimeMillis();
-        if (timer >= (1000.0 / 60)) {
-            System.out.println("60 FPS passed");
+        if (timer >= (1000.0 / GameState.GAMEFPS)) {
         } else {
             return;
         }
@@ -195,9 +139,9 @@ public class GameEngine {
         updatePlayer();
         updateMap();
         combatManager.updateCombatables();
-        timer = (long) (timer - (1000.0 / 60))
-                + (System.currentTimeMillis() - t0);
-        System.out.println("Remainder: " + timer);
+        long t1 = System.currentTimeMillis() - t0;
+        timer = (long) (timer - (1000.0 / GameState.GAMEFPS));
+        timer = timer + (t1);
 
     }
 
@@ -266,5 +210,8 @@ public class GameEngine {
         return soundEngine;
     }
 
+    public IntroText getintroTxt() {
+        return introTxt;
+    }
 
 }

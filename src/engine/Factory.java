@@ -49,6 +49,7 @@ public class Factory {
 
 		new ImageLoader("imagelist.txt", images);
         new SoundLoader("soundList2.txt", sounds);
+        new EnemyLoader("enemies", entities, images);
         new FontLoader();
 
 		this.listener = new GameEventListener();
@@ -66,6 +67,8 @@ public class Factory {
 		frame.addListener(listener);
 		this.graphicsEngine = new GraphicsEngine(entities, renderables, images,
 				frame);
+
+        System.out.println("Factory set.");
 	}
 
 	public GameEngine createGameEngine() {

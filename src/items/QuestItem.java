@@ -7,4 +7,10 @@ public class QuestItem extends GameItem {
 		id = type + (++GameItem.nextID);
 	}
 
+    @Override
+    public int compareTo(GameItem o) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

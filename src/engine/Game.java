@@ -22,11 +22,10 @@ public class Game {
 	}
 
 	public void init() {
+        System.out.println("Starting game.");
 		engine.start();
 		sleep(10);
 		gfx.start();
-		sleep(10);
-        sfx.start();
 		sleep(10);
 	}
 
@@ -37,7 +36,7 @@ public class Game {
 			while (GameState.getInstance().getState() == GameCondition.RUNNING) {
 
                 engine.update(time() - t0);
-                sfx.playMusic();
+                sfx.start();
 				delta = time() - t0;
 				gfx.render((int) delta);
 				t0 = time();
@@ -72,6 +71,7 @@ public class Game {
                 if (GameState.getInstance().isEnableVisualTesting()) {
                     engine.initTest();
                 }
+                sfx.splash();
                 gfx.renderSplash();
                 System.gc();
                 sleep(1000);
@@ -87,9 +87,16 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-        if (args.length != 0 && args[0].equals("doTest=true")) {
-            System.out.println("Time in main: " + System.currentTimeMillis());
-            GameState.getInstance().setEnableVisualTesting(true);
+        if (args.length != 0) {
+            for (String option : args) {
+                if (option.split("=")[0].equals("doTest")
+                        && option.split("=")[1].equals("true"))
+                    GameState.getInstance().setEnableVisualTesting(true);
+
+                else if (option.split("=")[0].equals("settings")
+                        && option.split("=")[1].equals("low"))
+                    GameState.setFPS(30);
+            }
         }
 		Game game = Game.getInstance();
 		game.init();

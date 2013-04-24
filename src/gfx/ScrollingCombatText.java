@@ -42,13 +42,13 @@ public class ScrollingCombatText implements Renderable {
             return;
         if (y < 0 && y > gameWidth)
             return;
-        if (oldY < y - gameHeight / 3) {
+        if (oldY < y - 100) {
             return;
         }
         Composite gComp = g.getComposite();
         g.setFont(stringFont);
         Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                1 - 0.8f * ((y - oldY) / (float) (gameHeight / 3)));
+                1 - 0.8f * ((y - oldY) / (float) (100)));
         g.setComposite(c);
         g.setColor(color);
         g.drawString(xpMessage, x % gameWidth, oldY % gameHeight);

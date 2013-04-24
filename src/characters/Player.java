@@ -37,8 +37,8 @@ public class Player extends GameCharacter {
     private Animated currentRenderable;
 
     private ArrayList<Potion> HealthPotions = new ArrayList<Potion>();
-    private int speedX = 2;
-    private int speedY = 2;
+    private int speedX = 1;
+    private int speedY = 1;
     private int health;
     private int maxHealth;
     private int xp;

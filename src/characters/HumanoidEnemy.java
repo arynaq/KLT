@@ -15,17 +15,12 @@ public class HumanoidEnemy extends BaseEnemy {
     private int oldX, oldY;
     private boolean doMove;
 
-    public HumanoidEnemy(int x, int y, int width, int height, int damage,
-            int health, int attackRange, int attackCooldown) {
-        super(x, y, width, height, damage, health, attackRange, attackCooldown);
 
-    }
-    
     public HumanoidEnemy(AttackMoveAnimated animation, int x, int y,
             int health, int damage,
-            int attackCooldown) {
+ int attackCooldown, int xp) {
         super(x, y, animation.getSheeet().getFrame(0).getWidth(), animation
-                .getSheeet().getFrame(0).getHeight(), damage, health, 0,
+                .getSheeet().getFrame(0).getHeight(), damage, health, xp, 0,
                 attackCooldown);
 
         this.moveWest = animation.getWestMovementSheet();
@@ -39,16 +34,28 @@ public class HumanoidEnemy extends BaseEnemy {
     @Override
     public void seek(Combatable other) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public Renderable getRenderable() {
-        if (!GameState.getInstance().isInCurrentMap(this)) {
-            currentRenderable.setX(GameState.DIMENSION.width + 10);
-            currentRenderable.setY(GameState.DIMENSION.height + 10);
+        if (!(GameState.getInstance().isInCurrentMap(this))) {
+            currentRenderable.setDoNotRender(true);
             return currentRenderable;
         }
+        else {
+            currentRenderable.setDoNotRender(false);
+        }
+
+        if (getState() == State.DEAD) {
+            currentRenderable.setDoNotRender(true);
+            return currentRenderable;
+        }
+
+
+
+
+
         if (getX() != oldX || getY() != oldY)
             doMove = true;
         else
@@ -71,7 +78,7 @@ public class HumanoidEnemy extends BaseEnemy {
         updateCurrentRenderable();
         return currentRenderable;
     }
-    
+
     private void updateCurrentRenderable() {
         currentRenderable.setX(getX() % GameState.DIMENSION.width);
         currentRenderable.setY(getY() % GameState.DIMENSION.height);

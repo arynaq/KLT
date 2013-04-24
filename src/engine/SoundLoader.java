@@ -17,6 +17,7 @@ public class SoundLoader {
 	public SoundLoader(String soundlistName, Map<String, Clip> sounds) {
 		this.sounds = sounds;
 		loadSounds(soundlistName);
+        System.out.println("Done loading sounds from file.");
 	}
 
     // public void loadSounds(String soundlistFile) {
@@ -55,7 +56,6 @@ public class SoundLoader {
                 continue;
             String[] args = line.split("\\s+");
             try {
-                System.out.println(args[1]);
                 AudioInputStream audio = AudioSystem
                         .getAudioInputStream(SoundLoader.class
                                 .getResourceAsStream("/sounds/" + args[1]));

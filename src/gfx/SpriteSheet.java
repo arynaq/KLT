@@ -17,6 +17,7 @@ public class SpriteSheet {
 	}
 
 	public SpriteSheet(List<BufferedImage> images, int rows, int columns) {
+        // System.out.println("Setting sprite with: " + images);
 		this.images = new ArrayList<BufferedImage>(images);
 		this.size = images.size();
 		this.rows = rows;

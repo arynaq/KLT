@@ -2,5 +2,7 @@
 levelUp Pup31.wav
 loot sfx23.wav
 potion Pup28.wav
-mainMusic beezDul.wav
+mainMusic skyrim.wav
+gameOver Photos.wav
 attack Pup2.wav
+splash Blizzard.wav

@@ -31,12 +31,12 @@ public class GameState {
 	/*
 	 * Determines the highest rate at which the game will run.
 	 */
-    public static final int GAMEFPS = 60;
+    public static int GAMEFPS = 60;
     /*
      * Determine how fast the player animation walks. 1 is very fast, 50 is very
      * slow.
      */
-    public static final int PLAYERSTEPS = 20;
+    public static final int PLAYERSTEPS = 10;
 	/*
 	 * Determines the state of the game.
 	 */
@@ -55,6 +55,7 @@ public class GameState {
 
 	private GameState() {
         this.state = GameCondition.SPLASH;
+        System.out.println("GameState set.");
 	}
 
 	public static GameState getInstance() {
@@ -122,6 +123,11 @@ public class GameState {
 
     public void setEnableVisualTesting(boolean enableVisualTesting) {
         this.enableVisualTesting = enableVisualTesting;
+    }
+
+    public static void setFPS(int i) {
+        System.out.println("FPS was set from,to: " + GAMEFPS + "," + i);
+        GAMEFPS = i;
     }
 
 }

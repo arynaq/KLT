@@ -32,6 +32,7 @@ public class CombatManager {
         this.dmgEngine = new DamageEngine();
         this.levelManager = engine.getLevelManager();
         this.engine.getRenderables().put("lootSCT", lootSCT);
+        System.out.println("Combatmanager loaded.");
     }
 
 
@@ -86,7 +87,7 @@ public class CombatManager {
 
                 if (combatable.getState() == State.DEAD) {
                     engine.getSoundEngine().playEnemyDead();
-                    levelManager.xpGain(50);
+                    levelManager.xpGain(combatable.getXP());
                     rollTheDiceAndGivePlayerLoot();
                 }
             }

@@ -1,5 +1,6 @@
 package worldmap;
 
+import engine.GameState;
 import gfx.Renderable;
 
 import java.awt.Graphics2D;
@@ -67,9 +68,8 @@ public class GameMap implements Renderable {
     public Rectangle getBounds() {
         int x = xBound[0];
         int y = yBound[0];
-        int w = xBound[1];
-        int h = yBound[1];
-        bounds.setBounds(x, y, w, h);
+        bounds.setBounds(x, y, GameState.DIMENSION.width,
+                GameState.DIMENSION.height);
         return bounds;
     }
 

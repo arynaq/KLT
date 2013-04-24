@@ -21,6 +21,7 @@ public class ImageLoader {
 			Map<String, ArrayList<BufferedImage>> imgs) {
 		this.images = imgs;
 		loadImages(imageListFile);
+        System.out.println("Done loading images from file.");
 	}
 
 	/**

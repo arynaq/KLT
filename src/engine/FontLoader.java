@@ -9,7 +9,7 @@ import java.io.InputStream;
 public class FontLoader {
 	public FontLoader() {
 		loadFonts();
-
+        System.out.println("Done loading fonts.");
 	}
 
 	private void loadFonts() {

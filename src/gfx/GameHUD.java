@@ -59,6 +59,7 @@ public class GameHUD implements Renderable {
                 Font.BOLD, 10);
         this.volatileFont = new Font("Commodore 64 Pixelized", Font.BOLD, 18);
         this.stroke = new BasicStroke(3f);
+        System.out.println("GameHUD set up.");
 
     }
 

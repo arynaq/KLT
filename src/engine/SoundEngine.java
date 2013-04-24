@@ -15,11 +15,25 @@ public class SoundEngine {
 
         this.sounds = sounds;
         this.audioSupported = GameState.getInstance().isAudioSupported();
+        System.out.println("SoundEngine loaded.");
     }
 
     public void start() {
-        // TODO Auto-generated method stub
 
+        if (currentMusic == "splash") {
+            playing = false;
+            stop();
+        }
+        if (playing == false) {
+            sounds.get("mainMusic").setFramePosition(0);
+            sounds.get("mainMusic").loop(Clip.LOOP_CONTINUOUSLY);
+            // playMusic("mainMusic");
+            currentMusic = "mainMusic";
+            playing = true;
+        }
+    }
+    public void stop(){
+        sounds.get(currentMusic).stop();        
     }
 
     public void playSFX(String soundName) {
@@ -29,25 +43,34 @@ public class SoundEngine {
         sounds.get(soundName).start();
     }
 
-    public void playMusic() {
+    public void playMusic(String songName) {
         if (!audioSupported || playing)
             return;
-        sounds.get("mainMusic").setFramePosition(currentFrame);
-        sounds.get("mainMusic").start();
+        sounds.get(songName).setFramePosition(currentFrame);
+        sounds.get(songName).start();
+        currentMusic = songName;
         playing = true;
+        currentFrame = 0;
     }
 
     public void playerGameOver() {
-        if (!audioSupported)
-            return;
-        playing = false;
+        if (currentMusic == "mainMusic") {
+            playing = false;
+            stop();
+            playMusic("gameOver");
+        }
+    }
+
+    public void splash(){
+        playMusic("splash");
+
     }
 
     public void pauseGame() {
         if (!audioSupported)
             return;
-        currentFrame = sounds.get("mainMusic").getFramePosition() - 100;
-        sounds.get("mainMusic").stop();
+        currentFrame = sounds.get(currentMusic).getFramePosition() - 100;
+        sounds.get(currentMusic).stop();
         playing = false;
 
     }

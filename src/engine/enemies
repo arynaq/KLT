@@ -1,0 +1,30 @@
+#enemy constructor: (image,x pos , y pos, width, heigth, dmg, health,xp, atkRng, atkCD)
+EnemyOne,320,70,2,30,25,default,default
+EnemyOne,414,165,2,30,25,default,default
+EnemyOne,266,319,2,30,25,default,default
+EnemyOne,50,288,2,30,25,default,default
+EnemyOne,233,700,2,30,25,default,default
+EnemyTwo,200,400,4,100,100,default,default
+#EnemyTwo,80,186,4,100,100,default,default
+EnemyTwo,270,890,4,100,100,default,default
+EnemyTwo,650,940,4,100,100,default,default
+EnemyTwo,920,960,4,100,100,default,default
+EnemyThree,72,950,8,350,250,default,default
+#EnemyThree,80,186,8,350,250,default,default
+EnemyThree,666,724,8,350,250,default,default
+#Enemies at sand area
+EnemyThree,950,650,8,350,250,default,default
+EnemyThree,930,620,8,350,250,default,default
+EnemyOne,910,615,2,30,25,default,default
+EnemyOne,935,625,4,350,250,default,default
+EnemyOne,930,620,8,350,250,default,default
+EnemyThree,942,617,8,350,250,default,default
+#End sand
+EnemyThree,730,80,8,350,250,default,default
+EnemyFour,952,135,15,500,1000,default,default
+EnemyFour,919,424,15,500,1000,default,default
+EnemyFour,650,580,15,500,1000,default,default
+Gukern,625,384,50,1000,5000,default,default
+
+#At Erlend
+EnemyThree,30,660,13,500,500,default,default

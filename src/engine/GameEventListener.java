@@ -14,7 +14,7 @@ WindowListener {
 	long lastTime;
 
 	public GameEventListener() {
-
+        System.out.println("GameEventListener loaded.");
 	}
 
 	@Override
@@ -136,7 +136,7 @@ WindowListener {
                 // movementManager.givePotion();
 			}
 			break;
-		case KeyEvent.VK_I:
+        case KeyEvent.VK_E:
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
 				movementManager.usePotion();
 			}
@@ -145,12 +145,6 @@ WindowListener {
 			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
                 movementManager.attack();
 			}
-			break;
-		case KeyEvent.VK_E:
-			if (GameState.getInstance().getState() == GameCondition.RUNNING) {
-				checkIfmoveAllowed("interact");
-			}
-
 			break;
 		case KeyEvent.VK_ENTER:
 			if (GameState.getInstance().getState() == GameCondition.SPLASH) {
